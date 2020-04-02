@@ -32,6 +32,7 @@
         "RECORD_AUDIO",
         "WRITE_EXTERNAL_STORAGE"
       ]
-    }
+    },
+    "description": ""
   }
 }

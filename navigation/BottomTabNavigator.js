@@ -1,30 +1,16 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import { SafeAreaView } from 'react-native';
-import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
-import { NavigationContainer } from '@react-navigation/native';
 
-const BottomTab = createBottomTabNavigator();
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+
+
+const BottomTab = createMaterialBottomTabNavigator();
+
 const INITIAL_ROUTE_NAME = 'Home';
-
-const BottomTabBar = ({ navigation, state }) => {
-  const onSelect = index => {
-    navigation.navigate(state.routeNames[index]);
-  };
-
-  return (
-    <SafeAreaView>
-      <BottomNavigation selectedIndex={state.index} onSelect={onSelect}>
-        <BottomNavigationTab title="Start" />
-        <BottomNavigationTab title="Options" />
-      </BottomNavigation>
-    </SafeAreaView>
-  );
-};
 
 const BottomTabNavigator = ({ navigation, route }) => {
   // Set the header title on the parent stack navigator depending on the
@@ -33,8 +19,7 @@ const BottomTabNavigator = ({ navigation, route }) => {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}
-    tabBar={props=><BottomTabBar {...props}/>}>
+    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}

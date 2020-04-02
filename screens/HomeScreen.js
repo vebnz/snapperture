@@ -1,17 +1,27 @@
-import React, { Component, useRef, useState, useEffect } from "react";
-import {
-  ApplicationProvider,
-  Layout,
-  Text,
-  Button
-} from "@ui-kitten/components";
+
+import { withNavigationFocus } from "@react-navigation/compat";
 import { Camera } from "expo-camera";
-import { View } from "react-native";
-import {withNavigationFocus} from '@react-navigation/compat'
+import { Surface } from "gl-react-native";
+import React, { Component } from "react";
+import { View, Slider,  } from "react-native";
+import { Text, Button, Title } from "react-native-paper";
+import FX from "../components/FX";
+
+import GLCamera from "../components/GLCamera";
+import FilterPicker from "../components/FilterPicker";
+import neutral from '../assets/filters/neutral-lut.png'
+import filterConsts from "../constants/Filters";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasPermission: null, type: Camera.Constants.Type.front };
+    this.state = {
+      hasPermission: null,
+      type: "front",
+      width: false,
+      height: false,
+      intensity: 1,
+      filter: filterConsts[0]
+    };
     this.camera = null;
     this.navigationListener = null;
   }
@@ -22,13 +32,13 @@ class HomeScreen extends Component {
 
     this.navigationListener = this.props.navigation.addListener("blur", e => {
       if (this.camera) {
-        console.log("HomeScreen -> componentDidMount -> blur -> e", e)
+        console.log("HomeScreen -> componentDidMount -> blur -> e", e);
         this.camera.pausePreview();
       }
     });
     this.navigationListener = this.props.navigation.addListener("focus", e => {
       if (this.camera) {
-        console.log("HomeScreen -> componentDidMount -> focus ->e", e)
+        console.log("HomeScreen -> componentDidMount -> focus ->e", e);
         this.camera.resumePreview();
       }
     });
@@ -42,10 +52,26 @@ class HomeScreen extends Component {
     console.log("onCameraError -> error", error);
   };
 
-  render() {
+  onLayout = evt => {
+    const { width, height } = evt.nativeEvent.layout;
+    this.setState({
+      width,
+      height
+    });
+  };
+
+  onSelectFilter = (filter) => {
+    console.log("HomeScreen -> onSelectFilter -> filter", filter)
+    this.setState({filter})
     
-    console.log("HomeScreen -> render -> this.props.navigation.isFocused();", this.props.navigation.isFocused())
-    const { hasPermission, type } = this.state;
+  }
+
+  onFlipPress = () => {
+    this.setState({type: this.state.type=="front" ? "back": "front"})
+  }
+  render() {
+    const { width, height, hasPermission, type, intensity, filter } = this.state;
+    console.log("HomeScreen -> render -> this.state", this.state);
 
     if (hasPermission === null) {
       return <View />;
@@ -56,43 +82,34 @@ class HomeScreen extends Component {
     if (!this.props.navigation.isFocused()) {
       return <Text>Camera delayed rendering</Text>;
     }
+
+    if (!width && !height) {
+      return <View style={{ flex: 1 }} onLayout={this.onLayout} />;
+    }
     return (
-      <View style={{ flex: 1 }}>
-        <Camera
-          style={{ aspectRatio: 1 }}
-          type={type}
-          ref={camera => (this.camrta = camera)}
-          ratio="1:1"
-          onMountError={this.onCameraError}
-          useCamera2Api
-        >
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "transparent",
-              flexDirection: "row"
-            }}
-          >
-            <Button
-              style={{
-                flex: 0.1,
-                alignSelf: "flex-end",
-                alignItems: "center"
-              }}
-              appearance="ghost"
-              onPress={() => {
-                this.setState({
-                  type:
-                    type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back
-                });
-              }}
-            >
-              Flip
-            </Button>
-          </View>
-        </Camera>
+      <View style={{ flex: 1 }} onLayout={this.onLayout}>
+        <Surface style={{ aspectRatio: 1, width, height: width }}>
+          <FX filter={filter} intensity={intensity}>
+            {/* {{ uri: "http://www.pwcphoto.com/images/test80.jpg" }} */}
+            {/* {neutral} */}
+            <GLCamera position={type} height={height} width={width} />
+          </FX>
+        </Surface>
+        <View style={{ flex: 1, justifyContent: "flex-end" }}>
+          <Title style={{flex:1, textAlign: "center"}}>{filter.name}</Title>
+          <Button style={{marginBottom: 10}} mode="contained" icon="camera" onPress={this.onFlipPress}>Flip</Button>
+          <FilterPicker onSelectFilter={this.onSelectFilter} />
+          <Text style={{paddingTop: 10, textAlign: "center"}}>Filter Intensity</Text>
+          <Slider
+            style={{ height: 40 }}
+            value={1}
+            minimumValue={0}
+            maximumValue={1.25}
+            minimumTrackTintColor="#000000"
+            maximumTrackTintColor="#ff0000"
+            onValueChange={value => this.setState({ intensity: value })}
+          />
+        </View>
       </View>
     );
   }

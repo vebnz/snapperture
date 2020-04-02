@@ -8,12 +8,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import useLinking from "./navigation/useLinking";
-import { ApplicationProvider } from "@ui-kitten/components";
 
-import { mapping, light as evaTheme } from '@eva-design/eva';
-import {default as appTheme} from './calo-theme.json'
-
-const theme = {...evaTheme, ...appTheme};
+import { Provider as PaperProvider } from "react-native-paper";
 
 const Stack = createStackNavigator();
 
@@ -53,7 +49,7 @@ const App = props => {
     return null;
   } else {
     return (
-      <ApplicationProvider mapping={mapping} theme={theme}>
+      <PaperProvider>
         <View style={styles.container}>
           {Platform.OS === "ios" && <StatusBar barStyle="default" />}
           <NavigationContainer
@@ -65,7 +61,7 @@ const App = props => {
             </Stack.Navigator>
           </NavigationContainer>
         </View>
-      </ApplicationProvider>
+      </PaperProvider>
     );
   }
 };
