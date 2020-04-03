@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { GLSL, Node, Shaders, Uniform } from "gl-react";
 import { View } from "react-native";
 import { Colors, Text } from "react-native-paper";
 import Expo2DContext from "expo-2d-context";
 import { GLView } from "expo-gl";
+
+import ViewShot from "react-native-view-shot";
 
 const shaders = Shaders.create({
   TextOverlay: {
@@ -19,42 +21,18 @@ void main() {
   }
 });
 
-const TextNode = ({ children: t }) => (
-  <Node shader={shaders.TextOverlay} uniforms={{ t }} />
-);
+const TextFx = props => {
+  const [renderedNode, setRenderedNode] = useState(false);
 
-const TextFx = (props) => {
-  const onGLContextCreate = async (gl, text, canvasWidth, canvasHeight) => {
-    console.log("onGLContextCreate -> gl", gl)
-    // var ctx = new Expo2DContext(gl);
-    // console.log("onGLContextCreate -> ctx", ctx)
-    // await ctx.initializeText();
-
-    // ctx.fillStyle = "#333399";
-    // ctx.fillRect(0, 0, ctx.width, ctx.height);
-
-    // ctx.fillStyle = "white";
-    // ctx.font = "italic 72pt sans-serif";
-    // ctx.fillText(text, 10, 100);
-
-    // ctx.flush();
-       gl.clearColor(0, 0, 1, 1);
-       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-       gl.endFrameEXP();
+  const onCapture = uri => {
+    console.log("TextFx -> uri", uri);
+    setRenderedNode(uri);
   };
 
-  const { text, canvasHeight, canvasWidth } = props;
+  const { children, text, canvasHeight, canvasWidth } = props;
+  console.log("children", children)
   
-  return (
-    // <TextNode>
-      <GLView
-        style={{ flex: 1, height: 200, width: "100%" }}
-        onContextCreate={gl => {
-          onGLContextCreate(gl, text, canvasWidth, canvasHeight);
-        }}
-      />
-    // </TextNode>
-  );
+  return <Node shader={shaders.TextOverlay} uniforms={{ t: children }} />;
 };
 TextFx.defaultProps = {
   text: "SAMPLE"

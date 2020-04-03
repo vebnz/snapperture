@@ -12,6 +12,7 @@ import FilterPicker from "../components/FilterPicker";
 import filterConsts from "../constants/Filters";
 import TopAppBar from "../navigation/AppBar";
 import TextFx from "../components/FX/TextFx";
+import ViewShot from "react-native-view-shot";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +22,8 @@ class HomeScreen extends Component {
       width: false,
       height: false,
       intensity: 1,
-      filter: filterConsts[0]
+      filter: filterConsts[0],
+      renderedNode: false
     };
     this.camera = null;
     this.surface = null;
@@ -89,6 +91,9 @@ class HomeScreen extends Component {
       
     }
   };
+  onCapture = (uri) => {
+    this.setState({renderedNode: uri})
+  }
 
   render() {
     const {
@@ -97,8 +102,10 @@ class HomeScreen extends Component {
       hasPermission,
       type,
       intensity,
-      filter
+      filter,
+      renderedNode
     } = this.state;
+    console.log("HomeScreen -> render -> this.state", this.state)
 
     if (hasPermission === null) {
       return <View />;
@@ -117,15 +124,29 @@ class HomeScreen extends Component {
     return (
       <View style={{ flex: 1 }} onLayout={this.onLayout}>
         <TopAppBar />
+        <ViewShot onCapture={this.onCapture} captureMode="mount">
+          <Text>...Something to rasterize...</Text>
+        </ViewShot>
         <View style={{ aspectRatio: 1, width, height: width }}>
-          {/* <TextFx text="DERPYDERP DERP" canvasHeight={width} canvasWidth={width}/>   */}
+          {!!renderedNode && (
+            <TextFx
+              text="DERPYDERP DERP"
+              canvasHeight={width}
+              canvasWidth={width}
+            >{{uri: renderedNode}}</TextFx>
+          )}
+
           <GLSurface
             ref={surface => (this.surface = surface)}
             style={{ aspectRatio: 1, width, height: width }}
           >
             <FX filter={filter} intensity={intensity}>
-              {/* <TextFx text="DERPYDERP DERP" canvasHeight={width} canvasWidth={width}/>   */}
-              <GLCamera position={type} height={height} width={width} />
+              <TextFx
+                text="DERPYDERP DERP"
+                canvasHeight={width}
+                canvasWidth={width}
+              />
+              {/* <GLCamera position={type} height={height} width={width} /> */}
             </FX>
           </GLSurface>
 
