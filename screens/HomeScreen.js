@@ -1,16 +1,16 @@
-
 import { withNavigationFocus } from "@react-navigation/compat";
 import { Camera } from "expo-camera";
-import { Surface } from "gl-react-native";
+import { Surface as GLSurface } from "gl-react-native";
 import React, { Component } from "react";
-import { View, Slider,  } from "react-native";
-import { Text, Button, Title } from "react-native-paper";
+import { View, Slider } from "react-native";
+import { Text, Button, Title, Surface, FAB, Colors } from "react-native-paper";
 import FX from "../components/FX";
 
 import GLCamera from "../components/GLCamera";
 import FilterPicker from "../components/FilterPicker";
-import neutral from '../assets/filters/neutral-lut.png'
+import neutral from "../assets/filters/neutral-lut.png";
 import filterConsts from "../constants/Filters";
+import TopAppBar from "../navigation/AppBar";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -24,25 +24,31 @@ class HomeScreen extends Component {
     };
     this.camera = null;
     this.surface = null;
-    this.navigationListener = null;
+    this.navigationBlurListener = null;
+    this.navigationFocusListener = null;
+    this.navigationStateListener = null;
   }
 
   componentDidMount = async () => {
     const { status } = await Camera.requestPermissionsAsync();
     this.setState({ hasPermission: status === "granted" });
 
-    this.navigationListener = this.props.navigation.addListener("blur", e => {
-      if (this.camera) {
-        console.log("HomeScreen -> componentDidMount -> blur -> e", e);
-        this.camera.pausePreview();
+    this.navigationBlurListener = this.props.navigation.addListener(
+      "blur",
+      e => {
+        if (this.camera) {
+          this.camera.pausePreview();
+        }
       }
-    });
-    this.navigationListener = this.props.navigation.addListener("focus", e => {
-      if (this.camera) {
-        console.log("HomeScreen -> componentDidMount -> focus ->e", e);
-        this.camera.resumePreview();
+    );
+    this.navigationFocusListener = this.props.navigation.addListener(
+      "focus",
+      e => {
+        if (this.camera) {
+          this.camera.resumePreview();
+        }
       }
-    });
+    );
   };
 
   componentWillUnmount = () => {
@@ -61,34 +67,38 @@ class HomeScreen extends Component {
     });
   };
 
-  onSelectFilter = (filter) => {
-    console.log("HomeScreen -> onSelectFilter -> filter", filter)
-    this.setState({filter})
-    
-  }
+  onSelectFilter = filter => {
+    console.log("HomeScreen -> onSelectFilter -> filter", filter);
+    this.setState({ filter });
+  };
 
   onFlipPress = () => {
-    this.setState({type: this.state.type=="front" ? "back": "front"})
-  }
+    this.setState({ type: this.state.type == "front" ? "back" : "front" });
+  };
 
   onSurfaceCapture = async () => {
     if (this.surface) {
-      const url = await this.surface.glView.capture()
+      const {
+        height,
+        localUri,
+        uri,
+        width
+      } = await this.surface.glView.capture();
+
+      this.props.navigation.navigate("Share", { height, localUri, uri, width });
       
-      console.log("HomeScreen -> onSurfaceCapture -> url", url)
-//Returns:  see what you can do with it
-//       {
-//   "height": 1080,
-//   "localUri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540avwave%252Fcalograph/GLView/95aedd20-953e-4dd7-926d-594edb282d15.jpeg",
-//   "uri": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540avwave%252Fcalograph/GLView/95aedd20-953e-4dd7-926d-594edb282d15.jpeg",
-//   "width": 1080,
-// }
     }
-  }
+  };
 
   render() {
-    const { width, height, hasPermission, type, intensity, filter } = this.state;
-    console.log("HomeScreen -> render -> this.state", this.state);
+    const {
+      width,
+      height,
+      hasPermission,
+      type,
+      intensity,
+      filter
+    } = this.state;
 
     if (hasPermission === null) {
       return <View />;
@@ -103,27 +113,41 @@ class HomeScreen extends Component {
     if (!width && !height) {
       return <View style={{ flex: 1 }} onLayout={this.onLayout} />;
     }
+
     return (
       <View style={{ flex: 1 }} onLayout={this.onLayout}>
-        <Surface
-          ref={surface => (this.surface = surface)}
-          style={{ aspectRatio: 1, width, height: width }}
-        >
-          <FX filter={filter} intensity={intensity}>
-            {/* {{ uri: "http://www.pwcphoto.com/images/test80.jpg" }} */}
-            {/* {neutral} */}
-            <GLCamera position={type} height={height} width={width} />
-          </FX>
-        </Surface>
-        <View style={{ flex: 1, justifyContent: "flex-end" }}>
-          <Title style={{ flex: 1, textAlign: "center" }}>{filter.name}</Title>
-          <Button
-            style={{ marginBottom: 10 }}
-            mode="contained"
-            onPress={this.onFlipPress}
+        <TopAppBar />
+        <View style={{ aspectRatio: 1, width, height: width }}>
+          <GLSurface
+            ref={surface => (this.surface = surface)}
+            style={{ aspectRatio: 1, width, height: width }}
           >
-            Flip
-          </Button>
+            <FX filter={filter} intensity={intensity}>
+              {/* {{ uri: "http://www.pwcphoto.com/images/test80.jpg" }} */}
+              {/* {neutral} */}
+              <GLCamera position={type} height={height} width={width} />
+            </FX>
+          </GLSurface>
+          <FAB
+            style={{ position: "absolute", top: 0, right: 0, margin: 20 }}
+            small
+            icon={`camera-${type === "front" ? "rear" : "front"}`}
+            onPress={this.onFlipPress}
+          />
+          <FAB
+            style={{
+              position: "absolute",
+              bottom: 0,
+              alignSelf: "center",
+              margin: 20
+            }}
+            icon="camera-iris"
+            color={Colors.white}
+            onPress={this.onSurfaceCapture}
+          />
+        </View>
+        <Surface style={{ flex: 1, justifyContent: "flex-end" }}>
+          <Title style={{ flex: 1, textAlign: "center" }}>{filter.name}</Title>
           <FilterPicker onSelectFilter={this.onSelectFilter} />
           <Text style={{ paddingTop: 10, textAlign: "center" }}>
             Filter Intensity
@@ -137,15 +161,7 @@ class HomeScreen extends Component {
             maximumTrackTintColor="#ff0000"
             onValueChange={value => this.setState({ intensity: value })}
           />
-          <Button
-            style={{ marginTop: 10 }}
-            mode="contained"
-            icon="camera"
-            onPress={this.onSurfaceCapture}
-          >
-            Capture
-          </Button>
-        </View>
+        </Surface>
       </View>
     );
   }

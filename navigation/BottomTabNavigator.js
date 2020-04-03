@@ -2,10 +2,11 @@ import * as React from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import ShareScreen from '../screens/ShareScreen';
 import { SafeAreaView } from 'react-native';
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { Colors } from 'react-native-paper';
 
 
 const BottomTab = createMaterialBottomTabNavigator();
@@ -19,21 +20,21 @@ const BottomTabNavigator = ({ navigation, route }) => {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator shifting initialRouteName={INITIAL_ROUTE_NAME}>
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Get Started',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          tabBarColor: Colors.amber900,
+          tabBarIcon: 'camera'
         }}
       />
       <BottomTab.Screen
-        name="Links"
-        component={LinksScreen}
+        name="Share"
+        component={ShareScreen}
         options={{
-          title: 'Resources',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          tabBarColor: Colors.grey900,
+          tabBarIcon: 'share-variant'
         }}
       />
     </BottomTab.Navigator>
@@ -48,7 +49,7 @@ const getHeaderTitle = (route) =>{
   switch (routeName) {
     case 'Home':
       return `Say 'Fromage'! `;
-    case 'Links':
-      return 'Options';
+    case 'Share':
+      return 'Share';
   }
 }

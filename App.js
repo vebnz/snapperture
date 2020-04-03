@@ -3,14 +3,16 @@ import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { SplashScreen } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, CommonActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import useLinking from "./navigation/useLinking";
 
 import { Provider as PaperProvider } from "react-native-paper";
-
+import AppTheme from './constants/AppTheme'
+import { screensEnabled } from "react-native-screens";
+import TopAppBar from './navigation/AppBar/index';
 const Stack = createStackNavigator();
 
 const App = props => {
@@ -49,14 +51,21 @@ const App = props => {
     return null;
   } else {
     return (
-      <PaperProvider>
+      <PaperProvider theme={AppTheme}>
         <View style={styles.container}>
           {Platform.OS === "ios" && <StatusBar barStyle="default" />}
           <NavigationContainer
             ref={containerRef}
             initialState={initialNavigationState}
           >
-            <Stack.Navigator>
+            <Stack.Navigator
+              headerMode="screen"
+              screenOptions={{
+                header: ({ scene, previous, navigation }) => (
+                  <React.Fragment/>
+                )
+              }}
+            >
               <Stack.Screen name="Root" component={BottomTabNavigator} />
             </Stack.Navigator>
           </NavigationContainer>
