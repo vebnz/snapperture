@@ -1616,6 +1616,16 @@ acorn@^6.0.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.4.1.tgz#531e58ba3f51b9dacb9a6646ca4debf5b14ca474"
   integrity sha512-ZVA9k326Nwrj3Cj9jlh3wGFutC2ZornPNARZwsNYqQYgN0EsV2d53w5RN/co65Ohn4sUAUtb1rSUAOD6XN9idA==
 
+adaptive-bezier-curve@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/adaptive-bezier-curve/-/adaptive-bezier-curve-1.0.3.tgz#477577abe87d7280d46ca41649f6c22646fe8227"
+  integrity sha1-R3V3q+h9coDUbKQWSfbCJkb+gic=
+
+adaptive-quadratic-curve@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/adaptive-quadratic-curve/-/adaptive-quadratic-curve-1.0.2.tgz#65b4190fc5711698d24f0ae7bd5fea6cda90010d"
+  integrity sha1-ZbQZD8VxFpjSTwrnvV/qbNqQAQ0=
+
 add-line-numbers@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/add-line-numbers/-/add-line-numbers-1.0.1.tgz#48dbbdea47dbd234deafeac6c93cea6f70b4b7e3"
@@ -2362,7 +2372,7 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
-color-convert@^1.9.0, color-convert@^1.9.1:
+color-convert@^1.9.0, color-convert@^1.9.1, color-convert@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
   integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
@@ -2567,6 +2577,11 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     semver "^5.5.0"
     shebang-command "^1.2.0"
     which "^1.2.9"
+
+css-font-parser@0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/css-font-parser/-/css-font-parser-0.2.3.tgz#9a391d2e47086be5401e47274e687ec06e238c0e"
+  integrity sha512-QhdfNV+RjQLVg24d/ls4I8UrA/5WCeEfUmi1je8ISPr7RGZJXwWU2AwZpCiUmWuLZW7dKaB3ER0Bq1W9UhEUag==
 
 css-in-js-utils@^2.0.0:
   version "2.0.1"
@@ -2779,7 +2794,7 @@ domelementtype@^2.0.1:
   resolved "https://registry.yarnpkg.com/domelementtype/-/domelementtype-2.0.1.tgz#1f8bdfe91f5a78063274e803b4bdcedf6e94f94d"
   integrity sha512-5HOHUDsYZWV8FGWN0Njbr/Rn7f/eWSQi1v7+HsUVwXgn8nWWlL64zKDkS0n8ZmQ3mlWOMuXOnR+7Nx/5tMO5AQ==
 
-domexception@^1.0.1:
+domexception@1.0.1, domexception@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/domexception/-/domexception-1.0.1.tgz#937442644ca6a31261ef36e3ec677fe805582c90"
   integrity sha512-raigMkn7CJNNo6Ihro1fzG7wr3fHuYVytzquZKX5n0yizGsTcYgzdIUwj1X9pK0VvjeihV+XiclP+DjwbsSKug==
@@ -2794,10 +2809,20 @@ domutils@^1.7.0:
     dom-serializer "0"
     domelementtype "1"
 
+draw-image-normalized@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/draw-image-normalized/-/draw-image-normalized-0.1.1.tgz#5f338b5495bc6413855a44f65162f11ca8c543a3"
+  integrity sha1-XzOLVJW8ZBOFWkT2UWLxHKjFQ6M=
+
 dup@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dup/-/dup-1.0.0.tgz#51fc5ac685f8196469df0b905e934b20af5b4029"
   integrity sha1-UfxaxoX4GWRp3wuQXpNLIK9bQCk=
+
+earcut@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/earcut/-/earcut-2.1.1.tgz#157634e5f3ebb42224e475016e86a5b6ce556b45"
+  integrity sha1-FXY05fPrtCIk5HUBboalts5Va0U=
 
 ecc-jsbn@~0.1.1:
   version "0.1.2"
@@ -3010,6 +3035,22 @@ expect@^24.9.0:
     jest-message-util "^24.9.0"
     jest-regex-util "^24.9.0"
 
+expo-2d-context@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/expo-2d-context/-/expo-2d-context-0.0.2.tgz#7aeea5b146b3f7091ca7d17fcf7a713024ef82f5"
+  integrity sha512-W4TCuTBXZgvAHhQ15u0fpQiBVw14u4vIDcUv/hk2PBA9a3HYav+1lQp2+dCXLM2DXUjV5T4POY+VlePBWBORhw==
+  dependencies:
+    adaptive-bezier-curve "1.0.3"
+    adaptive-quadratic-curve "1.0.2"
+    color-convert "^1.9.3"
+    css-font-parser "0.2.3"
+    domexception "1.0.1"
+    earcut "2.1.1"
+    gl-matrix "^2.4.0"
+    parse-bmfont-ascii "1.0.6"
+    string-format "0.5.0"
+    tess2 "^1.0.0"
+
 expo-asset@~8.1.3:
   version "8.1.4"
   resolved "https://registry.yarnpkg.com/expo-asset/-/expo-asset-8.1.4.tgz#5265c28c1c279b2f9779269195bec4caf250ba5d"
@@ -3058,7 +3099,7 @@ expo-gl-cpp@^8.0.0, expo-gl-cpp@~8.1.0:
   resolved "https://registry.yarnpkg.com/expo-gl-cpp/-/expo-gl-cpp-8.1.0.tgz#537ff7702db5b71d68f8128c033627cfa363c911"
   integrity sha512-LFc+R+0HVBxSk+9gCVQm5wmKCdmUfdqzq9ReYYg2b74+ZN3zvBGCLCOFI0R5YyReaUb7aCpAk+SqvG6X0b3D4w==
 
-expo-gl@^8.0.0:
+expo-gl@^8.0.0, expo-gl@~8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/expo-gl/-/expo-gl-8.1.0.tgz#1dd25bbfd239fa223aa7074dd6cccd7cc044e75f"
   integrity sha512-aCkS7uCR1apD6WH7qqbpRJTie4qQyWClGj7LQ67B3Mm6jNyfOS4OvxxS5Y980lFZWmePguCWzft0c0/bMGTdMw==
@@ -3543,6 +3584,11 @@ gl-format-compiler-error@^1.0.2:
     gl-constants "^1.0.0"
     glsl-shader-name "^1.0.0"
     sprintf-js "^1.0.3"
+
+gl-matrix@^2.4.0:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/gl-matrix/-/gl-matrix-2.8.1.tgz#1c7873448eac61d2cd25803a074e837bd42581a3"
+  integrity sha512-0YCjVpE3pS5XWlN3J4X7AiAx65+nqAI54LndtVFnQZB6G/FVLkZH8y8V6R3cIoOQR4pUdfwQGd1iwyoXHJ4Qfw==
 
 gl-react-expo@^4.0.1:
   version "4.0.1"
@@ -4693,6 +4739,14 @@ json-stringify-safe@~5.0.1:
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
   integrity sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus=
 
+json2d@^1.1.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/json2d/-/json2d-1.2.0.tgz#fa1febd985c0845c327ca1b0b5090755f91b2092"
+  integrity sha1-+h/r2YXAhFwyfKGwtQkHVfkbIJI=
+  dependencies:
+    draw-image-normalized "^0.1.1"
+    rect-crop "0.0.0"
+
 json5@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
@@ -5725,6 +5779,11 @@ pad-left@^1.0.2:
   dependencies:
     repeat-string "^1.3.0"
 
+parse-bmfont-ascii@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/parse-bmfont-ascii/-/parse-bmfont-ascii-1.0.6.tgz#11ac3c3ff58f7c2020ab22769079108d4dfa0285"
+  integrity sha1-Eaw8P/WPfCAgqyJ2kHkQjU36AoU=
+
 parse-json@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-2.2.0.tgz#f480f40434ef80741f8469099f8dea18f55a4dc9"
@@ -6027,6 +6086,14 @@ react-is@^16.12.0, react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1, react-
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-json2d@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-json2d/-/react-json2d-0.3.0.tgz#97fc11ea87691a9e9aa35f703e7c13836be3ea82"
+  integrity sha512-v40xnfmGoMQkZGp9LPtP7bzQC0muhXC+lTcypWewCj569iMJCSIjbhcrAbrUQ7DIGP1ET4xp7XNYIpDW5BoNZQ==
+  dependencies:
+    json2d "^1.1.1"
+    prop-types "^15.6.0"
+
 react-native-camera@^3.21.0:
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-3.21.0.tgz#d8d5149c6bf5d84174093065e08e78b81d785e5d"
@@ -6132,6 +6199,11 @@ react-native-web@~0.11.7:
     normalize-css-color "^1.0.2"
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.4"
+
+react-native-webgl-view-shot@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-webgl-view-shot/-/react-native-webgl-view-shot-0.1.1.tgz#75f69c8b51117a72c426674a7450a19fd5300789"
+  integrity sha1-dfaci1ERenLEJmdKdFChn9UwB4k=
 
 react-native-webview@8.1.1:
   version "8.1.1"
@@ -6272,6 +6344,11 @@ realpath-native@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/realpath-native/-/realpath-native-2.0.0.tgz#7377ac429b6e1fd599dc38d08ed942d0d7beb866"
   integrity sha512-v1SEYUOXXdbBZK8ZuNgO4TBjamPsiSgcFr0aP+tEKpQZK8vooEUqV6nm6Cv502mX4NF2EfsnVqtNAHG+/6Ur1Q==
+
+rect-crop@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/rect-crop/-/rect-crop-0.0.0.tgz#f6ea75863021177566887d4ca60e466e8a1c3898"
+  integrity sha1-9up1hjAhF3VmiH1Mpg5GboocOJg=
 
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
@@ -6885,6 +6962,11 @@ strict-uri-encode@^2.0.0:
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
   integrity sha1-ucczDHBChi9rFC3CdLvMWGbONUY=
 
+string-format@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/string-format/-/string-format-0.5.0.tgz#bfc4a69a250f17f273d97336797daf5dca6ecf30"
+  integrity sha1-v8SmmiUPF/Jz2XM2eX2vXcpuzzA=
+
 string-length@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/string-length/-/string-length-2.0.0.tgz#d40dbb686a3ace960c1cffca562bf2c45f8363ed"
@@ -7047,6 +7129,11 @@ temp@0.8.3:
   dependencies:
     os-tmpdir "^1.0.0"
     rimraf "~2.2.6"
+
+tess2@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tess2/-/tess2-1.0.0.tgz#2e2eb21822294061b83d46cbaefdd09d86ddf593"
+  integrity sha1-Li6yGCIpQGG4PUbLrv3QnYbd9ZM=
 
 test-exclude@^5.2.3:
   version "5.2.3"
@@ -7492,7 +7579,7 @@ webgltexture-loader-expo-camera@^1.0.0:
   dependencies:
     webgltexture-loader "^1.0.0"
 
-webgltexture-loader-expo@1.0.0:
+webgltexture-loader-expo@1.0.0, webgltexture-loader-expo@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/webgltexture-loader-expo/-/webgltexture-loader-expo-1.0.0.tgz#e542636cdd6dbbda7c1c11eca50c8190988d773b"
   integrity sha512-o0slPnFkZ1CfGNQKmaxfbDeA7RGJp6nvHzEM3kdnO9FgdtbMk0P8ZQueoNQrE9f6V+macLc37CE8bTZfEq+yUw==

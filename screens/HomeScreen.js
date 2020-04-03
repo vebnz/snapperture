@@ -11,6 +11,7 @@ import FilterPicker from "../components/FilterPicker";
 
 import filterConsts from "../constants/Filters";
 import TopAppBar from "../navigation/AppBar";
+import TextFx from "../components/FX/TextFx";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -68,7 +69,6 @@ class HomeScreen extends Component {
   };
 
   onSelectFilter = filter => {
-    console.log("HomeScreen -> onSelectFilter -> filter", filter);
     this.setState({ filter });
   };
 
@@ -118,15 +118,17 @@ class HomeScreen extends Component {
       <View style={{ flex: 1 }} onLayout={this.onLayout}>
         <TopAppBar />
         <View style={{ aspectRatio: 1, width, height: width }}>
+          {/* <TextFx text="DERPYDERP DERP" canvasHeight={width} canvasWidth={width}/>   */}
           <GLSurface
             ref={surface => (this.surface = surface)}
             style={{ aspectRatio: 1, width, height: width }}
           >
             <FX filter={filter} intensity={intensity}>
-              {/* {{ uri: "http://www.pwcphoto.com/images/test80.jpg" }} */}
+              {/* <TextFx text="DERPYDERP DERP" canvasHeight={width} canvasWidth={width}/>   */}
               <GLCamera position={type} height={height} width={width} />
             </FX>
           </GLSurface>
+
           <FAB
             style={{ position: "absolute", top: 0, right: 0, margin: 20 }}
             small

@@ -8,7 +8,6 @@ import { Surface as GLSurface } from "gl-react-expo";
 
 const FilterPicker = props => {
   const renderItem = ({ item }) => {
-    console.log("item", item);
     return (
       <TouchableOpacity onPress={() => props.onSelectFilter(item)}>
         <Image source={item.preview} style={{ width: 80, height: 80 }} />

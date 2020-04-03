@@ -63,14 +63,12 @@ const FX = props => {
   const { children: inputImageTexture, filter, intensity } = props;
   let lutTexture = "";
   let noFilter = false;
-  console.log("filter", filter)
-
+  
   let filterObj = filterConsts.find(element => element.value === filter.value)
 
   if(!filterObj) { filterObj = filterConsts[0]}
   if(filterObj) {
     lutTexture = filterObj.lut
-    console.log("lutTexture", noFilter, lutTexture);
     return (
       <Node
         shader={shaders.LUT}
@@ -82,7 +80,7 @@ const FX = props => {
       />
     );
   }
-  console.log("noFilter", noFilter)
+  
   return props.children
   
   // return <Node shader={shaders.FX} uniforms={{ t, factor }} />;
