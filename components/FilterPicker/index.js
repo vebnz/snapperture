@@ -1,34 +1,37 @@
 import React, { useState } from "react";
-import { Menu, Button } from "react-native-paper";
-import filterConsts from '../../constants/Filters'
+import { Menu, Button, Title, Colors, Text } from "react-native-paper";
+import filterConsts from "../../constants/Filters";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import FX from "../FX";
+import { Image, View } from "react-native";
+import { Surface as GLSurface } from "gl-react-expo";
 
 const FilterPicker = props => {
-  const [visible, setVisible] = useState(false);
-  
-  const onSelectFilter = filter => {
-    props.onSelectFilter(filter);
-    setVisible(false);
+  const renderItem = ({ item }) => {
+    console.log("item", item);
+    return (
+      <TouchableOpacity onPress={() => props.onSelectFilter(item)}>
+        <Image source={item.preview} style={{ width: 80, height: 80 }} />
+        <Text
+          style={{
+            position: "absolute",
+            top: 10,
+            textAlign: "center",
+            color: Colors.white
+          }}
+        >
+          {item.name}
+        </Text>
+      </TouchableOpacity>
+    );
   };
-  
   return (
-    <Menu
-      visible={visible}
-      onDismiss={() => setVisible(false)}
-      anchor={<Button mode="contained"  onPress={() => setVisible(true)}>Filters</Button>}
-    >
-
-      {filterConsts.map(filter=>{
-        return (
-          <Menu.Item
-            key={filter.value}
-            onPress={() => {
-              onSelectFilter(filter);
-            }}
-            title={filter.name}
-          />
-        );
-      })}
-    </Menu>
+    <FlatList
+      horizontal
+      data={filterConsts}
+      renderItem={renderItem}
+      keyExtractor={item => item.value}
+    />
   );
 };
 

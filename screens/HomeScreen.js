@@ -3,12 +3,12 @@ import { Camera } from "expo-camera";
 import { Surface as GLSurface } from "gl-react-native";
 import React, { Component } from "react";
 import { View, Slider } from "react-native";
-import { Text, Button, Title, Surface, FAB, Colors } from "react-native-paper";
+import { Text, Button, Title, Surface, FAB, Colors, IconButton } from "react-native-paper";
 import FX from "../components/FX";
 
 import GLCamera from "../components/GLCamera";
 import FilterPicker from "../components/FilterPicker";
-import neutral from "../assets/filters/neutral-lut.png";
+
 import filterConsts from "../constants/Filters";
 import TopAppBar from "../navigation/AppBar";
 class HomeScreen extends Component {
@@ -124,7 +124,6 @@ class HomeScreen extends Component {
           >
             <FX filter={filter} intensity={intensity}>
               {/* {{ uri: "http://www.pwcphoto.com/images/test80.jpg" }} */}
-              {/* {neutral} */}
               <GLCamera position={type} height={height} width={width} />
             </FX>
           </GLSurface>
@@ -134,15 +133,16 @@ class HomeScreen extends Component {
             icon={`camera-${type === "front" ? "rear" : "front"}`}
             onPress={this.onFlipPress}
           />
-          <FAB
+          <IconButton
             style={{
               position: "absolute",
               bottom: 0,
               alignSelf: "center",
-              margin: 20
+              margin: 10
             }}
             icon="camera-iris"
             color={Colors.white}
+            size={40}
             onPress={this.onSurfaceCapture}
           />
         </View>
