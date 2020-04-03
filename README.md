@@ -1,4 +1,5 @@
-##Installation and setup
+## Installation and setup
+
 `npm install -g expo-cli`
 
 `git clone git@github.com:vebnz/CALOgraph.git`
@@ -8,7 +9,7 @@
 `yarn install`
 
 
-##Running
+## Running
 `yarn start`
 
 visit on your browser for debugging/launching on device/simulator/etc
