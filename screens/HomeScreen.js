@@ -2,7 +2,7 @@ import { withNavigationFocus } from "@react-navigation/compat";
 import { Camera } from "expo-camera";
 import { Surface as GLSurface } from "gl-react-native";
 import React, { Component } from "react";
-import { View, Slider } from "react-native";
+import { View, Slider, Image } from "react-native";
 import { Text, Button, Title, Surface, FAB, Colors, IconButton } from "react-native-paper";
 import FX from "../components/FX";
 
@@ -124,29 +124,37 @@ class HomeScreen extends Component {
     return (
       <View style={{ flex: 1 }} onLayout={this.onLayout}>
         <TopAppBar />
-        <ViewShot onCapture={this.onCapture} captureMode="mount">
-          <Text>...Something to rasterize...</Text>
-        </ViewShot>
+        <View style={{ position: "absolute", zIndex: -1 }}>
+          <ViewShot
+            style={{ aspectRatio: 1, width, height: width }}
+            onCapture={this.onCapture}
+            captureMode="mount"
+            options={{ format: "png" }}
+          >
+            <Title style={{ color: Colors.white }}>
+              ...Something to rasterize...
+            </Title>
+          </ViewShot>
+        </View>
         <View style={{ aspectRatio: 1, width, height: width }}>
-          {!!renderedNode && (
+          {/* {!!renderedNode && (
             <TextFx
               text="DERPYDERP DERP"
               canvasHeight={width}
               canvasWidth={width}
             >{{uri: renderedNode}}</TextFx>
-          )}
+          )} */}
 
           <GLSurface
             ref={surface => (this.surface = surface)}
             style={{ aspectRatio: 1, width, height: width }}
           >
-            <FX filter={filter} intensity={intensity}>
-              <TextFx
-                text="DERPYDERP DERP"
-                canvasHeight={width}
-                canvasWidth={width}
-              />
-              {/* <GLCamera position={type} height={height} width={width} /> */}
+            <FX
+              filter={filter}
+              intensity={intensity}
+              overlay={{ uri: renderedNode }}
+            >
+              <GLCamera position={type} height={height} width={width} />
             </FX>
           </GLSurface>
 

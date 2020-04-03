@@ -9,6 +9,7 @@ const shaders = Shaders.create({
 varying highp vec2 uv;
 
 uniform sampler2D inputImageTexture;
+uniform sampler2D overlay;
 uniform sampler2D lutTexture; // lookup texture
 
 uniform lowp float intensity;
@@ -16,6 +17,7 @@ uniform lowp float intensity;
 void main()
 {
   highp vec4 textureColor = texture2D(inputImageTexture, uv);
+  highp vec4 overlayColor = texture2D(overlay, uv);
   
   highp float blueColor = textureColor.b * 63.0;
   
@@ -41,26 +43,15 @@ void main()
   lowp vec4 newColor2 = texture2D(lutTexture, texPos2);
   
   lowp vec4 newColor = mix(newColor1, newColor2, fract(blueColor));
-  gl_FragColor = mix(textureColor, vec4(newColor.rgb, textureColor.w), intensity);
+  lowp vec4 filteredColor = mix(textureColor, vec4(newColor.rgb, textureColor.w), intensity);
+  gl_FragColor = mix(filteredColor, overlayColor, overlayColor.a);
 }
     `
   }
 });
-const shaders2 = Shaders.create({
-  YFlip: {
-    // NB we need to YFlip the stream
-    frag: GLSL`
-precision highp float;
-varying vec2 uv;
-uniform sampler2D t;
-void main(){
-  gl_FragColor=texture2D(t, vec2(1.0-uv.x, 1.0 - uv.y));
-}`
-  }
-});
 
 const FX = props => {
-  const { children: inputImageTexture, filter, intensity } = props;
+  const { children: inputImageTexture, overlay, filter, intensity } = props;
   let lutTexture = "";
   let noFilter = false;
   
@@ -72,10 +63,12 @@ const FX = props => {
     return (
       <Node
         shader={shaders.LUT}
+        ignoreUnusedUniforms
         uniforms={{ 
-          inputImageTexture: inputImageTexture, 
-          lutTexture: lutTexture, 
-          intensity:intensity
+          inputImageTexture,
+          overlay, 
+          lutTexture, 
+          intensity
         }}
       />
     );
