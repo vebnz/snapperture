@@ -11,18 +11,21 @@ const FilterPicker = props => {
 
   const renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => {
-        setSelectedFilter(item)
-        props.onSelectFilter(item)
-      }}>
-        <View style={{paddingRight: 5, paddingLeft:5}}>
-          <Image source={item.preview} style={{ width: 75, height: 75 }} />
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedFilter(item);
+          props.onSelectFilter(item);
+        }}
+      >
+        <View style={{ paddingRight: 5, paddingLeft: 5, width: 100, alignContent:'center', justifyContent:'center' }}>
+          <Image source={item.preview} style={{ width: 100, height: 50 }} />
           <Text
             style={{
-              fontSize:12,
+              width: 100,
+              fontSize: 12,
               backgroundColor: Colors.grey900,
               textAlign: "center",
-              color: Colors.white
+              color: Colors.white,
             }}
           >
             {item.name}

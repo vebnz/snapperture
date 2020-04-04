@@ -88,7 +88,7 @@ const FX = props => {
           lutTexture,
           intensity,
           cropMask: frameOptions.cropMask,
-          maskRotate: Math.PI/2,
+          maskRotate: frameOptions.rotate,
         }}
       />
     );

@@ -28,6 +28,8 @@ import TopAppBar, {
 import TextFx from "../components/FX/TextFx";
 import ViewShot from "react-native-view-shot";
 import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
+import FramePicker from "../components/FramePicker";
+import frameConsts from '../constants/Frames';
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +44,7 @@ class HomeScreen extends Component {
       action: ACTION_TEXT,
       captionText: "",
       captionOptions: {},
-      frameOptions: {cropMask: defaultMask}
+      frameOptions: frameConsts[0]
     };
     this.camera = null;
     this.surface = null;
@@ -93,6 +95,9 @@ class HomeScreen extends Component {
   onSelectFilter = filter => {
     this.setState({ filter });
   };
+  onSelectFrame = frame => {
+    this.setState({frameOptions: frame})
+  }
 
   onFlipPress = () => {
     this.setState({ type: this.state.type == "front" ? "back" : "front" });
@@ -134,11 +139,7 @@ class HomeScreen extends Component {
           />
         );
       case ACTION_FRAME:
-        return (
-          <Surface>
-            <Title>FRAME</Title>
-          </Surface>
-        );
+        return <FramePicker onSelectFrame={this.onSelectFrame} />;
       case ACTION_TEXT:
         return (
           <CaptionView
