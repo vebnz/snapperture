@@ -17,6 +17,8 @@ import FX from "../components/FX";
 import GLCamera from "../components/GLCamera";
 import FilterPicker from "../components/FilterPicker";
 
+import defaultMask from '../assets/masks/portrait.png'
+import test80 from '../assets/images/test80.jpg'
 import filterConsts from "../constants/Filters";
 import TopAppBar, {
   ACTION_FILTER,
@@ -40,7 +42,7 @@ class HomeScreen extends Component {
       action: ACTION_TEXT,
       captionText: "",
       captionOptions: {},
-      frameOptions: {}
+      frameOptions: {cropMask: defaultMask}
     };
     this.camera = null;
     this.surface = null;
@@ -167,7 +169,7 @@ class HomeScreen extends Component {
       filter,
       renderedNode,
       captionOptions,
-      frameOptions
+      frameOptions,
     } = this.state;
 
     if (hasPermission === null) {
@@ -211,13 +213,14 @@ class HomeScreen extends Component {
             ref={surface => (this.surface = surface)}
             style={{ aspectRatio: 1, width, height: width }}
           >
-            <FX filter={filter} intensity={intensity} overlay={renderedNode}>
-              <GLCamera
+            <FX filter={filter} intensity={intensity} overlay={renderedNode} frameOptions={frameOptions}>
+              {test80}
+              {/* <GLCamera
                 ref={camera => (this.camera = camera)}
                 position={type}
                 height={height}
                 width={width}
-              />
+              /> */}
             </FX>
           </GLSurface>
 
@@ -227,16 +230,17 @@ class HomeScreen extends Component {
             icon={`camera-${type === "front" ? "rear" : "front"}`}
             onPress={this.onFlipPress}
           />
-          <IconButton
+          <FAB
             style={{
               position: "absolute",
               bottom: 0,
               alignSelf: "center",
-              margin: 10
+              margin: 10,
+              backgroundColor: '#ffffff66'
             }}
-            icon="camera-iris"
-            color={Colors.white}
-            size={40}
+            
+            color={Colors.amber300}
+            size={50}
             onPress={this.onSurfaceCapture}
           />
         </View>

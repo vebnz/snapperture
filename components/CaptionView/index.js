@@ -83,7 +83,7 @@ const CaptionView = props => {
                 style={{ flex: 1 }}
                 label="Caption"
                 value={captionText || props.captionText}
-                onChangeText={text => {
+                onChangeText={(text) => {
                   setCaptionText(text);
                   props.onSetCaptionText(text);
                 }}
@@ -101,6 +101,12 @@ const CaptionView = props => {
                 }}
               />
             </View>
+            <FlatList
+              horizontal
+              data={FontList}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.fontFamily}
+            />
           </Modal>
         </Portal>
         <Button
@@ -117,12 +123,6 @@ const CaptionView = props => {
           {props.captionText || "Add caption..."}
         </Button>
       </View>
-      <FlatList
-        horizontal
-        data={FontList}
-        renderItem={renderItem}
-        keyExtractor={item => item.fontFamily}
-      />
     </Surface>
   );
 };
@@ -150,14 +150,28 @@ const CaptionRenderBox = props => {
 
   return (
     <View style={props.style}>
-      <Title
+      <View
         style={{
-          color: captionOptions.color,
-          fontFamily: captionOptions.fontFamily
+          position: "absolute",
+          bottom: 0,
+          minHeight: 135,
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {props.captionText}
-      </Title>
+        <Title
+          style={{
+            textAlign: "center",
+            justifyContent: "center",
+            fontSize: 30,
+            color: captionOptions.color,
+            fontFamily: captionOptions.fontFamily,
+          }}
+        >
+          TEXT
+        </Title>
+      </View>
     </View>
   );
 };
@@ -167,8 +181,8 @@ const defaultFrameOptions = {
 };
 
 const defaultCaptionOptions = {
-  color: Colors.white,
-  fontFamily: "SF"
+  color: Colors.black,
+  fontFamily: "edosz"
 };
 
 export { CaptionView, CaptionRenderBox };

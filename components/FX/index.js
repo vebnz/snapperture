@@ -11,8 +11,19 @@ varying highp vec2 uv;
 uniform sampler2D inputImageTexture;
 uniform sampler2D overlay;
 uniform sampler2D lutTexture; // lookup texture
+uniform sampler2D cropMask;
+uniform lowp float maskRotate;
 
 uniform lowp float intensity;
+
+highp vec2 rotateUV(highp vec2 uv, highp float rotation)
+{
+  highp float mid = 0.5;
+  return vec2(
+    cos(rotation) * (uv.x - mid) + sin(rotation) * (uv.y - mid) + mid,
+    cos(rotation) * (uv.y - mid) - sin(rotation) * (uv.x - mid) + mid
+  );
+}
 
 void main()
 {
@@ -43,15 +54,22 @@ void main()
   lowp vec4 newColor2 = texture2D(lutTexture, texPos2);
   
   lowp vec4 newColor = mix(newColor1, newColor2, fract(blueColor));
+
   lowp vec4 filteredColor = mix(textureColor, vec4(newColor.rgb, textureColor.w), intensity);
-  gl_FragColor = mix(filteredColor, overlayColor, overlayColor.a);
+
+  highp vec2 maskuv = rotateUV(uv, maskRotate);
+  highp vec4 maskOverlayColor = texture2D(cropMask, maskuv);
+  highp vec4 maskColor = vec4(1.0, 1.0, 1.0, 1.0);
+  highp vec4 maskWithFilterColor = mix(filteredColor, maskColor, maskOverlayColor.a);
+
+  gl_FragColor = mix(maskWithFilterColor, overlayColor, overlayColor.a);
 }
-    `
-  }
+`,
+  },
 });
 
 const FX = props => {
-  const { children: inputImageTexture, overlay, filter, intensity } = props;
+  const { children: inputImageTexture, overlay, filter, intensity, frameOptions } = props;
   let lutTexture = "";
   let noFilter = false;
   
@@ -64,11 +82,13 @@ const FX = props => {
       <Node
         shader={shaders.LUT}
         ignoreUnusedUniforms
-        uniforms={{ 
+        uniforms={{
           inputImageTexture,
-          overlay, 
-          lutTexture, 
-          intensity
+          overlay,
+          lutTexture,
+          intensity,
+          cropMask: frameOptions.cropMask,
+          maskRotate: Math.PI/2,
         }}
       />
     );
