@@ -3,16 +3,29 @@ import { Camera } from "expo-camera";
 import { Surface as GLSurface } from "gl-react-native";
 import React, { Component } from "react";
 import { View, Slider, Image } from "react-native";
-import { Text, Button, Title, Surface, FAB, Colors, IconButton } from "react-native-paper";
+import {
+  Text,
+  Button,
+  Title,
+  Surface,
+  FAB,
+  Colors,
+  IconButton
+} from "react-native-paper";
 import FX from "../components/FX";
 
 import GLCamera from "../components/GLCamera";
 import FilterPicker from "../components/FilterPicker";
 
 import filterConsts from "../constants/Filters";
-import TopAppBar from "../navigation/AppBar";
+import TopAppBar, {
+  ACTION_FILTER,
+  ACTION_FRAME,
+  ACTION_TEXT
+} from "../navigation/AppBar";
 import TextFx from "../components/FX/TextFx";
 import ViewShot from "react-native-view-shot";
+import CaptionView from "../components/CaptionView";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -23,10 +36,13 @@ class HomeScreen extends Component {
       height: false,
       intensity: 1,
       filter: filterConsts[0],
-      renderedNode: false
+      renderedNode: null,
+      action: ACTION_FILTER,
+      captionText: ''
     };
     this.camera = null;
     this.surface = null;
+    this.captionRef = null;
     this.navigationBlurListener = null;
     this.navigationFocusListener = null;
     this.navigationStateListener = null;
@@ -88,13 +104,43 @@ class HomeScreen extends Component {
       } = await this.surface.glView.capture();
 
       this.props.navigation.navigate("Share", { height, localUri, uri, width });
-      
     }
   };
-  onCapture = (uri) => {
-    this.setState({renderedNode: uri})
-  }
+  onCapture = uri => {
+    this.setState({ renderedNode: { uri: uri } });
+  };
 
+  renderActionPanel = () => {
+    switch (this.state.action) {
+      case ACTION_FILTER:
+        return (
+          <FilterPicker
+            onSelectFilter={this.onSelectFilter}
+            onSetIntensity={value => this.setState({ intensity: value })}
+          />
+        );
+      case ACTION_FRAME:
+        return (
+          <Surface>
+            <Title>FRAME</Title>
+          </Surface>
+        );
+      case ACTION_TEXT:
+        return (
+          <CaptionView
+            captionText={this.state.captionText}
+            onSetCaptionText={captionText => {
+              this.setState({ captionText })
+            }}
+            onRenderCaption={() => {
+              this.captionRef.capture()
+            }}
+          />
+        );
+      default:
+        break;
+    }
+  };
   render() {
     const {
       width,
@@ -105,7 +151,7 @@ class HomeScreen extends Component {
       filter,
       renderedNode
     } = this.state;
-    console.log("HomeScreen -> render -> this.state", this.state)
+    
 
     if (hasPermission === null) {
       return <View />;
@@ -123,37 +169,28 @@ class HomeScreen extends Component {
 
     return (
       <View style={{ flex: 1 }} onLayout={this.onLayout}>
-        <TopAppBar />
+        <TopAppBar
+          activeAction={this.state.action}
+          onAppBarActionButtonPress={action => this.setState({ action })}
+        />
         <View style={{ position: "absolute", zIndex: -1 }}>
           <ViewShot
+            ref={captionRef => (this.captionRef = captionRef)}
             style={{ aspectRatio: 1, width, height: width }}
             onCapture={this.onCapture}
-            captureMode="mount"
             options={{ format: "png" }}
           >
             <Title style={{ color: Colors.white }}>
-              ...Something to rasterize...
+              {this.state.captionText}
             </Title>
           </ViewShot>
         </View>
         <View style={{ aspectRatio: 1, width, height: width }}>
-          {/* {!!renderedNode && (
-            <TextFx
-              text="DERPYDERP DERP"
-              canvasHeight={width}
-              canvasWidth={width}
-            >{{uri: renderedNode}}</TextFx>
-          )} */}
-
           <GLSurface
             ref={surface => (this.surface = surface)}
             style={{ aspectRatio: 1, width, height: width }}
           >
-            <FX
-              filter={filter}
-              intensity={intensity}
-              overlay={{ uri: renderedNode }}
-            >
+            <FX filter={filter} intensity={intensity} overlay={renderedNode}>
               <GLCamera position={type} height={height} width={width} />
             </FX>
           </GLSurface>
@@ -177,22 +214,7 @@ class HomeScreen extends Component {
             onPress={this.onSurfaceCapture}
           />
         </View>
-        <Surface style={{ flex: 1, justifyContent: "flex-end" }}>
-          <Title style={{ flex: 1, textAlign: "center" }}>{filter.name}</Title>
-          <FilterPicker onSelectFilter={this.onSelectFilter} />
-          <Text style={{ paddingTop: 10, textAlign: "center" }}>
-            Filter Intensity
-          </Text>
-          <Slider
-            style={{ height: 40 }}
-            value={1}
-            minimumValue={0}
-            maximumValue={1.25}
-            minimumTrackTintColor="#000000"
-            maximumTrackTintColor="#ff0000"
-            onValueChange={value => this.setState({ intensity: value })}
-          />
-        </Surface>
+        {this.renderActionPanel()}
       </View>
     );
   }
