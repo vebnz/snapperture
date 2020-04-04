@@ -33,7 +33,22 @@ const App = props => {
         // Load fonts
         await Font.loadAsync({
           ...Ionicons.font,
-          "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
+          "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
+          avantquelombre: require("./assets/fonts/album-avantquelombre.ttf"),
+          BebasNeue: require("./assets/fonts/BebasNeue.ttf"),
+          BondoluoPeek: require("./assets/fonts/BondoluoPeek.ttf"),
+          Brain: require("./assets/fonts/Brain-Flower-Euro.ttf"),
+          Christians: require("./assets/fonts/Christians-United.ttf"),
+          daniel: require("./assets/fonts/daniel.ttf"),
+          edosz: require("./assets/fonts/edosz.ttf"),
+          fashionistafree: require("./assets/fonts/fashionistafree.ttf"),
+          jersey_stories: require("./assets/fonts/jersey_stories.ttf"),
+          OneDirection: require("./assets/fonts/OneDirection.ttf"),
+          SF: require("./assets/fonts/SF-New-Republic-Bold.ttf"),
+          Signerica_Medium: require("./assets/fonts/Signerica_Medium.ttf"),
+          Silent: require("./assets/fonts/Silent-Reaction.ttf"),
+          Sunshine: require("./assets/fonts/Sunshine-in-my-Soul.ttf"),
+          Sweetly: require("./assets/fonts/Sweetly-Broken.ttf")
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

@@ -2,7 +2,7 @@ import { withNavigationFocus } from "@react-navigation/compat";
 import { Camera } from "expo-camera";
 import { Surface as GLSurface } from "gl-react-native";
 import React, { Component } from "react";
-import { View, Slider, Image } from "react-native";
+import { View, Slider, Image, TouchableHighlightBase } from "react-native";
 import {
   Text,
   Button,
@@ -25,7 +25,7 @@ import TopAppBar, {
 } from "../navigation/AppBar";
 import TextFx from "../components/FX/TextFx";
 import ViewShot from "react-native-view-shot";
-import CaptionView from "../components/CaptionView";
+import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -37,8 +37,10 @@ class HomeScreen extends Component {
       intensity: 1,
       filter: filterConsts[0],
       renderedNode: null,
-      action: ACTION_FILTER,
-      captionText: ''
+      action: ACTION_TEXT,
+      captionText: "",
+      captionOptions: {},
+      frameOptions: {}
     };
     this.camera = null;
     this.surface = null;
@@ -55,16 +57,16 @@ class HomeScreen extends Component {
     this.navigationBlurListener = this.props.navigation.addListener(
       "blur",
       e => {
-        if (this.camera) {
-          this.camera.pausePreview();
+        if (this.camera && this.camera.camera) {
+          this.camera.camera.pausePreview();
         }
       }
     );
     this.navigationFocusListener = this.props.navigation.addListener(
       "focus",
       e => {
-        if (this.camera) {
-          this.camera.resumePreview();
+        if (this.camera && this.camera.camera) {
+          this.camera.camera.resumePreview();
         }
       }
     );
@@ -110,6 +112,16 @@ class HomeScreen extends Component {
     this.setState({ renderedNode: { uri: uri } });
   };
 
+  onReadyCapture = () => {
+    if (this.captionRef) {
+      this.captionRef.capture();
+    }
+  };
+  onPauseCamera = pause => {
+    if (this.camera && this.camera.camera) {
+      pause ? this.camera.camera.pausePreview() : this.camera.camera.resumePreview();
+    }
+  };
   renderActionPanel = () => {
     switch (this.state.action) {
       case ACTION_FILTER:
@@ -128,12 +140,16 @@ class HomeScreen extends Component {
       case ACTION_TEXT:
         return (
           <CaptionView
+            cameraPause={this.onPauseCamera}
             captionText={this.state.captionText}
             onSetCaptionText={captionText => {
-              this.setState({ captionText })
+              this.setState({ captionText });
+            }}
+            onSetCaptionOptions={captionOptions => {
+              this.setState({ captionOptions });
             }}
             onRenderCaption={() => {
-              this.captionRef.capture()
+              this.captionRef.capture();
             }}
           />
         );
@@ -149,9 +165,10 @@ class HomeScreen extends Component {
       type,
       intensity,
       filter,
-      renderedNode
+      renderedNode,
+      captionOptions,
+      frameOptions
     } = this.state;
-    
 
     if (hasPermission === null) {
       return <View />;
@@ -180,9 +197,13 @@ class HomeScreen extends Component {
             onCapture={this.onCapture}
             options={{ format: "png" }}
           >
-            <Title style={{ color: Colors.white }}>
-              {this.state.captionText}
-            </Title>
+            <CaptionRenderBox
+              captionOptions={captionOptions}
+              frameOptions={frameOptions}
+              captionText={this.state.captionText}
+              onReadyCapture={this.onReadyCapture}
+              style={{ aspectRatio: 1, width, height: width }}
+            />
           </ViewShot>
         </View>
         <View style={{ aspectRatio: 1, width, height: width }}>
@@ -191,7 +212,12 @@ class HomeScreen extends Component {
             style={{ aspectRatio: 1, width, height: width }}
           >
             <FX filter={filter} intensity={intensity} overlay={renderedNode}>
-              <GLCamera position={type} height={height} width={width} />
+              <GLCamera
+                ref={camera => (this.camera = camera)}
+                position={type}
+                height={height}
+                width={width}
+              />
             </FX>
           </GLSurface>
 
