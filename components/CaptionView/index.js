@@ -8,7 +8,7 @@ import {
   Text,
   Portal,
   Modal,
-  Button
+  Button,
 } from "react-native-paper";
 import { View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
@@ -27,17 +27,17 @@ export const FontList = [
   { fontFamily: "Signerica_Medium", name: "Signerica" },
   { fontFamily: "Silent", name: "Silent Script" },
   { fontFamily: "Sunshine", name: "Sunshine" },
-  { fontFamily: "Sweetly", name: "Sweetly" }
+  { fontFamily: "Sweetly", name: "Sweetly" },
 ];
-const CaptionView = props => {
+const CaptionView = (props) => {
   const [captionText, setCaptionText] = useState(false);
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {
           props.onSetCaptionOptions({
-            fontFamily: item.fontFamily
+            fontFamily: item.fontFamily,
           });
         }}
       >
@@ -49,7 +49,7 @@ const CaptionView = props => {
             paddingRight: 5,
             paddingLeft: 5,
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <Text
@@ -58,7 +58,7 @@ const CaptionView = props => {
               fontFamily: item.fontFamily,
               textAlign: "center",
               alignSelf: "center",
-              color: Colors.black
+              color: Colors.black,
             }}
           >
             {item.name}
@@ -127,49 +127,36 @@ const CaptionView = props => {
   );
 };
 CaptionView.defaultProps = {
-  captionText: "Add caption..."
+  captionText: "Add caption...",
 };
 
-const CaptionRenderBox = props => {
+const CaptionRenderBox = (props) => {
   const captionOptions = { ...defaultCaptionOptions, ...props.captionOptions };
   const frameOptions = { ...defaultFrameOptions, ...props.frameOptions };
 
   const requestRef = React.useRef();
   const previousTimeRef = React.useRef();
 
-  const viewShotRender = time => {
-    console.log("time", time)
-    props.onReadyCapture()
-  }
+  const viewShotRender = (time) => {
+    console.log("time", time);
+    props.onReadyCapture();
+  };
 
   useEffect(() => {
-    console.log('uefect', props)
-    requestRef.current = requestAnimationFrame(viewShotRender)
-    return () => cancelAnimationFrame(requestRef.current)
-  }, [props.captionOptions, props.frameOptions, props.captionText])
+    requestRef.current = requestAnimationFrame(viewShotRender);
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [props.captionOptions, props.frameOptions, props.captionText]);
 
   return (
     <View style={props.style}>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 0,
-          minHeight: 135,
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={{...props.frameOptions.viewFrameStyle}}>
         <Title
           style={{
-            textAlign: "center",
-            justifyContent: "center",
-            fontSize: 30,
-            color: captionOptions.color,
+            ...props.frameOptions.textFrameStyle,
             fontFamily: captionOptions.fontFamily,
           }}
         >
-          TEXT
+          A my betook flown this fowl the of nevermore.
         </Title>
       </View>
     </View>
@@ -177,12 +164,12 @@ const CaptionRenderBox = props => {
 };
 
 const defaultFrameOptions = {
-  backgroundColor: Colors.white
+  backgroundColor: Colors.white,
 };
 
 const defaultCaptionOptions = {
   color: Colors.black,
-  fontFamily: "edosz"
+  fontFamily: "edosz",
 };
 
 export { CaptionView, CaptionRenderBox };
