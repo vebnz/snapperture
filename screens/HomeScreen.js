@@ -215,13 +215,13 @@ class HomeScreen extends Component {
             style={{ aspectRatio: 1, width, height: width }}
           >
             <FX filter={filter} intensity={intensity} overlay={renderedNode} frameOptions={frameOptions}>
-              {test80}
-              {/* <GLCamera
+              {/* {test80} */}
+              <GLCamera
                 ref={camera => (this.camera = camera)}
                 position={type}
                 height={height}
                 width={width}
-              /> */}
+              />
             </FX>
           </GLSurface>
 
