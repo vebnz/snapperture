@@ -41,10 +41,11 @@ class HomeScreen extends Component {
       intensity: 1,
       filter: filterConsts[0],
       renderedNode: null,
-      action: ACTION_FRAME,
+      action: ACTION_TEXT,
       captionText: "",
       captionOptions: {},
-      frameOptions: frameConsts[0]
+      frameOptions: frameConsts[0],
+      fontSize: 20
     };
     this.camera = null;
     this.surface = null;
@@ -151,6 +152,9 @@ class HomeScreen extends Component {
             onSetCaptionOptions={captionOptions => {
               this.setState({ captionOptions });
             }}
+            onSetFontSize={fontSize=> {
+              this.setState({fontSize});
+            }}
             onRenderCaption={() => {
               this.captionRef.capture();
             }}
@@ -171,6 +175,7 @@ class HomeScreen extends Component {
       renderedNode,
       captionOptions,
       frameOptions,
+      fontSize
     } = this.state;
 
     if (hasPermission === null) {
@@ -201,6 +206,7 @@ class HomeScreen extends Component {
             options={{ format: "png" }}
           >
             <CaptionRenderBox
+              fontSize={fontSize}
               captionOptions={captionOptions}
               frameOptions={frameOptions}
               captionText={this.state.captionText}

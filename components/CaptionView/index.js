@@ -9,6 +9,8 @@ import {
   Portal,
   Modal,
   Button,
+  ToggleButton,
+  FAB,
 } from "react-native-paper";
 import { View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
@@ -32,6 +34,8 @@ export const FontList = [
 const CaptionView = (props) => {
   const [captionText, setCaptionText] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [fontSize, setFontSize] = useState(30);
+
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
@@ -74,6 +78,7 @@ const CaptionView = (props) => {
       <View style={{ flexDirection: "row" }}>
         <Portal>
           <Modal
+            contentContainerStyle={{ opacity: 1 }}
             visible={showModal}
             dismissable={false}
             // onDismiss={() => setShowModal(false)}
@@ -107,6 +112,20 @@ const CaptionView = (props) => {
               renderItem={renderItem}
               keyExtractor={(item) => item.fontFamily}
             />
+            <Surface style={{ justifyContent:'space-around',flexDirection: "row" }}>
+              <FAB
+                icon="format-font-size-decrease"
+                onPress={() => props.onSetFontSize(14)}
+              />
+              <FAB
+                icon="format-color-text"
+                onPress={() => props.onSetFontSize(20)}
+              />
+              <FAB
+                icon="format-font-size-increase"
+                onPress={() => props.onSetFontSize(30)}
+              />
+            </Surface>
           </Modal>
         </Portal>
         <Button
@@ -145,7 +164,7 @@ const CaptionRenderBox = (props) => {
   useEffect(() => {
     requestRef.current = requestAnimationFrame(viewShotRender);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [props.captionOptions, props.frameOptions, props.captionText]);
+  }, [props.fontSize, props.captionOptions, props.frameOptions, props.captionText]);
 
   return (
     <View style={props.style}>
@@ -153,10 +172,11 @@ const CaptionRenderBox = (props) => {
         <Title
           style={{
             ...props.frameOptions.textFrameStyle,
+            fontSize: props.fontSize,
             fontFamily: captionOptions.fontFamily,
           }}
         >
-          A my betook flown this fowl the of nevermore.
+          {props.captionText}
         </Title>
       </View>
     </View>
