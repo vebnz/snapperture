@@ -174,6 +174,9 @@ const CaptionRenderBox = (props) => {
             ...props.frameOptions.textFrameStyle,
             fontSize: props.fontSize,
             fontFamily: captionOptions.fontFamily,
+            includeFontPadding: true,
+            textAlignVertical: 'center',
+            padding:10
           }}
         >
           {props.captionText}
