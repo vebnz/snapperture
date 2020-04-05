@@ -16,9 +16,7 @@ import PORTRAIT_FRAME_SRC from "../assets/masks/portrait.png";
 import { Colors } from "react-native-paper";
 
 const textShadow = {
-  textShadowColor: 'rgba(64,64,64,0.8)',
-  textShadowOffset: { width: 1, height: 1 },
-  textShadowRadius: 1,
+  
 }
 
 const frameConsts = [
@@ -38,9 +36,6 @@ const frameConsts = [
       alignItems: "center",
     },
     textFrameStyle: {
-      textShadowColor: 'rgba(64,64,64,0.8)',
-      textShadowOffset: { width: 1, height: 1 },
-      textShadowRadius: 1,
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,

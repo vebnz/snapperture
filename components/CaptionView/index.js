@@ -129,7 +129,7 @@ const CaptionView = (props) => {
           </Modal>
         </Portal>
         <Button
-          style={{ flex: 1, marginBottom: 20, marginTop: 20 }}
+          style={{ flex: 1, margin: 20}}
           uppercase={false}
           dark={false}
           color={Colors.deepOrange400}

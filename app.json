@@ -23,7 +23,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "veb.nz.calograph"
     },
     "android": {
       "package": "veb.nz.calograph",
@@ -31,7 +32,6 @@
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
-        "RECORD_AUDIO",
         "WRITE_EXTERNAL_STORAGE"
       ]
     },

@@ -2,7 +2,7 @@ import { withNavigationFocus } from "@react-navigation/compat";
 import { Camera } from "expo-camera";
 import { Surface as GLSurface } from "gl-react-native";
 import React, { Component } from "react";
-import { View, Slider, Image, TouchableHighlightBase } from "react-native";
+import { View, Slider, Image, TouchableHighlightBase, Platform } from "react-native";
 import {
   Text,
   Button,
@@ -13,10 +13,10 @@ import {
   IconButton
 } from "react-native-paper";
 import FX from "../components/FX";
-
+import Constants from "expo-constants";
 import GLCamera from "../components/GLCamera";
 import FilterPicker from "../components/FilterPicker";
-
+import * as IntentLauncherAndroid from 'expo-intent-launcher'
 import defaultMask from '../assets/masks/portrait.png'
 import test80 from '../assets/images/test80.jpg'
 import filterConsts from "../constants/Filters";
@@ -30,6 +30,7 @@ import ViewShot from "react-native-view-shot";
 import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
 import FramePicker from "../components/FramePicker";
 import frameConsts from '../constants/Frames';
+import { Linking } from "expo";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -105,15 +106,23 @@ class HomeScreen extends Component {
   };
 
   onSurfaceCapture = async () => {
-    if (this.surface) {
-      const {
-        height,
-        localUri,
-        uri,
-        width
-      } = await this.surface.glView.capture();
-
-      this.props.navigation.navigate("Share", { height, localUri, uri, width });
+    try {
+      if (this.surface) {
+        if (this.camera && this.camera.camera) {
+          // await this.camera.camera.takePictureAsync()
+          const {
+            height,
+            localUri,
+            uri,
+            width
+          } = await this.surface.glView.capture();
+    
+          this.props.navigation.navigate("Share", { height, localUri, uri, width });
+        }
+      }
+    } catch (error) {
+    console.log("HomeScreen -> onSurfaceCapture -> error", error)
+      
     }
   };
   onCapture = uri => {
@@ -164,6 +173,23 @@ class HomeScreen extends Component {
         break;
     }
   };
+
+  openPermissions = async() => {
+    if (Platform.OS === 'android') {
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.android.package // When published, considered as using standalone build
+        : "host.exp.exponent";
+      IntentLauncherAndroid.startActivityAsync(
+        IntentLauncherAndroid.ACTION_APPLICATION_DETAILS_SETTINGS,
+        { data: `package:${pkg}` }
+      );
+    } else if (Platform.OS === 'ios') {
+      const pkg = Constants.manifest.releaseChannel
+        ? Constants.manifest.ios.bundleIdentifier // When published, considered as using standalone build
+        : "host.exp.exponent";
+      Linking.openURL(`app-settings://notification/${pkg}`);
+    }
+  }
   render() {
     const {
       width,
@@ -178,12 +204,16 @@ class HomeScreen extends Component {
       fontSize
     } = this.state;
 
-    if (hasPermission === null) {
-      return <View />;
+    if (hasPermission === null || hasPermission === false) {
+      return (
+        <Surface style={{flex:1, alignItems:'center', justifyContent:'space-evenly'}}>
+          <Title>No camera access</Title>
+          <Text>Grant Camera and Storage access to continue</Text>
+          <Button mode="contained" icon="settings" onPress={this.openPermissions}>Open permissions</Button>
+        </Surface>
+      );
     }
-    if (hasPermission === false) {
-      return <Text>No access to camera</Text>;
-    }
+    
     if (!this.props.navigation.isFocused()) {
       return <Text>Camera delayed rendering</Text>;
     }
