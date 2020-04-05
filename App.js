@@ -22,6 +22,7 @@ const App = props => {
   const { getInitialState } = useLinking(containerRef);
 
   // Load any resources or data that we need prior to rendering the app
+  SplashScreen.preventAutoHide();
   React.useEffect(() => {
     async function loadResourcesAndDataAsync() {
       try {
@@ -95,6 +96,6 @@ export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#000"
   }
 });

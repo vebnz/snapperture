@@ -30,7 +30,7 @@ import ViewShot from "react-native-view-shot";
 import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
 import FramePicker from "../components/FramePicker";
 import frameConsts from '../constants/Frames';
-import { Linking } from "expo";
+import { Linking , SplashScreen} from "expo";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +42,7 @@ class HomeScreen extends Component {
       intensity: 1,
       filter: filterConsts[0],
       renderedNode: null,
-      action: ACTION_TEXT,
+      action: ACTION_FILTER,
       captionText: "",
       captionOptions: {},
       frameOptions: frameConsts[0],
@@ -204,6 +204,14 @@ class HomeScreen extends Component {
       fontSize
     } = this.state;
 
+    if (!width && !height) {
+      return (
+        <View
+          style={{ backgroundColor: Colors.grey900, flex: 1 }}
+          onLayout={this.onLayout}
+        />
+      );
+    }
     if (hasPermission === null || hasPermission === false) {
       return (
         <Surface style={{flex:1, alignItems:'center', justifyContent:'space-evenly'}}>
@@ -218,19 +226,17 @@ class HomeScreen extends Component {
       return <Text>Camera delayed rendering</Text>;
     }
 
-    if (!width && !height) {
-      return <View style={{ flex: 1 }} onLayout={this.onLayout} />;
-    }
+    
 
     return (
-      <View style={{ flex: 1 }} onLayout={this.onLayout}>
+      <Surface style={{ flex: 1 }} onLayout={this.onLayout}>
         <TopAppBar
           activeAction={this.state.action}
-          onAppBarActionButtonPress={action => this.setState({ action })}
+          onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
         <View style={{ position: "absolute", zIndex: -1 }}>
           <ViewShot
-            ref={captionRef => (this.captionRef = captionRef)}
+            ref={(captionRef) => (this.captionRef = captionRef)}
             style={{ aspectRatio: 1, width, height: width }}
             onCapture={this.onCapture}
             options={{ format: "png" }}
@@ -247,13 +253,18 @@ class HomeScreen extends Component {
         </View>
         <View style={{ aspectRatio: 1, width, height: width }}>
           <GLSurface
-            ref={surface => (this.surface = surface)}
+            ref={(surface) => (this.surface = surface)}
             style={{ aspectRatio: 1, width, height: width }}
           >
-            <FX filter={filter} intensity={intensity} overlay={renderedNode} frameOptions={frameOptions}>
+            <FX
+              filter={filter}
+              intensity={intensity}
+              overlay={renderedNode}
+              frameOptions={frameOptions}
+            >
               {/* {test80} */}
               <GLCamera
-                ref={camera => (this.camera = camera)}
+                ref={(camera) => (this.camera = camera)}
                 position={type}
                 height={height}
                 width={width}
@@ -273,16 +284,15 @@ class HomeScreen extends Component {
               bottom: 0,
               alignSelf: "center",
               margin: 10,
-              backgroundColor: '#ffffff66'
+              backgroundColor: "#ffffff66",
             }}
-            
             color={Colors.amber300}
             size={50}
             onPress={this.onSurfaceCapture}
           />
         </View>
         {this.renderActionPanel()}
-      </View>
+      </Surface>
     );
   }
 }

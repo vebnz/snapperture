@@ -12,8 +12,9 @@ import {
   ToggleButton,
   FAB,
 } from "react-native-paper";
-import { View } from "react-native";
+import { View, StatusBar } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import Constants from "expo-constants";
 
 export const FontList = [
   { fontFamily: "avantquelombre", name: "Avant" },
@@ -78,58 +79,71 @@ const CaptionView = (props) => {
       <View style={{ flexDirection: "row" }}>
         <Portal>
           <Modal
-            contentContainerStyle={{ opacity: 1 }}
+            contentContainerStyle={{ flex: 1, justifyContent:"flex-start" }}
             visible={showModal}
             dismissable={false}
             // onDismiss={() => setShowModal(false)}
           >
-            <View style={{ flexDirection: "row" }}>
-              <TextInput
-                style={{ flex: 1 }}
-                label="Caption"
-                value={captionText || props.captionText}
-                onChangeText={(text) => {
-                  setCaptionText(text);
-                  props.onSetCaptionText(text);
+            <View
+              style={{
+                
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 56 + Constants.statusBarHeight,
                 }}
-                onSubmitEditing={() => {
-                  // props.onRenderCaption();
-                }}
+              >
+                <TextInput
+                  style={{ flex: 1 }}
+                  label="Caption"
+                  value={captionText || props.captionText}
+                  onChangeText={(text) => {
+                    setCaptionText(text);
+                    props.onSetCaptionText(text);
+                  }}
+                  onSubmitEditing={() => {
+                    // props.onRenderCaption();
+                  }}
+                />
+                <Button
+                  icon="keyboard-return"
+                  color={Colors.deepOrange400}
+                  mode="contained"
+                  onPress={() => {
+                    setShowModal(false);
+                    props.cameraPause(false);
+                  }}
+                />
+              </View>
+              <FlatList
+                horizontal
+                data={FontList}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.fontFamily}
               />
-              <IconButton
-                icon="keyboard-return"
-                color={Colors.deepOrange400}
-                size={30}
-                onPress={() => {
-                  setShowModal(false);
-                  props.cameraPause(false);
-                }}
-              />
+              <Surface
+                style={{ justifyContent: "space-around", flexDirection: "row" }}
+              >
+                <FAB
+                  icon="format-font-size-decrease"
+                  onPress={() => props.onSetFontSize(14)}
+                />
+                <FAB
+                  icon="format-color-text"
+                  onPress={() => props.onSetFontSize(20)}
+                />
+                <FAB
+                  icon="format-font-size-increase"
+                  onPress={() => props.onSetFontSize(30)}
+                />
+              </Surface>
             </View>
-            <FlatList
-              horizontal
-              data={FontList}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.fontFamily}
-            />
-            <Surface style={{ justifyContent:'space-around',flexDirection: "row" }}>
-              <FAB
-                icon="format-font-size-decrease"
-                onPress={() => props.onSetFontSize(14)}
-              />
-              <FAB
-                icon="format-color-text"
-                onPress={() => props.onSetFontSize(20)}
-              />
-              <FAB
-                icon="format-font-size-increase"
-                onPress={() => props.onSetFontSize(30)}
-              />
-            </Surface>
           </Modal>
         </Portal>
         <Button
-          style={{ flex: 1, margin: 20}}
+          style={{ flex: 1, margin: 20 }}
           uppercase={false}
           dark={false}
           color={Colors.deepOrange400}
@@ -164,19 +178,24 @@ const CaptionRenderBox = (props) => {
   useEffect(() => {
     requestRef.current = requestAnimationFrame(viewShotRender);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [props.fontSize, props.captionOptions, props.frameOptions, props.captionText]);
+  }, [
+    props.fontSize,
+    props.captionOptions,
+    props.frameOptions,
+    props.captionText,
+  ]);
 
   return (
     <View style={props.style}>
-      <View style={{...props.frameOptions.viewFrameStyle}}>
+      <View style={{ ...props.frameOptions.viewFrameStyle }}>
         <Title
           style={{
             ...props.frameOptions.textFrameStyle,
             fontSize: props.fontSize,
             fontFamily: captionOptions.fontFamily,
             includeFontPadding: true,
-            textAlignVertical: 'center',
-            padding:10
+            textAlignVertical: "center",
+            padding: 10,
           }}
         >
           {props.captionText}
