@@ -26,10 +26,10 @@ varying highp vec2 uv;
 
 uniform sampler2D inputImageTexture;
 // uniform sampler2D overlay;
-uniform sampler2D lutTexture; // lookup texture
-// uniform sampler2D cropMask;
-// uniform lowp float maskRotate;
 // uniform lowp float overlayRotate;
+uniform sampler2D lutTexture; // lookup texture
+uniform sampler2D cropMask;
+uniform lowp float maskRotate;
 uniform lowp float intensity;
 
 highp vec2 rotateUV(highp vec2 uv, highp float rotation)
@@ -74,13 +74,13 @@ void main()
 
   lowp vec4 filteredColor = mix(textureColor, vec4(newColor.rgb, textureColor.w), intensity);
 
-  // highp vec2 maskuv = rotateUV(uv, maskRotate);
-  // highp vec4 maskOverlayColor = texture2D(cropMask, maskuv);
-  // highp vec4 maskColor = vec4(1.0, 1.0, 1.0, 1.0);
-  // highp vec4 maskWithFilterColor = mix(filteredColor, maskColor, maskOverlayColor.a);
+  highp vec2 maskuv = rotateUV(uv, maskRotate);
+  highp vec4 maskOverlayColor = texture2D(cropMask, maskuv);
+  highp vec4 maskColor = vec4(1.0, 1.0, 1.0, 1.0);
+  highp vec4 maskWithFilterColor = mix(filteredColor, maskColor, maskOverlayColor.a);
 
   // gl_FragColor = mix(maskWithFilterColor, overlayColor, overlayColor.a);
-  gl_FragColor = filteredColor;
+  gl_FragColor = maskWithFilterColor;
 }
 `,
   },
@@ -106,8 +106,8 @@ const FX = props => {
           // overlayRotate: frameOptions.overlayRotate,
           lutTexture,
           intensity,
-          // cropMask: Asset.fromModule(frameOptions.cropMask),
-          // maskRotate: frameOptions.rotate,
+          cropMask: Asset.fromModule(frameOptions.cropMask),
+          maskRotate: frameOptions.rotate,
         }}
       />
     );
