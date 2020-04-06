@@ -1,6 +1,6 @@
 import { withNavigationFocus } from "@react-navigation/compat";
 import { Camera } from "expo-camera";
-import { Surface as GLSurface } from "gl-react-native";
+import { Surface as GLSurface } from "gl-react-expo";
 import React, { Component } from "react";
 import { View, Slider, Image, TouchableHighlightBase, Platform } from "react-native";
 import {

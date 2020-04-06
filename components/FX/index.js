@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { GLSL, Node, Shaders } from "gl-react";
-
+import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
 import filterConsts from "../../constants/Filters";
 import { Asset } from "expo-asset";
 
@@ -25,11 +25,11 @@ const shaders = Shaders.create({
 varying highp vec2 uv;
 
 uniform sampler2D inputImageTexture;
-// uniform sampler2D overlay;
+uniform sampler2D overlay;
 uniform sampler2D lutTexture; // lookup texture
 uniform sampler2D cropMask;
 uniform lowp float maskRotate;
-// uniform lowp float overlayRotate;
+uniform lowp float overlayRotate;
 uniform lowp float intensity;
 
 highp vec2 rotateUV(highp vec2 uv, highp float rotation)
@@ -44,8 +44,8 @@ highp vec2 rotateUV(highp vec2 uv, highp float rotation)
 void main()
 {
   highp vec4 textureColor = texture2D(inputImageTexture, uv);
-  // highp vec2 overlayuv = rotateUV(uv, overlayRotate);
-  // highp vec4 overlayColor = texture2D(overlay, overlayuv);
+  highp vec2 overlayuv = rotateUV(uv, overlayRotate);
+  highp vec4 overlayColor = texture2D(overlay, overlayuv);
   
   highp float blueColor = textureColor.b * 63.0;
   
@@ -78,9 +78,8 @@ void main()
   highp vec4 maskOverlayColor = texture2D(cropMask, maskuv);
   highp vec4 maskColor = vec4(1.0, 1.0, 1.0, 1.0);
   highp vec4 maskWithFilterColor = mix(filteredColor, maskColor, maskOverlayColor.a);
-  gl_FragColor = maskWithFilterColor;
 
-  // gl_FragColor = mix(maskWithFilterColor, overlayColor, overlayColor.a);
+  gl_FragColor = mix(maskWithFilterColor, overlayColor, overlayColor.a);
 }
 `,
   },
@@ -99,17 +98,17 @@ const FX = props => {
     if (!overlay) {
       overlay = Asset.fromModule(require('../../assets/masks/blank.png'))
     } else {
-      overlay = Asset.fromURI(overlay.uri)
+      overlay = resolveAssetSource(overlay);
     }
-    console.log("overlay, lutTexture", overlay,  lutTexture)
+    console.log("overlay", overlay)
     return (
       <Node
         shader={shaders.LUT}
         ignoreUnusedUniforms
         uniforms={{
           inputImageTexture,
-          // overlay,
-          // overlayRotate: frameOptions.overlayRotate,
+          overlay,
+          overlayRotate: frameOptions.overlayRotate,
           lutTexture,
           intensity,
           cropMask: Asset.fromModule(frameOptions.cropMask),
