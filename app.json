@@ -26,6 +26,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "veb.nz.calograph",
       "versionCode": 1,
       "permissions": [
         "CAMERA",

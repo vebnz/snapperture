@@ -3,6 +3,20 @@ import { GLSL, Node, Shaders } from "gl-react";
 
 import filterConsts from "../../constants/Filters";
 
+const shaders2 = Shaders.create({
+  Passthrough: {
+    // NB we need to YFlip the stream
+    frag: GLSL`
+precision highp float;
+varying vec2 uv;
+uniform sampler2D t;
+void main() {
+  gl_FragColor = texture2D(t, uv);
+}
+`,
+  },
+});
+
 const shaders = Shaders.create({
   LUT: {
     frag: GLSL`
@@ -79,6 +93,13 @@ const FX = props => {
   if(!filterObj) { filterObj = filterConsts[0]}
   if(filterObj) {
     lutTexture = filterObj.lut
+    return (<Node shader={shaders2.Passthrough}
+    ignoreUnusedUniforms
+    uniforms={{
+      t: inputImageTexture
+    }}
+    />
+    )
     return (
       <Node
         shader={shaders.LUT}
