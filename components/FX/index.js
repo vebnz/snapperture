@@ -96,7 +96,7 @@ const FX = props => {
   if(filterObj) {
     lutTexture = Asset.fromModule(filterObj.lut)
     if (!overlay) {
-      overlay = Asset.fromModule('../../assets/masks/blank.png')
+      overlay = Asset.fromModule(require('../../assets/masks/blank.png'))
     } else {
       overlay = Asset.fromURI(overlay.uri)
     }

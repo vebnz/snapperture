@@ -51,8 +51,8 @@ class GLCamera extends Component {
         <Camera
           style={{
             aspectRatio: 1,
-            // width: this.props.width,
-            // height: this.props.height
+            width: this.props.width,
+            height: this.props.height
           }}
           ratio="1:1"
           type={type}
