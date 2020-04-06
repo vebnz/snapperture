@@ -78,15 +78,12 @@ class HomeScreen extends Component {
     );
   };
 
-  componentWillUnmount = () => {
-    console.log("cameraview->componentWillUnmount");
-  };
-
   onCameraError = error => {
     console.log("onCameraError -> error", error);
   };
 
   onLayout = evt => {
+    console.log("HomeScreen -> onLayout")
     const { width, height } = evt.nativeEvent.layout;
     this.setState({
       width,
@@ -237,7 +234,7 @@ class HomeScreen extends Component {
           activeAction={this.state.action}
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
-        <View style={{ position: "absolute", zIndex: -1 }}>
+        {/* <View style={{ position: "absolute", zIndex: -1 }}>
           <ViewShot
             ref={(captionRef) => (this.captionRef = captionRef)}
             style={{ width, height }}
@@ -253,7 +250,8 @@ class HomeScreen extends Component {
               style={{ width, height }}
             />
           </ViewShot>
-        </View>
+        </View> */}
+        
         <View style={{ width, height }}>
           <GLSurface
             ref={(surface) => (this.surface = surface)}
@@ -265,7 +263,6 @@ class HomeScreen extends Component {
               overlay={renderedNode}
               frameOptions={frameOptions}
             >
-              {/* {test80} */}
               <GLCamera
                 ref={(camera) => (this.camera = camera)}
                 position={type}
@@ -294,8 +291,8 @@ class HomeScreen extends Component {
             size={50}
             onPress={this.onSurfaceCapture}
           />
-        </View>
-        {this.renderActionPanel()}
+          </View>
+        {this.renderActionPanel()} 
       </Surface>
     );
   }
