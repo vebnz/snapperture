@@ -237,7 +237,7 @@ class HomeScreen extends Component {
         <View style={{ position: "absolute", zIndex: -1 }}>
           <ViewShot
             ref={(captionRef) => (this.captionRef = captionRef)}
-            style={{ aspectRatio: 1, width, height: width }}
+            style={{ aspectRatio: 1, width, height }}
             onCapture={this.onCapture}
             options={{ format: "png" }}
           >
@@ -247,14 +247,14 @@ class HomeScreen extends Component {
               frameOptions={frameOptions}
               captionText={this.state.captionText}
               onReadyCapture={this.onReadyCapture}
-              style={{ aspectRatio: 1, width, height: width }}
+              style={{ aspectRatio: 1, width, height }}
             />
           </ViewShot>
         </View>
-        <View style={{ aspectRatio: 1, width, height: width }}>
+        <View style={{ aspectRatio: 1, width, height }}>
           <GLSurface
             ref={(surface) => (this.surface = surface)}
-            style={{ aspectRatio: 1, width, height: width }}
+            style={{ aspectRatio: 1, width, height }}
           >
             <FX
               filter={filter}
