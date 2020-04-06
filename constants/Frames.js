@@ -8,11 +8,11 @@ export const RIGHT_FRAME = "RIGHT_FRAME";
 export const TOP_FRAME = "TOP_FRAME";
 export const BOTTOM_FRAME = "BOTTOM_FRAME";
 
-import BLANK_FRAME_SRC from "../assets/masks/blank.png";
-import CENTER_FRAME_SRC from "../assets/masks/center.png";
-import CIRCLE_FRAME_SRC from "../assets/masks/circle.png";
-import LANDSCAPE_FRAME_SRC from "../assets/masks/landscape.png";
-import PORTRAIT_FRAME_SRC from "../assets/masks/portrait.png";
+const BLANK_FRAME_SRC = require("../assets/masks/blank.png");
+const CENTER_FRAME_SRC = require("../assets/masks/center.png");
+const CIRCLE_FRAME_SRC = require("../assets/masks/circle.png");
+const LANDSCAPE_FRAME_SRC = require("../assets/masks/landscape.png");
+const PORTRAIT_FRAME_SRC = require("../assets/masks/portrait.png");
 import { Colors } from "react-native-paper";
 
 const textShadow = {

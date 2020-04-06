@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { GLSL, Node, Shaders } from "gl-react";
 
 import filterConsts from "../../constants/Filters";
+import { Asset } from "expo-asset";
+
 
 const shaders2 = Shaders.create({
   Passthrough: {
@@ -92,14 +94,8 @@ const FX = props => {
 
   if(!filterObj) { filterObj = filterConsts[0]}
   if(filterObj) {
-    lutTexture = filterObj.lut
-    return (<Node shader={shaders2.Passthrough}
-    ignoreUnusedUniforms
-    uniforms={{
-      t: inputImageTexture
-    }}
-    />
-    )
+    lutTexture = Asset.fromModule(filterObj.lut)
+    
     return (
       <Node
         shader={shaders.LUT}
@@ -110,7 +106,7 @@ const FX = props => {
           overlayRotate: frameOptions.overlayRotate,
           lutTexture,
           intensity,
-          cropMask: frameOptions.cropMask,
+          cropMask: Asset.fromModule(frameOptions.cropMask),
           maskRotate: frameOptions.rotate,
         }}
       />
