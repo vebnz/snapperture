@@ -90,7 +90,7 @@ class HomeScreen extends Component {
     const { width, height } = evt.nativeEvent.layout;
     this.setState({
       width,
-      height
+      height: width
     });
   };
 
@@ -237,7 +237,7 @@ class HomeScreen extends Component {
         <View style={{ position: "absolute", zIndex: -1 }}>
           <ViewShot
             ref={(captionRef) => (this.captionRef = captionRef)}
-            style={{ aspectRatio: 1, width, height }}
+            style={{ width, height }}
             onCapture={this.onCapture}
             options={{ format: "png" }}
           >
@@ -247,14 +247,14 @@ class HomeScreen extends Component {
               frameOptions={frameOptions}
               captionText={this.state.captionText}
               onReadyCapture={this.onReadyCapture}
-              style={{ aspectRatio: 1, width, height }}
+              style={{ width, height }}
             />
           </ViewShot>
         </View>
-        <View style={{ aspectRatio: 1, width, height }}>
+        <View style={{ width, height }}>
           <GLSurface
             ref={(surface) => (this.surface = surface)}
-            style={{ aspectRatio: 1, width, height }}
+            style={{ width, height }}
           >
             <FX
               filter={filter}
@@ -271,6 +271,7 @@ class HomeScreen extends Component {
               />
             </FX>
           </GLSurface>
+            
 
           <FAB
             style={{ position: "absolute", top: 0, right: 0, margin: 20 }}

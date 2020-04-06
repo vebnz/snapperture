@@ -212,6 +212,7 @@ const defaultFrameOptions = {
 const defaultCaptionOptions = {
   color: Colors.black,
   fontFamily: "edosz",
+  captionText:"CAPTAIN FACTION"
 };
 
 export { CaptionView, CaptionRenderBox };
