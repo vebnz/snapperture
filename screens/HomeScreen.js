@@ -90,7 +90,8 @@ class HomeScreen extends Component {
     const { width, height } = evt.nativeEvent.layout;
     this.setState({
       width,
-      height: width
+      height: width,
+      cameraHeight: height
     });
   };
 
@@ -126,6 +127,7 @@ class HomeScreen extends Component {
     }
   };
   onCapture = uri => {
+    console.log("HomeScreen -> uri", uri)
     this.setState({ renderedNode: { uri: uri } });
   };
 
@@ -194,6 +196,7 @@ class HomeScreen extends Component {
     const {
       width,
       height,
+      cameraHeight,
       hasPermission,
       type,
       intensity,
@@ -266,7 +269,7 @@ class HomeScreen extends Component {
               <GLCamera
                 ref={(camera) => (this.camera = camera)}
                 position={type}
-                height={height}
+                height={cameraHeight}
                 width={width}
               />
             </FX>
