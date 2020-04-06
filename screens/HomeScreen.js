@@ -31,6 +31,7 @@ import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
 import FramePicker from "../components/FramePicker";
 import frameConsts from '../constants/Frames';
 import { Linking , SplashScreen} from "expo";
+import TextRenderTarget from "../components/TextRenderTarget";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -204,6 +205,7 @@ class HomeScreen extends Component {
       fontSize
     } = this.state;
 
+    return <TextRenderTarget />;
     if (!width && !height) {
       return (
         <View
@@ -234,6 +236,8 @@ class HomeScreen extends Component {
           activeAction={this.state.action}
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
+
+        <TextRenderTarget/>
         {/* <View style={{ position: "absolute", zIndex: -1 }}>
           <ViewShot
             ref={(captionRef) => (this.captionRef = captionRef)}
