@@ -95,7 +95,6 @@ const FX = props => {
   if(!filterObj) { filterObj = filterConsts[0]}
   if(filterObj) {
     lutTexture = Asset.fromModule(filterObj.lut)
-    
     return (
       <Node
         shader={shaders.LUT}
