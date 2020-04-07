@@ -106,7 +106,7 @@ const FX = props => {
         if (Platform.OS === 'android') {
           txoverlay = await loadAsset(props.overlay);
         } else {
-          txOverlay = await resolveAsync(`file://${props.overlay.uri}`);
+          txoverlay = await resolveAsync(`file://${props.overlay.uri}`);
         }
         console.log("overlay srxc", txoverlay);
         setTextOverlay(txoverlay);  
