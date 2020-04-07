@@ -202,6 +202,10 @@ const CaptionRenderBox = (props) => {
         console.log("onSnap -> error", error);
       }
     }
+    console.log('autosnapnew', props.fontSize,
+    props.captionOptions,
+    props.frameOptions,
+    props.captionText)
     snapAsync()
     
     // requestRef.current = requestAnimationFrame(viewShotRender);

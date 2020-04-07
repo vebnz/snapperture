@@ -1,9 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { GLSL, Node, Shaders } from "gl-react";
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
 import filterConsts from "../../constants/Filters";
 import { Asset } from "expo-asset";
-
+import "webgltexture-loader-expo";
+import { loadAsset } from "webgltexture-loader-expo/lib/ExpoModuleTextureLoader";
+import { resolveAsync, fromUriAsync } from "expo-asset-utils";
+import { Platform } from "react-native";
 
 const shaders2 = Shaders.create({
   Passthrough: {
@@ -90,27 +93,43 @@ const FX = props => {
   let lutTexture = "";
   let noFilter = false;
 
+  const [textOverlay, setTextOverlay] = useState(
+    Asset.fromModule(require("../../assets/masks/blank.png"))
+  );
+
+  useEffect(() => {
+    async function loadOverlay() {
+      try {
+        let txoverlay = null
+        console.log("loadOverlay -> props.overlays", props.overlay);
+        if (Platform.OS === 'android') {
+          txoverlay = await loadAsset(props.overlay);
+        } else {
+          txOverlay = await resolveAsync(props.overlay);
+        }
+        console.log("overlay srxc", txoverlay);
+        setTextOverlay(txoverlay);  
+      } catch (error) {
+        console.log("loadOverlay -> error", error)
+      }
+    }
+    loadOverlay()
+  }, [props.overlay, frameOptions])
+
   let filterObj = filterConsts.find(element => element.value === filter.value)
 
   if (!filterObj) { filterObj = filterConsts[0] }
   if (filterObj) {
     lutTexture = Asset.fromModule(filterObj.lut)
     //overlay = { uri: 'https://img.icons8.com/android/2x/download-2.png' }
-    if (!overlay) {
-      overlay = Asset.fromModule(require('../../assets/masks/blank.png'))
-    } else {
-      //overlay = resolveAssetSource(overlay);
-      aaaa
-      overlay = { localUri: overlay, uri: overlay }
-      console.log('overlay src', overlay)
-    }
+    
     return (
       <Node
         shader={shaders.LUT}
         ignoreUnusedUniforms
         uniforms={{
           inputImageTexture,
-          overlay,
+          overlay: textOverlay,
           overlayRotate: frameOptions.overlayRotate,
           lutTexture,
           intensity,
