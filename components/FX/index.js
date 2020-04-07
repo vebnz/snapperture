@@ -89,16 +89,20 @@ const FX = props => {
   let { children: inputImageTexture, overlay, filter, intensity, frameOptions } = props;
   let lutTexture = "";
   let noFilter = false;
-  
+
   let filterObj = filterConsts.find(element => element.value === filter.value)
 
-  if(!filterObj) { filterObj = filterConsts[0]}
-  if(filterObj) {
+  if (!filterObj) { filterObj = filterConsts[0] }
+  if (filterObj) {
     lutTexture = Asset.fromModule(filterObj.lut)
+    //overlay = { uri: 'https://img.icons8.com/android/2x/download-2.png' }
     if (!overlay) {
       overlay = Asset.fromModule(require('../../assets/masks/blank.png'))
     } else {
-      overlay = resolveAssetSource(overlay);
+      //overlay = resolveAssetSource(overlay);
+      aaaa
+      overlay = { localUri: overlay, uri: overlay }
+      console.log('overlay src', overlay)
     }
     return (
       <Node
@@ -116,9 +120,9 @@ const FX = props => {
       />
     );
   }
-  
+
   return props.children
-  
+
   // return <Node shader={shaders.FX} uniforms={{ t, factor }} />;
 };
 
