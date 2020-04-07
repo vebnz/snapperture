@@ -100,7 +100,6 @@ const FX = props => {
     } else {
       overlay = resolveAssetSource(overlay);
     }
-    console.log("overlay", overlay)
     return (
       <Node
         shader={shaders.LUT}

@@ -16,6 +16,8 @@ import { View, StatusBar } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Constants from "expo-constants";
 
+import { captureRef } from "react-native-view-shot";
+
 export const FontList = [
   { fontFamily: "avantquelombre", name: "Avant" },
   { fontFamily: "BebasNeue", name: "Bebas" },
@@ -164,20 +166,46 @@ CaptionView.defaultProps = {
 };
 
 const CaptionRenderBox = (props) => {
+  
   const captionOptions = { ...defaultCaptionOptions, ...props.captionOptions };
   const frameOptions = { ...defaultFrameOptions, ...props.frameOptions };
+
+  const captureBox = React.useRef();
 
   const requestRef = React.useRef();
   const previousTimeRef = React.useRef();
 
-  const viewShotRender = (time) => {
+  const viewShotRender = async (time) => {
     console.log("time", time);
-    props.onReadyCapture();
+    
+    try {
+      let result = await captureRef(captureBox, {
+        format: "png",
+      });
+      console.log("onSnap -> result", result)
+      props.setCaptionSnapshot(result)
+    } catch (error) {
+      console.log("onSnap -> error", error)
+    }
   };
 
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(viewShotRender);
-    return () => cancelAnimationFrame(requestRef.current);
+
+    async function snapAsync() {
+      try {
+        let result = await captureRef(captureBox, {
+          format: "png",
+        });
+        console.log("onSnap -> result", result);
+        props.setCaptionSnapshot(result);
+      } catch (error) {
+        console.log("onSnap -> error", error);
+      }
+    }
+    snapAsync()
+    
+    // requestRef.current = requestAnimationFrame(viewShotRender);
+    // return () => cancelAnimationFrame(requestRef.current);
   }, [
     props.fontSize,
     props.captionOptions,
@@ -188,7 +216,8 @@ const CaptionRenderBox = (props) => {
   return (
     <View style={props.style}>
       <View style={{ ...props.frameOptions.viewFrameStyle }}>
-        <Title
+        <Text
+          ref={captureBox}
           style={{
             ...props.frameOptions.textFrameStyle,
             fontSize: props.fontSize,
@@ -199,7 +228,7 @@ const CaptionRenderBox = (props) => {
           }}
         >
           {props.captionText}
-        </Title>
+        </Text>
       </View>
     </View>
   );

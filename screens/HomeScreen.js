@@ -26,7 +26,7 @@ import TopAppBar, {
   ACTION_TEXT
 } from "../navigation/AppBar";
 import TextFx from "../components/FX/TextFx";
-import ViewShot from "react-native-view-shot";
+import {captureRef} from "react-native-view-shot";
 import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
 import FramePicker from "../components/FramePicker";
 import frameConsts from '../constants/Frames';
@@ -124,15 +124,11 @@ class HomeScreen extends Component {
       
     }
   };
-  onCapture = uri => {
-    console.log("HomeScreen -> uri", uri)
-    this.setState({ renderedNode: { uri: uri } });
-  };
+  
 
-  onReadyCapture = () => {
-    if (this.captionRef) {
-      this.captionRef.capture();
-    }
+  onReadyCapture = (uri) => {
+    console.log("HomeScreen -> uri", uri);
+    this.setState({ renderedNode: { uri: uri } });
   };
   onPauseCamera = pause => {
     if (this.camera && this.camera.camera) {
@@ -164,9 +160,7 @@ class HomeScreen extends Component {
             onSetFontSize={fontSize=> {
               this.setState({fontSize});
             }}
-            onRenderCaption={() => {
-              this.captionRef.capture();
-            }}
+            
           />
         );
       default:
@@ -205,7 +199,6 @@ class HomeScreen extends Component {
       fontSize
     } = this.state;
 
-    return <TextRenderTarget />;
     if (!width && !height) {
       return (
         <View
@@ -228,8 +221,6 @@ class HomeScreen extends Component {
       return <Text>Camera delayed rendering</Text>;
     }
 
-    
-
     return (
       <Surface style={{ flex: 1 }} onLayout={this.onLayout}>
         <TopAppBar
@@ -237,25 +228,17 @@ class HomeScreen extends Component {
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
 
-        <TextRenderTarget/>
-        {/* <View style={{ position: "absolute", zIndex: -1 }}>
-          <ViewShot
-            ref={(captionRef) => (this.captionRef = captionRef)}
+        <View style={{ position: "absolute", zIndex: -1 }}>
+          <CaptionRenderBox
+            fontSize={fontSize}
+            captionOptions={captionOptions}
+            frameOptions={frameOptions}
+            captionText={this.state.captionText}
+            setCaptionSnapshot={this.onReadyCapture}
             style={{ width, height }}
-            onCapture={this.onCapture}
-            options={{ format: "png" }}
-          >
-            <CaptionRenderBox
-              fontSize={fontSize}
-              captionOptions={captionOptions}
-              frameOptions={frameOptions}
-              captionText={this.state.captionText}
-              onReadyCapture={this.onReadyCapture}
-              style={{ width, height }}
-            />
-          </ViewShot>
-        </View> */}
-        
+          />
+        </View>
+
         <View style={{ width, height }}>
           <GLSurface
             ref={(surface) => (this.surface = surface)}
@@ -275,7 +258,6 @@ class HomeScreen extends Component {
               />
             </FX>
           </GLSurface>
-            
 
           <FAB
             style={{ position: "absolute", top: 0, right: 0, margin: 20 }}
@@ -295,8 +277,8 @@ class HomeScreen extends Component {
             size={50}
             onPress={this.onSurfaceCapture}
           />
-          </View>
-        {this.renderActionPanel()} 
+        </View>
+        {this.renderActionPanel()}
       </Surface>
     );
   }
