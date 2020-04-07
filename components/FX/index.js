@@ -100,12 +100,13 @@ const FX = props => {
   useEffect(() => {
     async function loadOverlay() {
       try {
+        
         let txoverlay = null
         console.log("loadOverlay -> props.overlays", props.overlay);
         if (Platform.OS === 'android') {
           txoverlay = await loadAsset(props.overlay);
         } else {
-          txOverlay = await resolveAsync(props.overlay);
+          txOverlay = await resolveAsync(`file://${props.overlay}`);
         }
         console.log("overlay srxc", txoverlay);
         setTextOverlay(txoverlay);  
