@@ -37,6 +37,12 @@ class GLCamera extends Component {
     this.camera = camera;
   };
 
+  onCameraReady = async () => {
+    const ratios = await this.camera.getSupportedRatiosAsync();
+    const sizes = await this.camera.getAvailablePictureSizesAsync()
+    console.log("GLCamera -> onCameraReady -> ratios, sizes", ratios, sizes)
+  }
+
   render() {
     const { position } = this.props;
     
@@ -54,6 +60,7 @@ class GLCamera extends Component {
           // ratio="1:1"
           type={type}
           ref={this.onCameraRef}
+          onCameraReady={this.onCameraReady}
         />
       </Node>
     );
