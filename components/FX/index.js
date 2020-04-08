@@ -46,6 +46,10 @@ highp vec2 rotateUV(highp vec2 uv, highp float rotation)
 
 void main()
 {
+
+  highp vec2 st = uv;
+  st.y = st.y * 1.33333333;
+  
   highp vec4 textureColor = texture2D(inputImageTexture, uv);
   highp vec2 overlayuv = rotateUV(uv, overlayRotate);
   highp vec4 overlayColor = texture2D(overlay, overlayuv);

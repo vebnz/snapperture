@@ -48,7 +48,7 @@ const ShareScreen = ({ route, navigation }) => {
         <Appbar.Content title="Share your creation"/>
       </Appbar.Header>
       <Image
-        style={{ width: "100%", height: undefined, aspectRatio: 1 }}
+        style={{ flex:1,  resizeMode: "contain"}}
         source={{ uri: localUri }}
       />
       <View style={{flexDirection:"row", justifyContent:"space-around"}}>

@@ -101,7 +101,7 @@ class HomeScreen extends Component {
   }
 
   onFlipPress = () => {
-    this.setState({ type: this.state.type == "front" ? "back" : "front" });
+    this.setState({ camkey: Math.random(), type: this.state.type == "front" ? "back" : "front" });
   };
 
   onSurfaceCapture = async () => {
@@ -241,6 +241,7 @@ class HomeScreen extends Component {
 
         <View style={{ width, height }}>
           <GLSurface
+            key={this.state.camkey}
             ref={(surface) => (this.surface = surface)}
             style={{ width, height }}
           >
