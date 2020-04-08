@@ -12,7 +12,7 @@ import {
   ToggleButton,
   FAB,
 } from "react-native-paper";
-import { View, StatusBar } from "react-native";
+import { View, StatusBar, ScrollView } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Constants from "expo-constants";
 
@@ -38,14 +38,16 @@ const CaptionView = (props) => {
   const [captionText, setCaptionText] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [fontSize, setFontSize] = useState(30);
+  const [captionFont, setCaptionFont] = useState(FontList[0].fontFamily)
 
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          props.onSetCaptionOptions({
-            fontFamily: item.fontFamily,
-          });
+          setCaptionFont(item.fontFamily)
+          // props.onSetCaptionOptions({
+          //   fontFamily: item.fontFamily,
+          // });
         }}
       >
         <Surface
@@ -81,29 +83,36 @@ const CaptionView = (props) => {
       <View style={{ flexDirection: "row" }}>
         <Portal>
           <Modal
-            contentContainerStyle={{ flex: 1, justifyContent:"flex-start" }}
+            contentContainerStyle={{ flex: 1, justifyContent: "flex-start" }}
             visible={showModal}
             dismissable={false}
             // onDismiss={() => setShowModal(false)}
           >
-            <View
-              style={{
-                
-              }}
-            >
+            <ScrollView style={{ padding: 10, marginTop: 56 + Constants.statusBarHeight }}>
+              <Text
+                style={{
+                  fontSize: fontSize,
+                  fontFamily: captionFont,
+                  includeFontPadding: true,
+                  textAlignVertical: "center",
+                  padding: 10,
+                  color: Colors.white,
+                }}
+              >
+                {captionText}
+              </Text>
               <View
                 style={{
                   flexDirection: "row",
-                  marginTop: 56 + Constants.statusBarHeight,
                 }}
               >
                 <TextInput
+                  autoFocus
                   style={{ flex: 1 }}
                   label="Caption"
                   value={captionText || props.captionText}
                   onChangeText={(text) => {
                     setCaptionText(text);
-                    props.onSetCaptionText(text);
                   }}
                   onSubmitEditing={() => {
                     // props.onRenderCaption();
@@ -130,18 +139,15 @@ const CaptionView = (props) => {
               >
                 <FAB
                   icon="format-font-size-decrease"
-                  onPress={() => props.onSetFontSize(14)}
+                  onPress={() => setFontSize(14)}
                 />
-                <FAB
-                  icon="format-color-text"
-                  onPress={() => props.onSetFontSize(20)}
-                />
+                <FAB icon="format-color-text" onPress={() => setFontSize(20)} />
                 <FAB
                   icon="format-font-size-increase"
-                  onPress={() => props.onSetFontSize(30)}
+                  onPress={() => setFontSize(30)}
                 />
               </Surface>
-            </View>
+            </ScrollView>
           </Modal>
         </Portal>
         <Button
@@ -167,9 +173,6 @@ CaptionView.defaultProps = {
 
 const CaptionRenderBox = (props) => {
   
-  const captionOptions = { ...defaultCaptionOptions, ...props.captionOptions };
-  const frameOptions = { ...defaultFrameOptions, ...props.frameOptions };
-
   const captureBox = React.useRef();
 
   const requestRef = React.useRef();
@@ -189,33 +192,30 @@ const CaptionRenderBox = (props) => {
     }
   };
 
-  useEffect(() => {
-
-    async function snapAsync() {
-      try {
-        let result = await captureRef(captureBox, {
-          format: "png",
-        });
-        console.log("onSnap -> result", result);
-        props.setCaptionSnapshot(result);
-      } catch (error) {
-        console.log("onSnap -> error", error);
-      }
+  const snapAsync = async () => {
+    try {
+      let result = await captureRef(captureBox, {
+        format: "png",
+      });
+      console.log("onSnap -> result", result);
+      props.setCaptionSnapshot(result);
+    } catch (error) {
+      console.log("onSnap -> error", error);
     }
-    console.log('autosnapnew', props.fontSize,
-    props.captionOptions,
-    props.frameOptions,
-    props.captionText)
+  }
+  
+  useEffect(() => {
     snapAsync()
-    
-    // requestRef.current = requestAnimationFrame(viewShotRender);
-    // return () => cancelAnimationFrame(requestRef.current);
   }, [
     props.fontSize,
     props.captionOptions,
     props.frameOptions,
     props.captionText,
   ]);
+
+  useEffect(() => {
+    snapAsync();
+  }, []);
 
   return (
     <View style={props.style}>
@@ -225,7 +225,7 @@ const CaptionRenderBox = (props) => {
           style={{
             ...props.frameOptions.textFrameStyle,
             fontSize: props.fontSize,
-            fontFamily: captionOptions.fontFamily,
+            fontFamily: props.captionOptions.fontFamily,
             includeFontPadding: true,
             textAlignVertical: "center",
             padding: 10,
@@ -238,14 +238,10 @@ const CaptionRenderBox = (props) => {
   );
 };
 
-const defaultFrameOptions = {
-  backgroundColor: Colors.white,
-};
-
-const defaultCaptionOptions = {
+CaptionRenderBox.defaultProps = {
   color: Colors.black,
   fontFamily: "edosz",
   captionText:"CAPTAIN FACTION"
-};
+}
 
 export { CaptionView, CaptionRenderBox };

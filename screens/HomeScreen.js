@@ -37,13 +37,13 @@ class HomeScreen extends Component {
     super(props);
     this.state = {
       hasPermission: null,
-      type: "front",
+      type: "back",
       width: false,
       height: false,
       intensity: 1,
       filter: filterConsts[0],
       renderedNode: null,
-      action: ACTION_FILTER,
+      action: ACTION_TEXT,
       captionText: "",
       captionOptions: {},
       frameOptions: frameConsts[0],

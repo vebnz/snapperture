@@ -39,7 +39,7 @@ class GLCamera extends Component {
 
   onCameraReady = async () => {
     const sizes = await this.camera.getAvailablePictureSizesAsync('1:1')
-    console.log("GLCamera -> onCameraReady -> ratios, sizes", ratios, sizes)
+    
   //     20:06
   // GLCamera -> onCameraReady -> ratios, sizes Array [
   //   "640x480",
@@ -54,7 +54,7 @@ class GLCamera extends Component {
   // ]
   //so, ios doesnt support SQUARE viewport sizes... this is what a 1:1 ratio is for ios.  don't know what "high" or "photo" aspect ratios are
   // but we can work with a 1920x1080 i guess
-  // fuck this
+  // edit: ios seems to be default 16:9 aspect ratio see FX.js fragment shader
 
   }
 

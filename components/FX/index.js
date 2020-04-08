@@ -34,7 +34,7 @@ uniform sampler2D cropMask;
 uniform lowp float maskRotate;
 uniform lowp float overlayRotate;
 uniform lowp float intensity;
-uniform lowp bool shaderTricks;
+uniform bool shaderTricks;
 highp vec2 rotateUV(highp vec2 uv, highp float rotation)
 {
   highp float mid = 0.5;
