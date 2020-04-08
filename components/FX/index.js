@@ -106,7 +106,14 @@ const FX = props => {
         if (Platform.OS === 'android') {
           txoverlay = await loadAsset(props.overlay);
         } else {
-          txoverlay = await resolveAsync(`file://${props.overlay.uri}`);
+          txoverlay = await resolveAsync(`file://${props.overlay.uri}`);  //this fucking thing
+          //storytime:
+          //resolveAsync works in android (sort of) 
+          //react-native-view-shot.captureRef returns a uri formatted string
+          //ios returns a posix file path... 
+          //so to make resolved Expo assets from ios internal file system (that isnt already assets/cameraroll)
+          //need to prepend file://
+          //stupid
         }
         console.log("overlay srxc", txoverlay);
         setTextOverlay(txoverlay);  
