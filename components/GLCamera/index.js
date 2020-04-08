@@ -38,9 +38,9 @@ class GLCamera extends Component {
   };
 
   onCameraReady = async () => {
-    const ratios = await this.camera.getSupportedRatiosAsync();
-    const sizes = await this.camera.getAvailablePictureSizesAsync()
-    console.log("GLCamera -> onCameraReady -> ratios, sizes", ratios, sizes)
+    //const ratios = await this.camera.getSupportedRatiosAsync();
+    const sizes = await this.camera.getAvailablePictureSizesAsync('1:1')
+    console.log("GLCamera -> onCameraReady -> ratios, sizes",  sizes)
   }
 
   render() {
@@ -56,6 +56,8 @@ class GLCamera extends Component {
         }}
       >
         <Camera
+          //
+
           // style={{width: this.props.width, height: this.props.height}}
           // ratio="1:1"
           type={type}

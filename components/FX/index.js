@@ -48,8 +48,8 @@ void main()
 {
 
   highp vec2 st = uv;
-  st.y = st.y * .75;
-  
+  //st.y = st.y * .75;
+  st.y = st.y * (1080.0/1920.0);
   highp vec4 textureColor = texture2D(inputImageTexture, st);
   highp vec2 overlayuv = rotateUV(uv, overlayRotate);
   highp vec4 overlayColor = texture2D(overlay, overlayuv);
