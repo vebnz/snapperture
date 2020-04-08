@@ -34,7 +34,7 @@ uniform sampler2D cropMask;
 uniform lowp float maskRotate;
 uniform lowp float overlayRotate;
 uniform lowp float intensity;
-
+uniform lowp bool shaderTricks;
 highp vec2 rotateUV(highp vec2 uv, highp float rotation)
 {
   highp float mid = 0.5;
@@ -49,7 +49,9 @@ void main()
 
   highp vec2 st = uv;
   //st.y = st.y * .75;
-  st.y = st.y * (1080.0/1920.0);
+  if(shaderTricks) {
+    st.y = st.y * (1080.0/1920.0);
+  }
   highp vec4 textureColor = texture2D(inputImageTexture, st);
   highp vec2 overlayuv = rotateUV(uv, overlayRotate);
   highp vec4 overlayColor = texture2D(overlay, overlayuv);
@@ -147,6 +149,7 @@ const FX = props => {
           intensity,
           cropMask: Asset.fromModule(frameOptions.cropMask),
           maskRotate: frameOptions.rotate,
+          shaderTricks: Platform.OS === 'ios'
         }}
       />
     );
