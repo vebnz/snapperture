@@ -37,6 +37,8 @@ uniform lowp float intensity;
 uniform bool shaderTricks;
 uniform highp float overlayAspect;
 
+uniform highp vec2 fxTextOffset;
+
 highp vec2 rotateUV(highp vec2 uv, highp float rotation)
 {
   highp float mid = 0.5;
@@ -61,8 +63,13 @@ void main()
 
   highp vec2 overlayUV = rotateUV(uv, overlayRotate);
   overlayUV.y = overlayUV.y * overlayAspect;
+
   // highp vec2 overlayuv = rotateUV(overlayUV, overlayRotate);
 
+
+  highp vec2 offset = vec2(.50, .50);
+  highp vec2 totalOffset = offset + overlayUV;
+  
   highp vec4 overlayColor = texture2D(overlay, overlayUV);
   
   highp float blueColor = textureColor.b * 63.0;
@@ -106,7 +113,13 @@ void main()
 });
 
 const FX = props => {
-  let { children: inputImageTexture, overlay, filter, intensity, frameOptions } = props;
+  let {
+    children: inputImageTexture,
+    fxTextOffset,
+    filter,
+    intensity,
+    frameOptions,
+  } = props;
   let lutTexture = "";
   let noFilter = false;
 
@@ -141,6 +154,7 @@ const FX = props => {
     loadOverlay()
   }, [props.overlay, frameOptions])
 
+  console.log("fxTextOffset", fxTextOffset)
   let filterObj = filterConsts.find(element => element.value === filter.value)
 
   if (!filterObj) { filterObj = filterConsts[0] }
@@ -156,12 +170,13 @@ const FX = props => {
           inputImageTexture,
           overlay: textOverlay,
           overlayRotate: frameOptions.overlayRotate,
-          overlayAspect: textOverlay.width/textOverlay.height,
+          overlayAspect: textOverlay.width / textOverlay.height,
           lutTexture,
           intensity,
           cropMask: Asset.fromModule(frameOptions.cropMask),
           maskRotate: frameOptions.rotate,
           shaderTricks: Platform.OS === "ios",
+          fxTextOffset
         }}
       />
     );

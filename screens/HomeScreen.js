@@ -31,11 +31,13 @@ import { Linking, SplashScreen } from "expo";
 import { Layout, Text, Button, Icon } from "@ui-kitten/components";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PanView from "../components/PanView";
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      fxTextOffset: [0,0],
       hasPermission: null,
       type: "back",
       width: false,
@@ -43,7 +45,6 @@ class HomeScreen extends Component {
       intensity: 1,
       filter: filterConsts[0],
       renderedNode: null,
-      renderedNodeResolution:[0,0],
       action: ACTION_TEXT,
       captionText: "",
       captionOptions: {},
@@ -160,7 +161,6 @@ class HomeScreen extends Component {
               console.log("HomeScreen -> renderActionPanel -> uri", uri);
               this.setState({
                 renderedNode: { uri: uri.uri },
-                renderedNodeResolution: uri.resolution,
               });
             }}
           />
@@ -186,6 +186,10 @@ class HomeScreen extends Component {
       Linking.openURL(`app-settings://notification/${pkg}`);
     }
   };
+  onFXDragPosition = (fxTextOffset) => {
+    this.setState({fxTextOffset})
+  }
+
   render() {
     const {
       width,
@@ -196,7 +200,6 @@ class HomeScreen extends Component {
       intensity,
       filter,
       renderedNode,
-      renderedNodeResolution,
       captionOptions,
       frameOptions,
       fontSize,
@@ -237,7 +240,10 @@ class HomeScreen extends Component {
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
         <Layout style={{ flex: 1 }} onLayout={this.onLayout}>
-          <View style={{ width, height }}>
+          <PanView
+            onFXDragPosition={this.onFXDragPosition}
+            style={{ width, height }}
+          >
             <GLSurface
               key={this.state.camkey}
               ref={(surface) => (this.surface = surface)}
@@ -247,8 +253,8 @@ class HomeScreen extends Component {
                 filter={filter}
                 intensity={intensity}
                 overlay={renderedNode}
-                overlayResolution={renderedNodeResolution}
                 frameOptions={frameOptions}
+                fxTextOffset={this.state.fxTextOffset}
               >
                 <GLCamera
                   ref={(camera) => (this.camera = camera)}
@@ -294,7 +300,7 @@ class HomeScreen extends Component {
                 backgroundColor: "#00000066",
               }}
             />
-          </View>
+          </PanView>
           {this.renderActionPanel()}
         </Layout>
       </SafeAreaView>
