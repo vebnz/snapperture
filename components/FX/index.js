@@ -35,6 +35,8 @@ uniform lowp float maskRotate;
 uniform lowp float overlayRotate;
 uniform lowp float intensity;
 uniform bool shaderTricks;
+uniform highp float overlayAspect;
+
 highp vec2 rotateUV(highp vec2 uv, highp float rotation)
 {
   highp float mid = 0.5;
@@ -53,8 +55,13 @@ void main()
     st.y = st.y * (1080.0/1920.0);
   }
   highp vec4 textureColor = texture2D(inputImageTexture, st);
-  highp vec2 overlayuv = rotateUV(uv, overlayRotate);
-  highp vec4 overlayColor = texture2D(overlay, overlayuv);
+
+  // highp vec2 overlayuv = rotateUV(uv, overlayRotate);
+
+  highp vec2 overlayUV = uv;
+  overlayUV.y = overlayUV.y * overlayAspect;
+  
+  highp vec4 overlayColor = texture2D(overlay, overlayUV);
   
   highp float blueColor = textureColor.b * 63.0;
   
@@ -145,11 +152,12 @@ const FX = props => {
           inputImageTexture,
           overlay: textOverlay,
           overlayRotate: frameOptions.overlayRotate,
+          overlayAspect: textOverlay.width/textOverlay.height,
           lutTexture,
           intensity,
           cropMask: Asset.fromModule(frameOptions.cropMask),
           maskRotate: frameOptions.rotate,
-          shaderTricks: Platform.OS === 'ios'
+          shaderTricks: Platform.OS === "ios",
         }}
       />
     );

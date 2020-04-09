@@ -24,7 +24,7 @@ import TopAppBar, {
 } from "../navigation/AppBar";
 import TextFx from "../components/FX/TextFx";
 import { captureRef } from "react-native-view-shot";
-import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
+import { CaptionView } from "../components/CaptionView";
 import FramePicker from "../components/FramePicker";
 import frameConsts from "../constants/Frames";
 import { Linking, SplashScreen } from "expo";
@@ -43,6 +43,7 @@ class HomeScreen extends Component {
       intensity: 1,
       filter: filterConsts[0],
       renderedNode: null,
+      renderedNodeResolution:[0,0],
       action: ACTION_TEXT,
       captionText: "",
       captionOptions: {},
@@ -132,10 +133,6 @@ class HomeScreen extends Component {
     }
   };
 
-  onReadyCapture = (uri) => {
-    console.log("HomeScreen -> uri", uri);
-    this.setState({ renderedNode: { uri: uri } });
-  };
   onPauseCamera = (pause) => {
     if (this.camera && this.camera.camera) {
       pause
@@ -157,16 +154,14 @@ class HomeScreen extends Component {
       case ACTION_TEXT:
         return (
           <CaptionView
-            cameraPause={this.onPauseCamera}
-            captionText={this.state.captionText}
-            onSetCaptionText={(captionText) => {
-              this.setState({ captionText });
-            }}
-            onSetCaptionOptions={(captionOptions) => {
-              this.setState({ captionOptions });
-            }}
-            onSetFontSize={(fontSize) => {
-              this.setState({ fontSize });
+            route={this.props.route}
+            navigation={this.props.navigation}
+            setCaptionSnapshot={(uri) => {
+              console.log("HomeScreen -> renderActionPanel -> uri", uri);
+              this.setState({
+                renderedNode: { uri: uri.uri },
+                renderedNodeResolution: uri.resolution,
+              });
             }}
           />
         );
@@ -201,6 +196,7 @@ class HomeScreen extends Component {
       intensity,
       filter,
       renderedNode,
+      renderedNodeResolution,
       captionOptions,
       frameOptions,
       fontSize,
@@ -241,17 +237,6 @@ class HomeScreen extends Component {
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
         <Layout style={{ flex: 1 }} onLayout={this.onLayout}>
-          <View style={{ position: "absolute", zIndex: -1 }}>
-            <CaptionRenderBox
-              fontSize={fontSize}
-              captionOptions={captionOptions}
-              frameOptions={frameOptions}
-              captionText={this.state.captionText}
-              setCaptionSnapshot={this.onReadyCapture}
-              style={{ width, height }}
-            />
-          </View>
-
           <View style={{ width, height }}>
             <GLSurface
               key={this.state.camkey}
@@ -262,6 +247,7 @@ class HomeScreen extends Component {
                 filter={filter}
                 intensity={intensity}
                 overlay={renderedNode}
+                overlayResolution={renderedNodeResolution}
                 frameOptions={frameOptions}
               >
                 <GLCamera
