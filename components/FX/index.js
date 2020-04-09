@@ -54,13 +54,15 @@ void main()
   if(shaderTricks) {
     st.y = st.y * (1080.0/1920.0);
   }
+  
+  
   highp vec4 textureColor = texture2D(inputImageTexture, st);
 
-  // highp vec2 overlayuv = rotateUV(uv, overlayRotate);
 
-  highp vec2 overlayUV = uv;
+  highp vec2 overlayUV = rotateUV(uv, overlayRotate);
   overlayUV.y = overlayUV.y * overlayAspect;
-  
+  // highp vec2 overlayuv = rotateUV(overlayUV, overlayRotate);
+
   highp vec4 overlayColor = texture2D(overlay, overlayUV);
   
   highp float blueColor = textureColor.b * 63.0;
@@ -95,7 +97,9 @@ void main()
   highp vec4 maskColor = vec4(1.0, 1.0, 1.0, 1.0);
   highp vec4 maskWithFilterColor = mix(filteredColor, maskColor, maskOverlayColor.a);
 
-  gl_FragColor = mix(maskWithFilterColor, overlayColor, overlayColor.a);
+
+  highp vec4 inverseOverlayColor = vec4(overlayColor.r-maskWithFilterColor.r,overlayColor.g-maskWithFilterColor.g,overlayColor.b-maskWithFilterColor.b,overlayColor.a);
+  gl_FragColor = mix(maskWithFilterColor, inverseOverlayColor, overlayColor.a);
 }
 `,
   },
