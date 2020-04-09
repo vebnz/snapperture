@@ -13,7 +13,6 @@ const CENTER_FRAME_SRC = require("../assets/masks/center.png");
 const CIRCLE_FRAME_SRC = require("../assets/masks/circle.png");
 const LANDSCAPE_FRAME_SRC = require("../assets/masks/landscape.png");
 const PORTRAIT_FRAME_SRC = require("../assets/masks/portrait.png");
-import { Colors } from "react-native-paper";
 
 const textShadow = {
   
@@ -39,7 +38,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.white,
+      color: '#ffffff',
     },
   },
   {
@@ -62,7 +61,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
   {
@@ -85,7 +84,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
   {
@@ -109,7 +108,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
   {
@@ -133,7 +132,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
   {
@@ -156,7 +155,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
   {
@@ -179,7 +178,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
   {
@@ -202,7 +201,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
   {
@@ -225,7 +224,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: Colors.black,
+      color: '#000000',
     },
   },
 ];

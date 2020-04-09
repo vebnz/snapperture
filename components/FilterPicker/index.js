@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Menu, Button, Title, Colors, Text, Surface } from "react-native-paper";
 import filterConsts from "../../constants/Filters";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import FX from "../FX";
 import { Image, View, Slider } from "react-native";
 import { Surface as GLSurface } from "gl-react-expo";
+import { Text, Layout } from "@ui-kitten/components";
 
 const FilterPicker = props => {
   const [selectedFilter, setSelectedFilter] = useState(filterConsts[0])
@@ -23,9 +23,9 @@ const FilterPicker = props => {
             style={{
               width: 100,
               fontSize: 12,
-              backgroundColor: Colors.grey900,
+              backgroundColor: "#212121",
               textAlign: "center",
-              color: Colors.white,
+              color: "#ffffff",
             }}
           >
             {item.name}
@@ -35,29 +35,31 @@ const FilterPicker = props => {
     );
   };
   return (
-    <Surface style={{ flex: 1, justifyContent: "flex-end" }}>
-      <Title style={{ flex: 1, textAlign: "center" }}>
+    <Layout style={{ flex: 1, justifyContent: "flex-end" }}>
+      <Text category="h3" style={{ flex: 1, textAlign: "center" }}>
         {selectedFilter.name}
-      </Title>
+      </Text>
       <FlatList
         horizontal
         data={filterConsts}
         renderItem={renderItem}
         keyExtractor={item => item.value}
       />
-      <Text style={{ paddingTop: 10, textAlign: "center" }}>
+      <Text style={{ paddingTop: 0, textAlign: "center" }}>
         Filter Intensity
       </Text>
       <Slider
-        style={{ height: 40 }}
+        style={{ height: 40, marginBottom: 10 }}
         value={1}
         minimumValue={0}
         maximumValue={1.25}
-        minimumTrackTintColor="#000000"
+        minimumTrackTintColor="#ffffff"
         maximumTrackTintColor="#ff0000"
-        onValueChange={value => props.onSetIntensity(value)}
+        onValueChange={value => {
+          props.onSetIntensity(value)
+        }}
       />
-    </Surface>
+    </Layout>
   );
 };
 

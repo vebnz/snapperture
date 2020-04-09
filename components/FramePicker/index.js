@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Menu, Button, Title, Colors, Text, Surface } from "react-native-paper";
+
 import frameConsts from "../../constants/Frames";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import FX from "../FX";
 import { Image, View, Slider } from "react-native";
+import { Text, Layout } from "@ui-kitten/components";
 
 
 const FramePicker = (props) => {
@@ -18,13 +19,13 @@ const FramePicker = (props) => {
         }}
       >
         <View style={{ paddingRight: 5, paddingLeft: 5 }}>
-          <Image tintColor={Colors.white} source={item.cropMask} style={{ transform:[{rotate: item.imgRotate}], width: 50, height: 50 }} />
+          <Image tintColor={"#ffffff"} source={item.cropMask} style={{ transform:[{rotate: item.imgRotate}], width: 50, height: 50 }} />
           <Text
             style={{
               fontSize: 12,
-              backgroundColor: Colors.grey900,
+              backgroundColor: "#212121",
               textAlign: "center",
-              color: Colors.white,
+              color: "#ffffff",
             }}
           >
             {item.name}
@@ -34,17 +35,17 @@ const FramePicker = (props) => {
     );
   };
   return (
-    <Surface style={{ flex: 1, justifyContent: "flex-end" }}>
-      <Title style={{ flex: 1, textAlign: "center" }}>
+    <Layout style={{ flex: 1, justifyContent: "flex-end" }}>
+      <Text category="h3" style={{ flex: 1, textAlign: "center" }}>
         {selectedFrame.name}
-      </Title>
+      </Text>
       <FlatList
         horizontal
         data={frameConsts}
         renderItem={renderItem}
         keyExtractor={(item) => item.value}
       />
-    </Surface>
+    </Layout>
   );
 };
 

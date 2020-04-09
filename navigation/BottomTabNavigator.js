@@ -1,44 +1,32 @@
-import * as React from 'react';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { BottomNavigation, BottomNavigationTab, Icon } from "@ui-kitten/components";
+import React from "react";
+import HomeScreen from "../screens/HomeScreen";
+import ShareScreen from "../screens/ShareScreen";
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import ShareScreen from '../screens/ShareScreen';
-import { SafeAreaView } from 'react-native';
+const { Navigator, Screen } = createBottomTabNavigator();
+const BottomTabBar = ({ navigation, state }) => (
+  <BottomNavigation
+    selectedIndex={state.index}
+    onSelect={(index) => navigation.navigate(state.routeNames[index])}
+  >
+    <BottomNavigationTab title="Camera" icon={(props) => <Icon {...props} name="camera" />} />
+    <BottomNavigationTab title="Share" icon={(props) => <Icon {...props} name="share-variant" />} />
+  </BottomNavigation>
+);
 
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { Colors } from 'react-native-paper';
+const TabNavigator = () => (
+  <Navigator tabBar={(props) => <BottomTabBar {...props} />}>
+    <Screen name="Camera" component={HomeScreen} />
+    <Screen name="Share" component={ShareScreen} />
+  </Navigator>
+);
 
+const BottomTabNavigator = () => (
+  <NavigationContainer>
+    <TabNavigator />
+  </NavigationContainer>
+)
 
-const BottomTab = createMaterialBottomTabNavigator();
-
-const INITIAL_ROUTE_NAME = 'Home';
-
-const BottomTabNavigator = ({ navigation, route }) => {
-  // Set the header title on the parent stack navigator depending on the
-  // currently active tab. Learn more in the documentation:
-  // https://reactnavigation.org/docs/en/screen-options-resolution.html
-
-  return (
-    <BottomTab.Navigator shifting initialRouteName={INITIAL_ROUTE_NAME}>
-      <BottomTab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          tabBarColor: Colors.amber900,
-          tabBarIcon: 'camera'
-        }}
-      />
-      <BottomTab.Screen
-        name="Share"
-        component={ShareScreen}
-        options={{
-          tabBarColor: Colors.grey900,
-          tabBarIcon: 'share-variant'
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-}
-
-export default BottomTabNavigator;
-
+export default TabNavigator;

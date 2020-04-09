@@ -1,22 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Surface,
-  Title,
-  TextInput,
-  IconButton,
-  Colors,
-  Text,
-  Portal,
-  Modal,
-  Button,
-  ToggleButton,
-  FAB,
-} from "react-native-paper";
+
 import { View, StatusBar, ScrollView } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import Constants from "expo-constants";
 
 import { captureRef } from "react-native-view-shot";
+import { Text, Modal, Input, Button, Icon, ButtonGroup, Layout } from "@ui-kitten/components";
 
 export const FontList = [
   { fontFamily: "avantquelombre", name: "Avant" },
@@ -50,9 +39,9 @@ const CaptionView = (props) => {
           // });
         }}
       >
-        <Surface
+        <View
           style={{
-            backgroundColor: Colors.white,
+            backgroundColor: '#ffffff',
             width: 120,
             height: 80,
             paddingRight: 5,
@@ -67,108 +56,115 @@ const CaptionView = (props) => {
               fontFamily: item.fontFamily,
               textAlign: "center",
               alignSelf: "center",
-              color: Colors.black,
+              color: '#000000',
             }}
           >
             {item.name}
           </Text>
-        </Surface>
+        </View>
       </TouchableOpacity>
     );
   };
 
   return (
-    <Surface style={{ flex: 1, justifyContent: "flex-start" }}>
-      <Title style={{ textAlign: "center" }}>Caption</Title>
+    <Layout style={{ flex: 1, justifyContent: "flex-start" }}>
       <View style={{ flexDirection: "row" }}>
-        <Portal>
-          <Modal
-            contentContainerStyle={{ flex: 1, justifyContent: "flex-start" }}
-            visible={showModal}
-            dismissable={false}
-            // onDismiss={() => setShowModal(false)}
-          >
-            <ScrollView style={{ padding: 10, marginTop: 56 + Constants.statusBarHeight }}>
-              <Text
-                style={{
-                  fontSize: fontSize,
-                  fontFamily: captionFont,
-                  includeFontPadding: true,
-                  textAlignVertical: "center",
-                  padding: 10,
-                  color: Colors.white,
-                }}
-              >
-                {captionText}
-              </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                }}
-              >
-                <TextInput
-                  autoFocus
-                  style={{ flex: 1 }}
-                  label="Caption"
-                  value={captionText || props.captionText}
-                  onChangeText={(text) => {
-                    setCaptionText(text);
-                  }}
-                  onSubmitEditing={() => {
-                    // props.onRenderCaption();
-                  }}
-                />
-                <Button
-                  icon="keyboard-return"
-                  color={Colors.deepOrange400}
-                  mode="contained"
-                  onPress={() => {
-                    setShowModal(false);
-                    props.cameraPause(false);
-                  }}
-                />
-              </View>
-              <FlatList
-                horizontal
-                data={FontList}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.fontFamily}
-              />
-              <Surface
-                style={{ justifyContent: "space-around", flexDirection: "row" }}
-              >
-                <FAB
-                  icon="format-font-size-decrease"
-                  onPress={() => setFontSize(14)}
-                />
-                <FAB icon="format-color-text" onPress={() => setFontSize(20)} />
-                <FAB
-                  icon="format-font-size-increase"
-                  onPress={() => setFontSize(30)}
-                />
-              </Surface>
-            </ScrollView>
-          </Modal>
-        </Portal>
-        <Button
-          style={{ flex: 1, margin: 20 }}
-          uppercase={false}
-          dark={false}
-          color={Colors.deepOrange400}
-          mode="contained"
-          onPress={() => {
-            setShowModal(true);
-            props.cameraPause(true);
-          }}
+        <Modal
+          contentContainerStyle={{ flex: 1, justifyContent: "flex-start" }}
+          visible={showModal}
+          dismissable={false}
+          // onDismiss={() => setShowModal(false)}
         >
-          {props.captionText || "Add caption..."}
-        </Button>
+          <ScrollView
+            style={{ padding: 10, marginTop: 56 + Constants.statusBarHeight }}
+          >
+            <Text
+              style={{
+                fontSize: fontSize,
+                fontFamily: captionFont,
+                includeFontPadding: true,
+                textAlignVertical: "center",
+                padding: 10,
+                color: "#ffffff",
+              }}
+            >
+              {captionText}
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+              }}
+            >
+              <Input
+                autoFocus
+                style={{ flex: 1 }}
+                label="Caption"
+                value={captionText || props.captionText}
+                onChangeText={(text) => {
+                  setCaptionText(text);
+                }}
+                onSubmitEditing={() => {
+                  // props.onRenderCaption();
+                }}
+              />
+              <Button
+                accessoryLeft={(props) => (
+                  <Icon {...props} name="keyboard-return" />
+                )}
+                status="primary"
+                onPress={() => {
+                  setShowModal(false);
+                  props.cameraPause(false);
+                }}
+              />
+            </View>
+            <FlatList
+              horizontal
+              data={FontList}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.fontFamily}
+            />
+            <ButtonGroup appearance="filled">
+              <Button
+                accessoryLeft={(props) => (
+                  <Icon {...props} name="format-font-size-decrease" />
+                )}
+                onPress={() => setFontSize(14)}
+              />
+              <Button
+                accessoryLeft={(props) => (
+                  <Icon {...props} name="format-color-text" />
+                )}
+                onPress={() => setFontSize(20)}
+              />
+              <Button
+                accessoryLeft={(props) => (
+                  <Icon {...props} name="format-font-size-increase" />
+                )}
+                onPress={() => setFontSize(30)}
+              />
+            </ButtonGroup>
+          </ScrollView>
+        </Modal>
+        <View style={{ flex: 1 }}>
+          <Button
+            textStyle={{ fontFamily: "Quicksand" }}
+            appearance="filled"
+            style={{ fontFamily: 'Quicksand', alignSelf: "center" }}
+            onPress={() => {
+              setShowModal(true);
+              props.cameraPause(true);
+            }}
+            accessoryRight={(props) => <Text>{captionText || "Add caption"}</Text>}
+            accessoryLeft={(icoprops) => <Icon {...icoprops} name={`${captionText?'pencil':'plus'}`}/>}
+          />            
+        </View>
       </View>
-    </Surface>
+    </Layout>
   );
 };
 CaptionView.defaultProps = {
-  captionText: "Add caption...",
+  captionText: false,
 };
 
 const CaptionRenderBox = (props) => {
@@ -239,7 +235,7 @@ const CaptionRenderBox = (props) => {
 };
 
 CaptionRenderBox.defaultProps = {
-  color: Colors.black,
+  color: '#000000',
   fontFamily: "edosz",
   captionText:"CAPTAIN FACTION"
 }

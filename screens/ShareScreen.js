@@ -1,24 +1,14 @@
 import React, { useEffect } from 'react';
-import {
-  Avatar,
-  Button,
-  Card,
-  Title,
-  Paragraph,
-  Surface,
-  Colors,
-  Appbar,
-} from "react-native-paper";
-import TopAppBar from "../navigation/AppBar";
+
 import { Image, View } from "react-native";
 import * as Sharing from "expo-sharing";
 import * as MediaLibrary from 'expo-media-library';
-
-const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+import { Layout, TopNavigation, Button, Icon, ButtonGroup, Text } from '@ui-kitten/components';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ShareScreen = ({ route, navigation }) => {
   if (!route.params) {
-    return <Title>No Image</Title>;
+    return <Text category="h1">No Image</Text>;
   }
   const { height, localUri, uri, width } = route.params;
 
@@ -40,38 +30,31 @@ const ShareScreen = ({ route, navigation }) => {
   };
 
   if (!height || !localUri || !uri || !width) {
-    return <Title>No Image</Title>;
+    return <Text category="h1">No Image</Text>;
   }
   return (
-    <Surface style={{ flex: 1 }}>
-      <Appbar.Header>
-        <Appbar.Content title="Share your creation"/>
-      </Appbar.Header>
-      <Image
-        style={{ flex:1,  resizeMode: "contain"}}
-        source={{ uri: localUri }}
-      />
-      <View style={{flexDirection:"row", justifyContent:"space-around"}}>
-      <Button
-        style={{ margin: 20 }}
-        mode="contained"
-        icon="share"
-        color={Colors.amber900}
-        onPress={openShareDialogAsync}
-      >
-        Share This
-      </Button>
-      <Button
-        style={{ margin: 20 }}
-        mode="contained"
-        icon="content-save"
-        color={Colors.amberA700}
-        onPress={saveToRoll}
-      >
-        Save This
-      </Button>
-      </View>
-    </Surface>
+    <SafeAreaView style={{ flex: 1 }}>
+      <TopNavigation title="Share your creation" />
+      <Layout style={{ flex: 1 }}>
+        <Image
+          style={{ flex: 1, resizeMode: "contain" }}
+          source={{ uri: localUri }}
+        />
+        <ButtonGroup style={{justifyContent:'center'}}>
+          <Button
+            accessoryLeft={(props) => <Icon {...props} name="share" />}
+            accessoryRight={(props) => <Text>Share this...</Text>}
+            onPress={openShareDialogAsync}
+          />
+          <Button
+            accessoryLeft={(props) => <Icon {...props} name="content-save" />}
+            accessoryRight={(props) => <Text>Save This</Text>}
+            status="info"
+            onPress={saveToRoll}
+          />
+        </ButtonGroup>
+      </Layout>
+    </SafeAreaView>
   );
 };
 

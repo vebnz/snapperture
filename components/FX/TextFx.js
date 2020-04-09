@@ -1,11 +1,6 @@
+import { GLSL, Node, Shaders } from "gl-react";
 import React, { useState } from "react";
-import { GLSL, Node, Shaders, Uniform } from "gl-react";
-import { View } from "react-native";
-import { Colors, Text } from "react-native-paper";
-import Expo2DContext from "expo-2d-context";
-import { GLView } from "expo-gl";
 
-import ViewShot from "react-native-view-shot";
 
 const shaders = Shaders.create({
   TextOverlay: {

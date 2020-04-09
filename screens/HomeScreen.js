@@ -2,36 +2,36 @@ import { withNavigationFocus } from "@react-navigation/compat";
 import { Camera } from "expo-camera";
 import { Surface as GLSurface } from "gl-react-expo";
 import React, { Component } from "react";
-import { View, Slider, Image, TouchableHighlightBase, Platform } from "react-native";
 import {
-  Text,
-  Button,
-  Title,
-  Surface,
-  FAB,
-  Colors,
-  IconButton
-} from "react-native-paper";
+  View,
+  Slider,
+  Image,
+  TouchableHighlightBase,
+  Platform,
+} from "react-native";
 import FX from "../components/FX";
 import Constants from "expo-constants";
 import GLCamera from "../components/GLCamera";
 import FilterPicker from "../components/FilterPicker";
-import * as IntentLauncherAndroid from 'expo-intent-launcher'
-import defaultMask from '../assets/masks/portrait.png'
-import test80 from '../assets/images/test80.jpg'
+import * as IntentLauncherAndroid from "expo-intent-launcher";
+import defaultMask from "../assets/masks/portrait.png";
+import test80 from "../assets/images/test80.jpg";
 import filterConsts from "../constants/Filters";
 import TopAppBar, {
   ACTION_FILTER,
   ACTION_FRAME,
-  ACTION_TEXT
+  ACTION_TEXT,
 } from "../navigation/AppBar";
 import TextFx from "../components/FX/TextFx";
-import {captureRef} from "react-native-view-shot";
+import { captureRef } from "react-native-view-shot";
 import { CaptionView, CaptionRenderBox } from "../components/CaptionView";
 import FramePicker from "../components/FramePicker";
-import frameConsts from '../constants/Frames';
-import { Linking , SplashScreen} from "expo";
-import TextRenderTarget from "../components/TextRenderTarget";
+import frameConsts from "../constants/Frames";
+import { Linking, SplashScreen } from "expo";
+import { Layout, Text, Button, Icon } from "@ui-kitten/components";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -47,7 +47,7 @@ class HomeScreen extends Component {
       captionText: "",
       captionOptions: {},
       frameOptions: frameConsts[0],
-      fontSize: 20
+      fontSize: 20,
     };
     this.camera = null;
     this.surface = null;
@@ -63,7 +63,7 @@ class HomeScreen extends Component {
 
     this.navigationBlurListener = this.props.navigation.addListener(
       "blur",
-      e => {
+      (e) => {
         if (this.camera && this.camera.camera) {
           this.camera.camera.pausePreview();
         }
@@ -71,7 +71,7 @@ class HomeScreen extends Component {
     );
     this.navigationFocusListener = this.props.navigation.addListener(
       "focus",
-      e => {
+      (e) => {
         if (this.camera && this.camera.camera) {
           this.camera.camera.resumePreview();
         }
@@ -79,29 +79,32 @@ class HomeScreen extends Component {
     );
   };
 
-  onCameraError = error => {
+  onCameraError = (error) => {
     console.log("onCameraError -> error", error);
   };
 
-  onLayout = evt => {
-    console.log("HomeScreen -> onLayout")
+  onLayout = (evt) => {
+    console.log("HomeScreen -> onLayout");
     const { width, height } = evt.nativeEvent.layout;
     this.setState({
       width,
       height: width,
-      cameraHeight: height
+      cameraHeight: height,
     });
   };
 
-  onSelectFilter = filter => {
+  onSelectFilter = (filter) => {
     this.setState({ filter });
   };
-  onSelectFrame = frame => {
-    this.setState({frameOptions: frame})
-  }
+  onSelectFrame = (frame) => {
+    this.setState({ frameOptions: frame });
+  };
 
   onFlipPress = () => {
-    this.setState({ camkey: Math.random(), type: this.state.type == "front" ? "back" : "front" });
+    this.setState({
+      camkey: Math.random(),
+      type: this.state.type == "front" ? "back" : "front",
+    });
   };
 
   onSurfaceCapture = async () => {
@@ -113,26 +116,31 @@ class HomeScreen extends Component {
             height,
             localUri,
             uri,
-            width
+            width,
           } = await this.surface.glView.capture();
-    
-          this.props.navigation.navigate("Share", { height, localUri, uri, width });
+
+          this.props.navigation.navigate("Share", {
+            height,
+            localUri,
+            uri,
+            width,
+          });
         }
       }
     } catch (error) {
-    console.log("HomeScreen -> onSurfaceCapture -> error", error)
-      
+      console.log("HomeScreen -> onSurfaceCapture -> error", error);
     }
   };
-  
 
   onReadyCapture = (uri) => {
     console.log("HomeScreen -> uri", uri);
     this.setState({ renderedNode: { uri: uri } });
   };
-  onPauseCamera = pause => {
+  onPauseCamera = (pause) => {
     if (this.camera && this.camera.camera) {
-      pause ? this.camera.camera.pausePreview() : this.camera.camera.resumePreview();
+      pause
+        ? this.camera.camera.pausePreview()
+        : this.camera.camera.resumePreview();
     }
   };
   renderActionPanel = () => {
@@ -141,7 +149,7 @@ class HomeScreen extends Component {
         return (
           <FilterPicker
             onSelectFilter={this.onSelectFilter}
-            onSetIntensity={value => this.setState({ intensity: value })}
+            onSetIntensity={(value) => this.setState({ intensity: value })}
           />
         );
       case ACTION_FRAME:
@@ -151,16 +159,15 @@ class HomeScreen extends Component {
           <CaptionView
             cameraPause={this.onPauseCamera}
             captionText={this.state.captionText}
-            onSetCaptionText={captionText => {
+            onSetCaptionText={(captionText) => {
               this.setState({ captionText });
             }}
-            onSetCaptionOptions={captionOptions => {
+            onSetCaptionOptions={(captionOptions) => {
               this.setState({ captionOptions });
             }}
-            onSetFontSize={fontSize=> {
-              this.setState({fontSize});
+            onSetFontSize={(fontSize) => {
+              this.setState({ fontSize });
             }}
-            
           />
         );
       default:
@@ -168,8 +175,8 @@ class HomeScreen extends Component {
     }
   };
 
-  openPermissions = async() => {
-    if (Platform.OS === 'android') {
+  openPermissions = async () => {
+    if (Platform.OS === "android") {
       const pkg = Constants.manifest.releaseChannel
         ? Constants.manifest.android.package // When published, considered as using standalone build
         : "host.exp.exponent";
@@ -177,13 +184,13 @@ class HomeScreen extends Component {
         IntentLauncherAndroid.ACTION_APPLICATION_DETAILS_SETTINGS,
         { data: `package:${pkg}` }
       );
-    } else if (Platform.OS === 'ios') {
+    } else if (Platform.OS === "ios") {
       const pkg = Constants.manifest.releaseChannel
         ? Constants.manifest.ios.bundleIdentifier // When published, considered as using standalone build
         : "host.exp.exponent";
       Linking.openURL(`app-settings://notification/${pkg}`);
     }
-  }
+  };
   render() {
     const {
       width,
@@ -196,91 +203,115 @@ class HomeScreen extends Component {
       renderedNode,
       captionOptions,
       frameOptions,
-      fontSize
+      fontSize,
     } = this.state;
 
     if (!width && !height) {
-      return (
-        <View
-          style={{ backgroundColor: Colors.grey900, flex: 1 }}
-          onLayout={this.onLayout}
-        />
-      );
+      return <Layout style={{ flex: 1 }} onLayout={this.onLayout} />;
     }
     if (hasPermission === null || hasPermission === false) {
       return (
-        <Surface style={{flex:1, alignItems:'center', justifyContent:'space-evenly'}}>
-          <Title>No camera access</Title>
+        <Layout
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Text category="h1">No camera access</Text>
           <Text>Grant Camera and Storage access to continue</Text>
-          <Button mode="contained" icon="settings" onPress={this.openPermissions}>Open permissions</Button>
-        </Surface>
+          <Button
+            accessoryLeft={(props) => <Icon {...props} name="settings" />}
+            onPress={this.openPermissions}
+          >
+            Open permissions
+          </Button>
+        </Layout>
       );
     }
-    
+
     if (!this.props.navigation.isFocused()) {
       return <Text>Camera delayed rendering</Text>;
     }
 
     return (
-      <Surface style={{ flex: 1 }} onLayout={this.onLayout}>
+      <SafeAreaView style={{ flex: 1 }}>
         <TopAppBar
           activeAction={this.state.action}
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
-
-        <View style={{ position: "absolute", zIndex: -1 }}>
-          <CaptionRenderBox
-            fontSize={fontSize}
-            captionOptions={captionOptions}
-            frameOptions={frameOptions}
-            captionText={this.state.captionText}
-            setCaptionSnapshot={this.onReadyCapture}
-            style={{ width, height }}
-          />
-        </View>
-
-        <View style={{ width, height }}>
-          <GLSurface
-            key={this.state.camkey}
-            ref={(surface) => (this.surface = surface)}
-            style={{ width, height }}
-          >
-            <FX
-              filter={filter}
-              intensity={intensity}
-              overlay={renderedNode}
+        <Layout style={{ flex: 1 }} onLayout={this.onLayout}>
+          <View style={{ position: "absolute", zIndex: -1 }}>
+            <CaptionRenderBox
+              fontSize={fontSize}
+              captionOptions={captionOptions}
               frameOptions={frameOptions}
-            >
-              <GLCamera
-                ref={(camera) => (this.camera = camera)}
-                position={type}
-                height={cameraHeight}
-                width={width}
-              />
-            </FX>
-          </GLSurface>
+              captionText={this.state.captionText}
+              setCaptionSnapshot={this.onReadyCapture}
+              style={{ width, height }}
+            />
+          </View>
 
-          <FAB
-            style={{ position: "absolute", top: 0, right: 0, margin: 20 }}
-            small
-            icon={`camera-${type === "front" ? "rear" : "front"}`}
-            onPress={this.onFlipPress}
-          />
-          <FAB
-            style={{
-              position: "absolute",
-              bottom: 0,
-              alignSelf: "center",
-              margin: 10,
-              backgroundColor: "#ffffff66",
-            }}
-            color={Colors.amber300}
-            size={50}
-            onPress={this.onSurfaceCapture}
-          />
-        </View>
-        {this.renderActionPanel()}
-      </Surface>
+          <View style={{ width, height }}>
+            <GLSurface
+              key={this.state.camkey}
+              ref={(surface) => (this.surface = surface)}
+              style={{ width, height }}
+            >
+              <FX
+                filter={filter}
+                intensity={intensity}
+                overlay={renderedNode}
+                frameOptions={frameOptions}
+              >
+                <GLCamera
+                  ref={(camera) => (this.camera = camera)}
+                  position={type}
+                  height={cameraHeight}
+                  width={width}
+                />
+              </FX>
+            </GLSurface>
+
+            <Button
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                margin: 20,
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+                backgroundColor: "#00000066",
+              }}
+              accessoryLeft={(props) => (
+                <Icon
+                  {...props}
+                  name={`camera-${type === "front" ? "rear" : "front"}`}
+                />
+              )}
+              onPress={this.onFlipPress}
+            />
+            <Button
+              onPress={this.onSurfaceCapture}
+              accessoryLeft={(props) => (
+                <Icon {...props} name={`camera-iris`} />
+              )}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                alignSelf: "center",
+                margin: 10,
+                height: 60,
+                width: 60,
+                borderRadius: 30,
+                backgroundColor: "#00000066",
+              }}
+            />
+          </View>
+          {this.renderActionPanel()}
+        </Layout>
+      </SafeAreaView>
     );
   }
 }
