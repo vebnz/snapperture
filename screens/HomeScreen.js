@@ -8,6 +8,7 @@ import {
   Image,
   TouchableHighlightBase,
   Platform,
+  AppState,
 } from "react-native";
 import FX from "../components/FX";
 import Constants from "expo-constants";
@@ -37,7 +38,7 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fxTextOffset: [0,0],
+      fxTextOffset: [0, 0],
       hasPermission: null,
       type: "back",
       width: false,
@@ -50,6 +51,7 @@ class HomeScreen extends Component {
       captionOptions: {},
       frameOptions: frameConsts[0],
       fontSize: 20,
+      appState: AppState.currentState,
     };
     this.camera = null;
     this.surface = null;
@@ -60,12 +62,14 @@ class HomeScreen extends Component {
   }
 
   componentDidMount = async () => {
+    AppState.addEventListener("change", this._handleAppStateChange);
     const { status } = await Camera.requestPermissionsAsync();
     this.setState({ hasPermission: status === "granted" });
 
     this.navigationBlurListener = this.props.navigation.addListener(
       "blur",
       (e) => {
+        console.log("HomeScreen -> componentDidMount -> blur");
         if (this.camera && this.camera.camera) {
           this.camera.camera.pausePreview();
         }
@@ -74,11 +78,34 @@ class HomeScreen extends Component {
     this.navigationFocusListener = this.props.navigation.addListener(
       "focus",
       (e) => {
+        console.log("HomeScreen -> componentDidMount -> focus");
         if (this.camera && this.camera.camera) {
           this.camera.camera.resumePreview();
         }
       }
     );
+    
+  };
+  
+  componentWillUnmount() {
+    cancelAnimationFrame(this._raf);
+    AppState.removeEventListener("change", this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    console.log("GLCamera -> this.state.appState", this.state.appState);
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      if (this.camera) {
+        console.log("GLCamera -> app foreground");
+        this.setState({camkey: Math.random()})
+        // this.camera.camera.resumePreview();
+      }
+      
+    }
+    this.setState({ appState: nextAppState });
   };
 
   onCameraError = (error) => {
@@ -187,8 +214,8 @@ class HomeScreen extends Component {
     }
   };
   onFXDragPosition = (fxTextOffset) => {
-    this.setState({fxTextOffset})
-  }
+    this.setState({ fxTextOffset });
+  };
 
   render() {
     const {
@@ -263,7 +290,6 @@ class HomeScreen extends Component {
                   width={width}
                 />
               </FX>
-              
             </GLSurface>
 
             <Button

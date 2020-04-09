@@ -15,7 +15,7 @@ const PanView = (props) => {
         onPanResponderMove: (evt, gestureState) => {
           if (panDimensions.height > 0 && panDimensions.width > 0) {
             const { pageX, pageY } = evt.nativeEvent;
-            const pointer = [.5-(pageX / panDimensions.width), (-.5+(pageY / panDimensions.height))]
+            const pointer = [.5-(pageX / panDimensions.width), (-.6+(pageY / panDimensions.height))]
             position.setValue(pointer);
             props.onFXDragPosition(pointer)
           }

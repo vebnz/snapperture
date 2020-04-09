@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { GLSL, Node, Shaders } from "gl-react";
 import { Camera } from "expo-camera";
 import "webgltexture-loader-expo-camera";
+import { AppState } from "react-native";
 
 const shaders = Shaders.create({
   YFlip: {
@@ -19,7 +20,7 @@ void main(){
 class GLCamera extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    
     this.camera = null;
   }
   async componentDidMount() {
@@ -29,10 +30,7 @@ class GLCamera extends Component {
     };
     this._raf = requestAnimationFrame(loop);
   }
-  componentWillUnmount() {
-    cancelAnimationFrame(this._raf);
-  }
-
+  
   onCameraRef = camera => {
     this.camera = camera;
   };
