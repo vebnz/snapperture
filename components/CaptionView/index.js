@@ -93,6 +93,11 @@ const CaptionView = (props) => {
           <Icon {...icoprops} name={`${captionText ? "pencil" : "plus"}`} />
         )}
       />
+
+      <ButtonGroup style={{ justifyContent: "center" }}>
+        <Button>Rotate</Button>
+        <Button>Move</Button>
+      </ButtonGroup>
     </Layout>
   );
 };

@@ -263,6 +263,7 @@ class HomeScreen extends Component {
                   width={width}
                 />
               </FX>
+              
             </GLSurface>
 
             <Button

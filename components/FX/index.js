@@ -62,15 +62,14 @@ void main()
 
 
   highp vec2 overlayUV = rotateUV(uv, overlayRotate);
-  overlayUV.y = overlayUV.y * overlayAspect;
+  // overlayUV.y = overlayUV.y * overlayAspect;
 
   // highp vec2 overlayuv = rotateUV(overlayUV, overlayRotate);
 
 
-  highp vec2 offset = vec2(.50, .50);
-  highp vec2 totalOffset = offset + overlayUV;
+  highp vec2 totalOffset = fxTextOffset + overlayUV;
   
-  highp vec4 overlayColor = texture2D(overlay, overlayUV);
+  highp vec4 overlayColor = texture2D(overlay, totalOffset);
   
   highp float blueColor = textureColor.b * 63.0;
   

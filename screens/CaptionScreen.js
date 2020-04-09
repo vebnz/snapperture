@@ -9,13 +9,13 @@ import {
   TopNavigation,
   TopNavigationAction,
 } from "@ui-kitten/components";
-import Constants from "expo-constants";
 import React, { useState, useRef } from "react";
-import { FlatList, ScrollView, View, TouchableOpacity } from "react-native";
+import { FlatList, ScrollView, View, TouchableOpacity, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontList } from "../components/CaptionView";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { captureRef } from "react-native-view-shot";
+
 
 const BackIcon = (props) => <Icon {...props} name="arrow-left" />;
 
@@ -95,10 +95,26 @@ export const CaptionScreen = (props) => {
         accessoryLeft={BackAction}
       />
       <Divider />
+      <Text
+        ref={textRenderTarget}
+        style={{
+          position: "absolute",
+          height: Dimensions.get("window").width,
+          width: Dimensions.get("window").width,
+          fontSize: fontSize,
+          fontFamily: captionFont,
+          includeFontPadding: true,
+          textAlignVertical: "center",
+          padding: 10,
+          color: "#ffffff",
+          textAlign: "center",
+        }}
+      >
+        {captionText}
+      </Text>
       <Layout style={{ flex: 1 }}>
         <KeyboardAwareScrollView>
           <Text
-            ref={textRenderTarget}
             style={{
               fontSize: fontSize,
               fontFamily: captionFont,
