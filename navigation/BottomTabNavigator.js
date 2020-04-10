@@ -12,6 +12,7 @@ import CropperScreen from "../screens/CropperScreen";
 const { Navigator, Screen } = createBottomTabNavigator();
 const BottomTabBar = ({ navigation, state }) => (
   <BottomNavigation
+    appearance="noIndicator"
     tabBarOptions={{ keyboardHidesTabBar: true }}
     selectedIndex={state.index}
     onSelect={(index) => navigation.navigate(state.routeNames[index])}

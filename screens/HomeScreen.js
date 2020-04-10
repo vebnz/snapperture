@@ -94,6 +94,8 @@ class HomeScreen extends Component {
   componentWillUnmount() {
     cancelAnimationFrame(this._raf);
     AppState.removeEventListener("change", this._handleAppStateChange);
+    this.navigationBlurListener = null;
+    this.navigationFocusListener = null;
   }
 
   _handleAppStateChange = (nextAppState) => {
