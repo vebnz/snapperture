@@ -5,6 +5,8 @@ import React from "react";
 import HomeScreen from "../screens/HomeScreen";
 import ShareScreen from "../screens/ShareScreen";
 import {CaptionScreen} from '../screens/CaptionScreen';
+import { View } from "react-native";
+import ImageSourceScreen from '../screens/ImageSourceScreen';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const BottomTabBar = ({ navigation, state }) => (
@@ -14,7 +16,16 @@ const BottomTabBar = ({ navigation, state }) => (
     onSelect={(index) => navigation.navigate(state.routeNames[index])}
   >
     <BottomNavigationTab
-      title="Camera"
+      title="Source"
+      icon={(props) => (
+        <View style={{ flexDirection: "row" }}>
+          <Icon {...props} name="film" />
+          <Icon {...props} name="image-multiple" />
+        </View>
+      )}
+    />
+    <BottomNavigationTab
+      title="Editor"
       icon={(props) => <Icon {...props} name="camera" />}
     />
     <BottomNavigationTab
@@ -29,7 +40,8 @@ const TabNavigator = () => (
     tabBarOptions={{ keyboardHidesTabBar: true }}
     tabBar={(props) => <BottomTabBar {...props} />}
   >
-    <Screen name="Camera" component={HomeScreen} />
+    <Screen name="Source" component={ImageSourceScreen} />
+    <Screen name="Editor" component={HomeScreen} />
     <Screen name="Share" component={ShareScreen} />
     <Screen name="Caption" component={CaptionScreen} />
   </Navigator>

@@ -61,15 +61,14 @@ void main()
   highp vec4 textureColor = texture2D(inputImageTexture, st);
 
 
-  highp vec2 overlayUV = rotateUV(uv, overlayRotate);
-  // overlayUV.y = overlayUV.y * overlayAspect;
+  // highp vec2 overlayUV = rotateUV(uv, overlayRotate);
+  // highp vec2 totalOffset = fxTextOffset + overlayUV;
 
-  // highp vec2 overlayuv = rotateUV(overlayUV, overlayRotate);
-
-
-  highp vec2 totalOffset = fxTextOffset + overlayUV;
   
-  highp vec4 overlayColor = texture2D(overlay, totalOffset);
+  highp vec2 totalOffset = fxTextOffset + uv;
+  highp vec2 overlayUV = rotateUV(totalOffset, overlayRotate);
+
+  highp vec4 overlayColor = texture2D(overlay, overlayUV);
   
   highp float blueColor = textureColor.b * 63.0;
   
@@ -101,7 +100,7 @@ void main()
   highp vec2 maskuv = rotateUV(uv, maskRotate);
   highp vec4 maskOverlayColor = texture2D(cropMask, maskuv);
   highp vec4 maskColor = vec4(1.0, 1.0, 1.0, 1.0);
-  highp vec4 maskWithFilterColor = mix(filteredColor, maskColor, maskOverlayColor.a);
+  highp vec4 maskWithFilterColor = mix(filteredColor, maskOverlayColor, maskOverlayColor.a);
 
 
   highp vec4 inverseOverlayColor = vec4(overlayColor.r-maskWithFilterColor.r,overlayColor.g-maskWithFilterColor.g,overlayColor.b-maskWithFilterColor.b,overlayColor.a);
@@ -153,7 +152,6 @@ const FX = props => {
     loadOverlay()
   }, [props.overlay, frameOptions])
 
-  console.log("fxTextOffset", fxTextOffset)
   let filterObj = filterConsts.find(element => element.value === filter.value)
 
   if (!filterObj) { filterObj = filterConsts[0] }
@@ -168,7 +166,7 @@ const FX = props => {
         uniforms={{
           inputImageTexture,
           overlay: textOverlay,
-          overlayRotate: frameOptions.overlayRotate,
+          overlayRotate: props.overlayRotate,
           overlayAspect: textOverlay.width / textOverlay.height,
           lutTexture,
           intensity,
@@ -188,6 +186,7 @@ const FX = props => {
 
 FX.defaultProps = {
   factor: 1,
-  intensity: 1
+  intensity: 1,
+  overlayRotate: 0
 };
 export default FX;

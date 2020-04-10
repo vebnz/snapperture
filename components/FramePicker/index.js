@@ -19,7 +19,7 @@ const FramePicker = (props) => {
         }}
       >
         <View style={{ paddingRight: 5, paddingLeft: 5 }}>
-          <Image tintColor={"#ffffff"} source={item.cropMask} style={{ transform:[{rotate: item.imgRotate}], width: 50, height: 50 }} />
+          <Image source={item.cropMask} style={{ transform:[{rotate: item.imgRotate}], width: 50, height: 50 }} />
           <Text
             style={{
               fontSize: 12,

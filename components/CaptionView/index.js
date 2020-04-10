@@ -38,12 +38,20 @@ const CaptionView = (props) => {
   const [fontSize, setFontSize] = useState(30);
   const [captionFont, setCaptionFont] = useState(FontList[0].fontFamily);
 
+  const [rotate, setRotate] = useState(0)
+
   useEffect(() => {
     if (props.route.params?.renderedCaption) {
       props.setCaptionSnapshot(props.route.params?.renderedCaption);
     }
   }, [props.route.params?.renderedCaption])
 
+  const rotateText = increment => {
+    const rotateIncrement = rotate + increment;
+    setRotate(rotateIncrement);
+    props.onRotateCaptionSnapshot(rotateIncrement)
+  }
+  
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
@@ -94,9 +102,20 @@ const CaptionView = (props) => {
         )}
       />
 
+      <Text>Rotate</Text>
       <ButtonGroup style={{ justifyContent: "center" }}>
-        <Button>Rotate</Button>
-        <Button>Move</Button>
+        <Button
+          accessoryLeft={(props) => (
+            <Icon {...props} name="rotate-left-variant" />
+          )}
+          onPress={() => rotateText(+Math.PI/2)}
+        />
+        <Button
+          accessoryLeft={(props) => (
+            <Icon {...props} name="rotate-right-variant" />
+          )}
+          onPress={() => rotateText(-Math.PI/2)}
+        />
       </ButtonGroup>
     </Layout>
   );

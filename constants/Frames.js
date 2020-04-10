@@ -8,12 +8,19 @@ export const RIGHT_FRAME = "RIGHT_FRAME";
 export const TOP_FRAME = "TOP_FRAME";
 export const BOTTOM_FRAME = "BOTTOM_FRAME";
 
+export const GRUNGE_FRAME = "GRUNGE_FRAME";
+export const COLORTV_FRAME = "COLORTV_FRAME";
+export const BROWNTV_FRAME = "BROWNTV_FRAME";
+
 const BLANK_FRAME_SRC = require("../assets/masks/blank.png");
 const CENTER_FRAME_SRC = require("../assets/masks/center.png");
 const CIRCLE_FRAME_SRC = require("../assets/masks/circle.png");
 const LANDSCAPE_FRAME_SRC = require("../assets/masks/landscape.png");
 const PORTRAIT_FRAME_SRC = require("../assets/masks/portrait.png");
 
+const GRUNGE_FRAME_SRC = require("../assets/masks/grunge.png");
+const COLORTV_FRAME_SRC = require("../assets/masks/silverframe.png");
+const BROWNTV_FRAME_SRC = require("../assets/masks/browntv.png");
 const textShadow = {
   
 }
@@ -38,7 +45,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#ffffff',
+      color: "#ffffff",
     },
   },
   {
@@ -61,7 +68,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
     },
   },
   {
@@ -84,7 +91,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
     },
   },
   {
@@ -108,7 +115,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
     },
   },
   {
@@ -132,7 +139,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
     },
   },
   {
@@ -155,7 +162,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
     },
   },
   {
@@ -178,7 +185,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
     },
   },
   {
@@ -201,7 +208,7 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
     },
   },
   {
@@ -224,7 +231,76 @@ const frameConsts = [
       textAlign: "center",
       justifyContent: "center",
       fontSize: 30,
-      color: '#000000',
+      color: "#000000",
+    },
+  },
+  {
+    name: "Grunge",
+    imgRotate: "0deg",
+    rotate: 0,
+    overlayRotate: 0,
+    value: GRUNGE_FRAME,
+    cropMask: GRUNGE_FRAME_SRC,
+    viewFrameStyle: {
+      position: "absolute",
+      bottom: 0,
+      minHeight: 56,
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textFrameStyle: {
+      ...textShadow,
+      textAlign: "center",
+      justifyContent: "center",
+      fontSize: 30,
+      color: "#000000",
+    },
+  },
+  {
+    name: "Brown TV",
+    imgRotate: "0deg",
+    rotate: 0,
+    overlayRotate: 0,
+    value: BROWNTV_FRAME,
+    cropMask: BROWNTV_FRAME_SRC,
+    viewFrameStyle: {
+      position: "absolute",
+      bottom: 0,
+      minHeight: 56,
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textFrameStyle: {
+      ...textShadow,
+      textAlign: "center",
+      justifyContent: "center",
+      fontSize: 30,
+      color: "#000000",
+    },
+  },
+  {
+    name: "Color TV",
+    imgRotate: "0deg",
+    rotate: 0,
+    overlayRotate: 0,
+    value: COLORTV_FRAME,
+    cropMask: COLORTV_FRAME_SRC,
+    viewFrameStyle: {
+      position: "absolute",
+      bottom: 0,
+      minHeight: 56,
+      width: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textFrameStyle: {
+      ...textShadow,
+      textAlign: "center",
+      justifyContent: "center",
+      fontSize: 30,
+      color: "#000000",
     },
   },
 ];

@@ -190,6 +190,9 @@ class HomeScreen extends Component {
                 renderedNode: { uri: uri.uri },
               });
             }}
+            onRotateCaptionSnapshot={(rotateIncrement) => {
+              this.setState({ rotateIncrement });
+            }}
           />
         );
       default:
@@ -230,6 +233,8 @@ class HomeScreen extends Component {
       captionOptions,
       frameOptions,
       fontSize,
+      rotateIncrement,
+      fxTextOffset,
     } = this.state;
 
     if (!width && !height) {
@@ -269,6 +274,8 @@ class HomeScreen extends Component {
         <Layout style={{ flex: 1 }} onLayout={this.onLayout}>
           <PanView
             onFXDragPosition={this.onFXDragPosition}
+            onPauseFrame={this.onPauseCamera(true)}
+            onResumeFrame={this.onPauseCamera(false)}
             style={{ width, height }}
           >
             <GLSurface
@@ -280,8 +287,9 @@ class HomeScreen extends Component {
                 filter={filter}
                 intensity={intensity}
                 overlay={renderedNode}
+                overlayRotate={rotateIncrement}
                 frameOptions={frameOptions}
-                fxTextOffset={this.state.fxTextOffset}
+                fxTextOffset={fxTextOffset}
               >
                 <GLCamera
                   ref={(camera) => (this.camera = camera)}

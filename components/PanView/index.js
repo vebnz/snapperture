@@ -12,6 +12,12 @@ const PanView = (props) => {
     setPanResponder(
       PanResponder.create({
         onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onPanResponderStart: (evt, gestureState) => {
+          console.log("PanView -> onPanResponderStart");
+          if (props.onPauseFrame) {
+            props.onPauseFrame();
+          }
+        },
         onPanResponderMove: (evt, gestureState) => {
           if (panDimensions.height > 0 && panDimensions.width > 0) {
             const { pageX, pageY } = evt.nativeEvent;
@@ -23,7 +29,12 @@ const PanView = (props) => {
             props.onFXDragPosition(pointer)
           }
         },
-        onPanResponderRelease: (evt, gestureState) => {},
+        onPanResponderRelease: (evt, gestureState) => {
+          console.log("PanView -> onPanResponderRelease");
+          if (props.onResumeFrame) {
+            props.onResumeFrame();
+          }
+        },
       })
     );
   }, [panDimensions]);
