@@ -7,6 +7,7 @@ import ShareScreen from "../screens/ShareScreen";
 import {CaptionScreen} from '../screens/CaptionScreen';
 import { View } from "react-native";
 import ImageSourceScreen from '../screens/ImageSourceScreen';
+import CropperScreen from "../screens/CropperScreen";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const BottomTabBar = ({ navigation, state }) => (
@@ -41,9 +42,14 @@ const TabNavigator = () => (
     tabBar={(props) => <BottomTabBar {...props} />}
   >
     <Screen name="Source" component={ImageSourceScreen} />
-    <Screen name="Editor" component={HomeScreen} />
+    <Screen
+      name="Editor"
+      component={HomeScreen}
+      initialParams={{ imageSource: false }}
+    />
     <Screen name="Share" component={ShareScreen} />
     <Screen name="Caption" component={CaptionScreen} />
+    <Screen name="Cropper" component={CropperScreen} />
   </Navigator>
 );
 

@@ -96,9 +96,9 @@ const CaptionView = (props) => {
         onPress={() => {
           props.navigation.navigate("Caption");
         }}
-        accessoryRight={(props) => <Text>{captionText || "Add caption"}</Text>}
+        accessoryRight={(props) => <Text>{"Edit caption"}</Text>}
         accessoryLeft={(icoprops) => (
-          <Icon {...icoprops} name={`${captionText ? "pencil" : "plus"}`} />
+          <Icon {...icoprops} name="pencil" />
         )}
       />
 

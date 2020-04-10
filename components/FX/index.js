@@ -128,9 +128,7 @@ const FX = props => {
   useEffect(() => {
     async function loadOverlay() {
       try {
-        
         let txoverlay = null
-        console.log("loadOverlay -> props.overlays", props.overlay);
         if (Platform.OS === 'android') {
           txoverlay = await loadAsset(props.overlay);
         } else {
@@ -143,7 +141,6 @@ const FX = props => {
           //need to prepend file://
           //stupid
         }
-        console.log("overlay srxc", txoverlay);
         setTextOverlay(txoverlay);  
       } catch (error) {
         console.log("loadOverlay -> error", error)

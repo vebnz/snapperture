@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { StyleSheet, Image } from "react-native";
 import * as Sharing from "expo-sharing";
@@ -16,9 +16,37 @@ import {
   useTheme,
 } from "@ui-kitten/components";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ImageManipulator } from "expo-image-crop";
+
+import * as ImagePicker from "expo-image-picker";
 
 const ImageSourceScreen = ({ route, navigation }) => {
   const theme = useTheme();
+  const [cropperVisible, setCropperVisible] = useState(false)
+  const [imageSource, setImageSource] = useState(false)
+  const [croppedPicture, setCroppedPicture] = useState()
+
+  let openImagePickerAsync = async () => {
+    setImageSource(false)
+    try {
+      let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+      if (permissionResult.granted === false) {
+        alert("Permission to access camera roll is required!");
+        return;
+      }
+
+      let pickerResult = await ImagePicker.launchImageLibraryAsync();
+      console.log("openImagePickerAsync -> pickerResult", pickerResult);
+      setImageSource(pickerResult.uri);
+      navigation.navigate("Cropper", { image: pickerResult });  
+    } catch (error) {
+      console.log("openImagePickerAsync -> error", error)
+      
+    }
+    
+  };
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Layout
@@ -43,9 +71,13 @@ const ImageSourceScreen = ({ route, navigation }) => {
             alignItems: "center",
           }}
         >
-          <Card style={styles.card} status="primary"
+          <Card
+            style={styles.card}
+            status="primary"
             onPress={() => {
-              navigation.navigate("Editor");
+              navigation.navigate("Editor", {
+                imageSource: false,
+              });
             }}
           >
             <Icon
@@ -59,7 +91,11 @@ const ImageSourceScreen = ({ route, navigation }) => {
             />
             <Text>Use device camera</Text>
           </Card>
-          <Card style={styles.card} status="success">
+          <Card
+            style={styles.card}
+            status="success"
+            onPress={openImagePickerAsync}
+          >
             <Icon
               name="image-search"
               style={{

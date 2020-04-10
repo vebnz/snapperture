@@ -80,7 +80,7 @@ export const CaptionScreen = (props) => {
     } catch (error) {
       console.log("onSnap -> error", error);
     }
-    props.navigation.navigate("Camera", {
+    props.navigation.navigate("Editor", {
       renderedCaption: { 
         uri: renderedCaption,
       },

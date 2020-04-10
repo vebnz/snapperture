@@ -49,6 +49,7 @@ const FilterPicker = props => {
         Filter Intensity
       </Text>
       <Slider
+        step={.05}
         style={{ height: 40, marginBottom: 10 }}
         value={1}
         minimumValue={0}

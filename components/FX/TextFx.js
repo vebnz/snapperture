@@ -20,7 +20,6 @@ const TextFx = props => {
   const [renderedNode, setRenderedNode] = useState(false);
 
   const onCapture = uri => {
-    console.log("TextFx -> uri", uri);
     setRenderedNode(uri);
   };
 

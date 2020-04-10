@@ -38,6 +38,7 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      imageSource: false,
       fxTextOffset: [0, 0],
       hasPermission: null,
       type: "back",
@@ -64,7 +65,11 @@ class HomeScreen extends Component {
   componentDidMount = async () => {
     AppState.addEventListener("change", this._handleAppStateChange);
     const { status } = await Camera.requestPermissionsAsync();
-    this.setState({ hasPermission: status === "granted" });
+
+    
+    this.setState({
+      hasPermission: status === "granted",
+    });
 
     this.navigationBlurListener = this.props.navigation.addListener(
       "blur",
@@ -84,26 +89,23 @@ class HomeScreen extends Component {
         }
       }
     );
-    
   };
-  
+
   componentWillUnmount() {
     cancelAnimationFrame(this._raf);
     AppState.removeEventListener("change", this._handleAppStateChange);
   }
 
   _handleAppStateChange = (nextAppState) => {
-    console.log("GLCamera -> this.state.appState", this.state.appState);
     if (
       this.state.appState.match(/inactive|background/) &&
       nextAppState === "active"
     ) {
-      if (this.camera) {
+      if (this.camera && this.camera.camera) {
         console.log("GLCamera -> app foreground");
-        this.setState({camkey: Math.random()})
+        this.setState({ camkey: Math.random() });
         // this.camera.camera.resumePreview();
       }
-      
     }
     this.setState({ appState: nextAppState });
   };
@@ -264,6 +266,16 @@ class HomeScreen extends Component {
     if (!this.props.navigation.isFocused()) {
       return <Text>Camera delayed rendering</Text>;
     }
+    console.log("HomeScreen -> render -> imageSource", imageSource);
+    console.log(
+      "HomeScreen -> componentDidMount -> this.props.route",
+      this.props.route
+    );
+    const { params } = this.props.route;
+    let imageSource = false;
+    if (params && params.imageSource) {
+      imageSource = params.imageSource;
+    }
 
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -291,34 +303,40 @@ class HomeScreen extends Component {
                 frameOptions={frameOptions}
                 fxTextOffset={fxTextOffset}
               >
-                <GLCamera
-                  ref={(camera) => (this.camera = camera)}
-                  position={type}
-                  height={cameraHeight}
-                  width={width}
-                />
+                {!imageSource ? (
+                  <GLCamera
+                    ref={(camera) => (this.camera = camera)}
+                    position={type}
+                    height={cameraHeight}
+                    width={width}
+                  />
+                ) : (
+                  { uri: imageSource }
+                )}
               </FX>
             </GLSurface>
 
-            <Button
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-                margin: 20,
-                height: 50,
-                width: 50,
-                borderRadius: 25,
-                backgroundColor: "#00000066",
-              }}
-              accessoryLeft={(props) => (
-                <Icon
-                  {...props}
-                  name={`camera-${type === "front" ? "rear" : "front"}`}
-                />
-              )}
-              onPress={this.onFlipPress}
-            />
+            {!imageSource && (
+              <Button
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                  margin: 20,
+                  height: 50,
+                  width: 50,
+                  borderRadius: 25,
+                  backgroundColor: "#00000066",
+                }}
+                accessoryLeft={(props) => (
+                  <Icon
+                    {...props}
+                    name={`camera-${type === "front" ? "rear" : "front"}`}
+                  />
+                )}
+                onPress={this.onFlipPress}
+              />
+            )}
             <Button
               onPress={this.onSurfaceCapture}
               accessoryLeft={(props) => (
