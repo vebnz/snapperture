@@ -100,11 +100,12 @@ class ImageCropper extends Component {
         ]
       );
       const { uri, width: w, height } = result
-      this.setState({
-        uri, 
-      });
       this.actualSize.width = w;
       this.actualSize.height = height;
+      this.setState({
+        uri, 
+        cropMode: true
+      });
     } catch (error) {
       console.log(
         "ImageCropper -> onConvertImageToEditableSize -> error",
