@@ -6,7 +6,7 @@ import { Platform } from "react-native";
 import "webgltexture-loader-expo";
 import { loadAsset } from "webgltexture-loader-expo/lib/ExpoModuleTextureLoader";
 import filterConsts from "../../constants/Filters";
-import shaderCode from './shaders/Sobel'
+import shaderCode from './shaders/LUT'
 const shaders = Shaders.create({
   SHADER: {
     frag: shaderCode,
