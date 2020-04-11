@@ -65,13 +65,15 @@ class GLCamera extends Component {
         blendFunc={{ src: "one", dst: "one minus src alpha" }}
         shader={shaders.YFlip}
         uniforms={{
-          t: this.camera
+          t: this.camera,
         }}
       >
         <Camera
           // style={{width: this.props.width, height: this.props.height}}
           ratio="1:1"
           type={type}
+          autoFocus={false}
+          whiteBalance={Camera.Constants.WhiteBalance.fluorescent}
           ref={this.onCameraRef}
           onCameraReady={this.onCameraReady}
         />
