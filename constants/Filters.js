@@ -35,6 +35,13 @@ import TINTYPE_LUT_PREVIEW from "../assets/filters/tintypepreview.png";
 import TWOSTRIP_LUT_PREVIEW from "../assets/filters/twostrippreview.png";
 import WALKINGDEAD_LUT_PREVIEW from "../assets/filters/walkingdeadpreview.png";
 import WASHOUT_LUT_PREVIEW from "../assets/filters/washoutpreview.png";
+import ASCII from '../components/FX/shaders/ASCII';
+import ColdCGA from '../components/FX/shaders/ColdCGA';
+import HalfTone from '../components/FX/shaders/HalfTone';
+import LowQualityPorn from '../components/FX/shaders/LowQualityPorn';
+import Sobel from '../components/FX/shaders/Sobel';
+import Warhol from '../components/FX/shaders/Warhol';
+import LUT from "../components/FX/shaders/LUT";
 
 const ALIENGREEN_LUT =  require("../assets/filters/aliengreen.png");
 const ALIENRED_LUT =  require("../assets/filters/alienred.png");
@@ -112,231 +119,312 @@ const TWOSTRIP = "TWOSTRIP";
 const WALKINGDEAD = "WALKINGDEAD";
 const WASHOUT = "WASHOUT";
 
+const ASCII_SHADER = 'ASCII_SHADER';
+const ColdCGA_SHADER = 'ColdCGA_SHADER';
+const HalfTone_SHADER = 'HalfTone_SHADER';
+const LowQualityPorn_SHADER = 'LowQualityPorn_SHADER';
+const Sobel_SHADER = 'Sobel_SHADER';
+const Warhol_SHADER = 'Warhol_SHADER';
+
 const filterConsts = [
   {
+    shader: LUT,
     lut: NOIR_LUT,
     value: NOIR,
     name: "Noir",
-    preview: NOIR_LUT_PREVIEW
+    preview: NOIR_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: MONO_BLUEFILTER_LUT,
     value: MONO_BLUEFILTER,
     name: "Mono B",
-    preview: MONO_BLUEFILTER_LUT_PREVIEW
+    preview: MONO_BLUEFILTER_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: MONO_GREENFILTER_LUT,
     value: MONO_GREENFILTER,
     name: "Mono G",
-    preview: MONO_GREENFILTER_LUT_PREVIEW
+    preview: MONO_GREENFILTER_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: MONO_YELLOWFILTER_LUT,
     value: MONO_YELLOWFILTER,
     name: "Mono_Y",
-    preview: MONO_YELLOWFILTER_LUT_PREVIEW
+    preview: MONO_YELLOWFILTER_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: MONO_REDFILTER_LUT,
     value: MONO_REDFILTER,
     name: "Mono R",
-    preview: MONO_REDFILTER_LUT_PREVIEW
+    preview: MONO_REDFILTER_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: MONO_NEUTRALDENSITY_LUT,
     value: MONO_NEUTRALDENSITY,
     name: "Mono ND",
-    preview: MONO_NEUTRALDENSITY_LUT_PREVIEW
+    preview: MONO_NEUTRALDENSITY_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: INFRARED_LUT,
     value: INFRARED,
     name: "Infrared",
-    preview: INFRARED_LUT_PREVIEW
+    preview: INFRARED_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: RETROBROWN_LUT,
     value: RETROBROWN,
     name: "70s Brown",
-    preview: RETROBROWN_LUT_PREVIEW
+    preview: RETROBROWN_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: SEPIA_LUT,
     value: SEPIA,
     name: "Sepia",
-    preview: SEPIA_LUT_PREVIEW
+    preview: SEPIA_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: CORDUROY_LUT,
     value: CORDUROY,
     name: "Corduroy",
-    preview: CORDUROY_LUT_PREVIEW
+    preview: CORDUROY_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: TINTYPE_LUT,
     value: TINTYPE,
     name: "Tin Type",
-    preview: TINTYPE_LUT_PREVIEW
+    preview: TINTYPE_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: WASHOUT_LUT,
     value: WASHOUT,
     name: "Washout",
-    preview: WASHOUT_LUT_PREVIEW
+    preview: WASHOUT_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: THREESTRIP_LUT,
     value: THREESTRIP,
     name: "Threestrip",
-    preview: THREESTRIP_LUT_PREVIEW
+    preview: THREESTRIP_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: TWOSTRIP_LUT,
     value: TWOSTRIP,
     name: "Twostrip",
-    preview: TWOSTRIP_LUT_PREVIEW
+    preview: TWOSTRIP_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: ALIENGREEN_LUT,
     value: ALIENGREEN,
     name: "Alien Green",
-    preview: ALIENGREEN_LUT_PREVIEW
+    preview: ALIENGREEN_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: ALIENRED_LUT,
     value: ALIENRED,
     name: "Alien Red",
-    preview: ALIENRED_LUT_PREVIEW
+    preview: ALIENRED_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: AMBER_LUT,
     value: AMBER,
     name: "Amber",
-    preview: AMBER_LUT_PREVIEW
+    preview: AMBER_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: AUTUMN_LUT,
     value: AUTUMN,
     name: "Autumn",
-    preview: AUTUMN_LUT_PREVIEW
+    preview: AUTUMN_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: BLEAK_LUT,
     value: BLEAK,
     name: "Bleak",
-    preview: BLEAK_LUT_PREVIEW
+    preview: BLEAK_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: BRIGHTWINTER_LUT,
     value: BRIGHTWINTER,
     name: "Brightwinter",
-    preview: BRIGHTWINTER_LUT_PREVIEW
+    preview: BRIGHTWINTER_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: CANDLELIGHT_LUT,
     value: CANDLELIGHT,
     name: "Candlelight",
-    preview: CANDLELIGHT_LUT_PREVIEW
+    preview: CANDLELIGHT_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: LATESUNSET_LUT,
     value: LATESUNSET,
     name: "Latesunset",
-    preview: LATESUNSET_LUT_PREVIEW
+    preview: LATESUNSET_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: COOLING_LUT,
     value: COOLING,
     name: "Cooling",
-    preview: COOLING_LUT_PREVIEW
+    preview: COOLING_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: DREAMCLOVER_LUT,
     value: DREAMCLOVER,
     name: "Clover",
-    preview: DREAMCLOVER_LUT_PREVIEW
+    preview: DREAMCLOVER_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: DREAMPANDORA_LUT,
     value: DREAMPANDORA,
     name: "Pandora",
-    preview: DREAMPANDORA_LUT_PREVIEW
+    preview: DREAMPANDORA_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: DREAMRED_LUT,
     value: DREAMRED,
     name: "Dream Red",
-    preview: DREAMRED_LUT_PREVIEW
+    preview: DREAMRED_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: DROPBLUE_LUT,
     value: DROPBLUE,
     name: "Dropped Blue",
-    preview: DROPBLUE_LUT_PREVIEW
+    preview: DROPBLUE_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: HORRORBLUE_LUT,
     value: HORRORBLUE,
     name: "Innsmouth",
-    preview: HORRORBLUE_LUT_PREVIEW
+    preview: HORRORBLUE_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: MATRIX_LUT,
     value: MATRIX,
     name: "Matrix",
-    preview: MATRIX_LUT_PREVIEW
+    preview: MATRIX_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: TENSIONGREEN_LUT,
     value: TENSIONGREEN,
     name: "Anderson",
-    preview: TENSIONGREEN_LUT_PREVIEW
+    preview: TENSIONGREEN_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: NIGHTBLUES_LUT,
     value: NIGHTBLUES,
     name: "Nightblues",
-    preview: NIGHTBLUES_LUT_PREVIEW
+    preview: NIGHTBLUES_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: ORANGEBLUES_LUT,
     value: ORANGEBLUES,
     name: "Orangeblues",
-    preview: ORANGEBLUES_LUT_PREVIEW
+    preview: ORANGEBLUES_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: PILOT_LUT,
     value: PILOT,
     name: "Pilot",
-    preview: PILOT_LUT_PREVIEW
+    preview: PILOT_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: SIMPLYRED_LUT,
     value: SIMPLYRED,
     name: "Simplyred",
-    preview: SIMPLYRED_LUT_PREVIEW
+    preview: SIMPLYRED_LUT_PREVIEW,
   },
   {
+    shader: LUT,
     lut: STRANGERTHINGS_LUT,
     value: STRANGERTHINGS,
     name: "Strangerville",
-    preview: STRANGERTHINGS_LUT_PREVIEW
+    preview: STRANGERTHINGS_LUT_PREVIEW,
   },
 
   {
+    shader: LUT,
     lut: WALKINGDEAD_LUT,
     value: WALKINGDEAD,
     name: "DeadXDaylight",
-    preview: WALKINGDEAD_LUT_PREVIEW
-  }
+    preview: WALKINGDEAD_LUT_PREVIEW,
+  },
+
+  { shader: ASCII,
+    value: ASCII_SHADER,
+    lut: NEUTRAL_LUT,
+    name: 'ASCII',
+    preview: NEUTRAL_LUT_PREVIEW
+  },
+  { shader: ColdCGA,
+    value: ColdCGA_SHADER,
+    lut: NEUTRAL_LUT,
+    name: 'ColdCGA',
+    preview: NEUTRAL_LUT_PREVIEW
+  },
+  { shader: HalfTone,
+    value: HalfTone_SHADER,
+    lut: NEUTRAL_LUT,
+    name: 'HalfTone',
+    preview: NEUTRAL_LUT_PREVIEW
+  },
+  { shader: LowQualityPorn,
+    value: LowQualityPorn_SHADER,
+    lut: NEUTRAL_LUT,
+    name: 'Low Quality Porn',
+    preview: NEUTRAL_LUT_PREVIEW
+  },
+  { shader: Sobel,
+    value: Sobel_SHADER,
+    lut: NEUTRAL_LUT,
+    name: 'Vault Hunter',
+    preview: NEUTRAL_LUT_PREVIEW
+  },
+  { shader: Warhol,
+    value: Warhol_SHADER,
+    lut: NEUTRAL_LUT,
+    name: 'Warhol',
+    preview: NEUTRAL_LUT_PREVIEW
+  },
+  
 ];
 
 export default filterConsts;

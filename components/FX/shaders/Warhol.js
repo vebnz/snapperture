@@ -37,7 +37,7 @@ void main() {
   highp vec4 orig = texture2D(inputImageTexture, 2. * mod(uv, 0.5));
 
   
-  highp vec3 col = floor(orig.bgr * vec3(levels)) / 2.*vec3(levels);
+  highp vec3 col = floor(orig.rgb * vec3(levels)) / 2.*vec3(levels);
   
   if (uv.x > .5 && uv.y > .5) {
     col = hueShift(col, 0.);

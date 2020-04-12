@@ -36,7 +36,7 @@ class HomeScreen extends Component {
       filter: filterConsts[0],
       frame: frameConsts[0],
       renderedNode: null,
-      action: ACTION_FRAME,
+      action: ACTION_FILTER,
       captionText: "",
       captionOptions: {},
       frameOptions: frameConsts[0],
