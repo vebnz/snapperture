@@ -63,10 +63,6 @@ class GLCamera extends Component {
   }
 
   render() {
-    if (this.props.imageSource) {
-      return { uri: imageSource }
-    }
-
     const { position } = this.props;
     
     const type = Camera.Constants.Type[position];

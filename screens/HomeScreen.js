@@ -284,13 +284,17 @@ class HomeScreen extends Component {
                 frameOptions={frameOptions}
                 fxTextOffset={fxTextOffset}
               >
-                <GLCamera
-                  ref={(camera) => (this.camera = camera)}
-                  position={type}
-                  height={cameraHeight}
-                  width={width}
-                  imageSource={imageSource}
-                />
+                {!imageSource ? (
+                  <GLCamera
+                    ref={(camera) => (this.camera = camera)}
+                    position={type}
+                    height={cameraHeight}
+                    width={width}
+                    imageSource={imageSource}
+                  />
+                ):(
+                  {uri: imageSource}
+                )}
                 
               </FX>
             </GLSurface>
