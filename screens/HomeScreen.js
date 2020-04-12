@@ -42,6 +42,7 @@ class HomeScreen extends Component {
       frameOptions: frameConsts[0],
       fontSize: 20,
       appState: AppState.currentState,
+      opacity: 1.0
     };
     this.camera = null;
     this.unmountedCamera = true;
@@ -153,6 +154,7 @@ class HomeScreen extends Component {
           <FramePicker
             selectedFrame={this.state.frame}
             onSelectFrame={this.onSelectFrame}
+            onSetOpacity={(opacity) => this.setState({opacity})}
           />
         );
       case ACTION_TEXT:
@@ -210,6 +212,7 @@ class HomeScreen extends Component {
       fontSize,
       rotateIncrement,
       fxTextOffset,
+      opacity
     } = this.state;
 
     if (!width && !height) {
@@ -273,6 +276,7 @@ class HomeScreen extends Component {
                 overlayRotate={rotateIncrement}
                 frameOptions={frameOptions}
                 fxTextOffset={fxTextOffset}
+                opacity={opacity}
               >
                 {!imageSource ? (
                   <GLCamera

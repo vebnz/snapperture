@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import frameConsts from "../../constants/Frames";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-import FX from "../FX";
 import { Image, View, Slider } from "react-native";
 import { Text, Layout } from "@ui-kitten/components";
 import { ThemedFrameGrid } from "./FrameGrid";
@@ -61,13 +60,12 @@ const FramePicker = (props) => {
         <View style={{ flexDirection: "column", flex: 1 }}>
           <Text style={{ paddingTop: 0, textAlign: "center" }}>Opacity</Text>
           <Slider
-            disabled
-            step={0.05}
+            step={0.1}
             style={{ margin: 10 }}
             value={1}
-            minimumValue={0}
-            maximumValue={1.25}
-            onValueChange={(value) => {}}
+            minimumValue={0.0}
+            maximumValue={1.0}
+            onValueChange={(value) => {props.onSetOpacity(value)}}
           />
         </View>
       </View>
