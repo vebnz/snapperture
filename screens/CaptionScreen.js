@@ -151,19 +151,19 @@ export const CaptionScreen = (props) => {
               accessoryLeft={(props) => (
                 <Icon {...props} name="format-font-size-decrease" />
               )}
-              onPress={() => setFontSize(14)}
+              onPress={() => setFontSize(fontSize - 5)}
             />
             <Button
               accessoryLeft={(props) => (
                 <Icon {...props} name="format-color-text" />
               )}
-              onPress={() => setFontSize(20)}
+              onPress={() => setFontSize(30)}
             />
             <Button
               accessoryLeft={(props) => (
                 <Icon {...props} name="format-font-size-increase" />
               )}
-              onPress={() => setFontSize(30)}
+              onPress={() => setFontSize(fontSize + 5)}
             />
           </ButtonGroup>
           <Button

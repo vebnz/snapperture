@@ -30,8 +30,9 @@ class HomeScreen extends Component {
       height: false,
       intensity: 1,
       filter: filterConsts[0],
+      frame: frameConsts[0],
       renderedNode: null,
-      action: ACTION_FILTER,
+      action: ACTION_FRAME,
       captionText: "",
       captionOptions: {},
       frameOptions: frameConsts[0],
@@ -91,7 +92,7 @@ class HomeScreen extends Component {
     this.setState({ filter, activeFilterContentTitle: filter.name });
   };
   onSelectFrame = (frame) => {
-    this.setState({ frameOptions: frame, activeFrameContentTitle: frame.name });
+    this.setState({ frame, frameOptions: frame, activeFrameContentTitle: frame.name });
   };
 
   onFlipPress = () => {
@@ -138,12 +139,18 @@ class HomeScreen extends Component {
       case ACTION_FILTER:
         return (
           <FilterPicker
+            selectedFilter={this.state.filter}
             onSelectFilter={this.onSelectFilter}
             onSetIntensity={(value) => this.setState({ intensity: value })}
           />
         );
       case ACTION_FRAME:
-        return <FramePicker onSelectFrame={this.onSelectFrame} />;
+        return (
+          <FramePicker
+            selectedFrame={this.state.frame}
+            onSelectFrame={this.onSelectFrame}
+          />
+        );
       case ACTION_TEXT:
         return (
           <CaptionView
@@ -239,8 +246,8 @@ class HomeScreen extends Component {
         <TopAppBar
           activeContentTitle={this.state.activeContentTitle}
           activeAction={this.state.action}
-          activeFilterContentTitle={this.state.activeFilterContentTitle}
-          activeFrameContentTitle={this.state.activeFrameContentTitle}
+          activeFilterContentTitle={this.state.filter.name}
+          activeFrameContentTitle={this.state.frame.name}
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
         <Layout style={{ flex: 1 }} onLayout={this.onLayout}>

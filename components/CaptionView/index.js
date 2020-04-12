@@ -53,33 +53,47 @@ const CaptionView = (props) => {
     props.onRotateCaptionSnapshot(rotateIncrement)
   }
   return (
-    <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Button
-        appearance="filled"
-        onPress={() => {
-          props.navigation.navigate("Caption");
-        }}
-        accessoryRight={(props) => <Text status="control">{"Edit caption"}</Text>}
-        accessoryLeft={(icoprops) => (
-          <Icon {...icoprops} name="pencil" />
-        )}
-      />
+    <Layout
+      style={{
+        flexDirection: "row",
+        flex: 1,
+        justifyContent: "space-around",
+        alignItems: "center",
+      }}
+    >
+      <View>
+        <Text></Text>
+        <ButtonGroup style={{ justifyContent: "center" }}>
 
-      <Text>Rotate</Text>
-      <ButtonGroup style={{ justifyContent: "center" }}>
         <Button
-          accessoryLeft={(props) => (
-            <Icon {...props} name="rotate-left-variant" />
+          appearance="filled"
+          onPress={() => {
+            props.navigation.navigate("Caption");
+          }}
+          accessoryRight={(props) => (
+            <Text status="control">{"Edit caption"}</Text>
           )}
-          onPress={() => rotateText(+Math.PI/2)}
+          accessoryLeft={(icoprops) => <Icon {...icoprops} name="pencil" />}
         />
-        <Button
-          accessoryLeft={(props) => (
-            <Icon {...props} name="rotate-right-variant" />
-          )}
-          onPress={() => rotateText(-Math.PI/2)}
-        />
-      </ButtonGroup>
+        </ButtonGroup>
+      </View>
+      <View style={{alignItems:"center"}}>
+        <Text>Rotate</Text>
+        <ButtonGroup style={{ justifyContent: "center" }}>
+          <Button
+            accessoryLeft={(props) => (
+              <Icon {...props} name="rotate-left-variant" />
+            )}
+            onPress={() => rotateText(+Math.PI / 2)}
+          />
+          <Button
+            accessoryLeft={(props) => (
+              <Icon {...props} name="rotate-right-variant" />
+            )}
+            onPress={() => rotateText(-Math.PI / 2)}
+          />
+        </ButtonGroup>
+      </View>
     </Layout>
   );
 };

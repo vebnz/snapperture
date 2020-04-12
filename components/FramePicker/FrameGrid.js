@@ -1,14 +1,14 @@
 import React from "react";
 import { View, FlatList, TouchableOpacity, Image, Modal } from "react-native";
 import { Text, withStyles, Layout } from "@ui-kitten/components";
-import filterConsts from "../../constants/Filters";
+import frameConsts from "../../constants/Frames";
 
-const FilterGrid = (props) => {
+const FrameGrid = (props) => {
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          props.onSelectFilter(item);
+          props.onSelectFrame(item);
         }}
       >
         <View
@@ -16,14 +16,19 @@ const FilterGrid = (props) => {
             paddingRight: 5,
             paddingLeft: 5,
             width: 100,
+            backgroundColor: "#212121",
             alignContent: "center",
             justifyContent: "center",
           }}
         >
           <Image
-            source={item.preview}
+            source={item.cropMask}
             resizeMode="contain"
-            style={{ width: 100, height: 100 }}
+            style={{
+              width: 90,
+              height: 90,
+              transform: [{ rotate: item.imgRotate }],
+            }}
           />
           <Text
             style={{
@@ -50,9 +55,9 @@ const FilterGrid = (props) => {
       visible={props.showFilterModal}
     >
       <View style={props.eva.style.mStyle}>
-        <Text category="h5">Select filter...</Text>
+        <Text category="h5">Select frame...</Text>
         <FlatList
-          data={filterConsts}
+          data={frameConsts}
           renderItem={renderItem}
           keyExtractor={(item) => item.value}
           numColumns={3}
@@ -63,11 +68,11 @@ const FilterGrid = (props) => {
   );
 };
 
-FilterGrid.defaultProps = {
+FrameGrid.defaultProps = {
   showFilterModal: false,
 };
 
-export const ThemedFilterGrid = withStyles(FilterGrid, (theme) => ({
+export const ThemedFrameGrid = withStyles(FrameGrid, (theme) => ({
   mStyle: {
     flex: 1,
     alignItems: "center",

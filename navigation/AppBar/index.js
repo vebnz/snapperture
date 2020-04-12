@@ -7,12 +7,21 @@ import {
   TopNavigation,
   TopNavigationAction,
 } from "@ui-kitten/components";
+import { Image } from "react-native";
+import { useColorScheme } from "react-native-appearance";
 
 export const ACTION_FILTER = "ACTION_FILTER";
 export const ACTION_TEXT = "ACTION_TEXT";
 export const ACTION_FRAME = "ACTION_FRAME";
 
+import splashLight from "../../assets/images/logolight.png";
+import splashDark from "../../assets/images/logodark.png";
+
 const TopAppBar = (props) => {
+  const colorScheme = useColorScheme();
+
+  const splash = colorScheme === "light" ? splashDark : splashLight;
+
   console.log("TopAppBar -> props", props);
   const [currentAction, setCurrentAction] = useState("Filters");
   const renderToolbar = () => (
@@ -58,7 +67,7 @@ const TopAppBar = (props) => {
       activeContentTitle = "";
       break;
   }
-  
+
   return (
     <TopNavigation
       appearance="default"
@@ -66,49 +75,12 @@ const TopAppBar = (props) => {
       title={activeContentTitle}
       subtitle={currentAction}
       accessoryRight={renderToolbar}
+      accessoryLeft={(props) => (
+        <Image {...props} source={splash} style={{ height: 40, width: 40 }} 
+          resizeMode="contain"
+        />
+      )}
     />
-  );
-  return (
-    <Layout
-      style={{
-        flexDirection: "row",
-        flexWrap: "wrap",
-      }}
-    >
-      {/* <ButtonGroup style={{justifyContent:"center"}}> */}
-      <Button
-        appearance="ghost"
-        accessoryLeft={(props) => (
-          <Icon {...props} name="image-filter-black-white" />
-        )}
-        status={props.activeAction === ACTION_FILTER ? "primary" : "basic"}
-        onPress={() => {
-          setCurrentAction("Filters");
-          props.onAppBarActionButtonPress(ACTION_FILTER);
-        }}
-      />
-      <Button
-        appearance="ghost"
-        accessoryLeft={(props) => <Icon {...props} name="format-textbox" />}
-        status={props.activeAction === ACTION_TEXT ? "primary" : "basic"}
-        onPress={() => {
-          setCurrentAction("Captions");
-          props.onAppBarActionButtonPress(ACTION_TEXT);
-        }}
-      />
-      <Button
-        appearance="ghost"
-        accessoryLeft={(props) => (
-          <Icon {...props} name="image-filter-frames" />
-        )}
-        status={props.activeAction === ACTION_FRAME ? "primary" : "basic"}
-        onPress={() => {
-          setCurrentAction("Frames");
-          props.onAppBarActionButtonPress(ACTION_FRAME);
-        }}
-      />
-      {/* </ButtonGroup> */}
-    </Layout>
   );
 };
 
