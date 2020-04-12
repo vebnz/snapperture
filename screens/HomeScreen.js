@@ -147,6 +147,7 @@ class HomeScreen extends Component {
             selectedFilter={this.state.filter}
             onSelectFilter={this.onSelectFilter}
             onSetIntensity={(value) => this.setState({ intensity: value })}
+            intensity={this.state.intensity}
           />
         );
       case ACTION_FRAME:
@@ -154,7 +155,8 @@ class HomeScreen extends Component {
           <FramePicker
             selectedFrame={this.state.frame}
             onSelectFrame={this.onSelectFrame}
-            onSetOpacity={(opacity) => this.setState({opacity})}
+            onSetOpacity={(opacity) => this.setState({ opacity })}
+            opacity={this.state.opacity}
           />
         );
       case ACTION_TEXT:

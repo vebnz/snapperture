@@ -60,7 +60,7 @@ const FilterPicker = (props) => {
           <Slider
             step={0.05}
             style={{ margin: 10 }}
-            value={1}
+            value={props.intensity}
             minimumValue={0}
             maximumValue={1.25}
             onValueChange={(value) => {

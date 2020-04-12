@@ -62,7 +62,7 @@ const FramePicker = (props) => {
           <Slider
             step={0.1}
             style={{ margin: 10 }}
-            value={1}
+            value={props.opacity}
             minimumValue={0.0}
             maximumValue={1.0}
             onValueChange={(value) => {props.onSetOpacity(value)}}
