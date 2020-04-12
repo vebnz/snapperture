@@ -7,8 +7,15 @@ import * as React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 
 import * as eva from "@eva-design/eva";
-import { default as theme } from "./calo-theme.json";
+import { default as darktheme } from "./calo-theme-dark.json";
+import { default as lighttheme } from "./calo-theme-light.json";
 import { default as mapping } from "./mapping.json";
+
+import {
+  Appearance,
+  AppearanceProvider,
+  useColorScheme,
+} from "react-native-appearance";
 
 import {
   ApplicationProvider,
@@ -29,6 +36,14 @@ const App = (props) => {
   const containerRef = React.useRef();
   const { getInitialState } = useLinking(containerRef);
 
+  const colorScheme = useColorScheme()
+
+  const appTheme =
+    colorScheme === "light"
+      ? { ...eva.light, ...lighttheme }
+      : { ...eva.dark, ...darktheme };
+
+      
   // Load any resources or data that we need prior to rendering the app
   SplashScreen.preventAutoHide();
   React.useEffect(() => {
@@ -74,7 +89,7 @@ const App = (props) => {
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
-      <ApplicationProvider {...eva} theme={{ ...eva.dark, ...theme }}>
+      <ApplicationProvider {...eva} theme={appTheme}>
         <Layout
           style={{ flex: 1, alignContent: "center", justifyContent: "center" }}
         >
@@ -84,11 +99,11 @@ const App = (props) => {
     );
   } else {
     return (
-      <React.Fragment>
+      <AppearanceProvider>
         <IconRegistry icons={MCIconsPack} />
         <ApplicationProvider
           {...eva}
-          theme={{ ...eva.dark, ...theme }}
+          theme={appTheme}
           customMapping={mapping}
         >
           <Layout style={styles.container}>
@@ -111,7 +126,7 @@ const App = (props) => {
             </NavigationContainer>
           </Layout>
         </ApplicationProvider>
-      </React.Fragment>
+      </AppearanceProvider>
     );
   }
 };

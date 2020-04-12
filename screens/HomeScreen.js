@@ -55,47 +55,26 @@ class HomeScreen extends Component {
       appState: AppState.currentState,
     };
     this.camera = null;
+    this.unmountedCamera = true;
     this.surface = null;
     this.captionRef = null;
-    this.navigationBlurListener = null;
-    this.navigationFocusListener = null;
     this.navigationStateListener = null;
   }
 
   componentDidMount = async () => {
     AppState.addEventListener("change", this._handleAppStateChange);
     const { status } = await Camera.requestPermissionsAsync();
-
-    
     this.setState({
       hasPermission: status === "granted",
     });
-
-    this.navigationBlurListener = this.props.navigation.addListener(
-      "blur",
-      (e) => {
-        console.log("HomeScreen -> componentDidMount -> blur");
-        if (this.camera && this.camera.camera) {
-          this.camera.camera.pausePreview();
-        }
-      }
-    );
-    this.navigationFocusListener = this.props.navigation.addListener(
-      "focus",
-      (e) => {
-        console.log("HomeScreen -> componentDidMount -> focus");
-        if (this.camera && this.camera.camera) {
-          this.camera.camera.resumePreview();
-        }
-      }
-    );
+    this.unmountedCamera = false;
   };
 
   componentWillUnmount() {
+    console.log("HomeScreen -> componentWillUnmount -> componentWillUnmount")
+    this.camera = null;
     cancelAnimationFrame(this._raf);
     AppState.removeEventListener("change", this._handleAppStateChange);
-    this.navigationBlurListener = null;
-    this.navigationFocusListener = null;
   }
 
   _handleAppStateChange = (nextAppState) => {
@@ -305,16 +284,14 @@ class HomeScreen extends Component {
                 frameOptions={frameOptions}
                 fxTextOffset={fxTextOffset}
               >
-                {!imageSource ? (
-                  <GLCamera
-                    ref={(camera) => (this.camera = camera)}
-                    position={type}
-                    height={cameraHeight}
-                    width={width}
-                  />
-                ) : (
-                  { uri: imageSource }
-                )}
+                <GLCamera
+                  ref={(camera) => (this.camera = camera)}
+                  position={type}
+                  height={cameraHeight}
+                  width={width}
+                  imageSource={imageSource}
+                />
+                
               </FX>
             </GLSurface>
 

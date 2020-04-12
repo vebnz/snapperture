@@ -2,6 +2,7 @@
   "expo": {
     "name": "calograph",
     "slug": "calograph",
+    "userInterfaceStyle": "automatic",
     "platforms": [
       "ios",
       "android",

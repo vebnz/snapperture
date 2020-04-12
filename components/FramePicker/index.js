@@ -6,7 +6,6 @@ import FX from "../FX";
 import { Image, View, Slider } from "react-native";
 import { Text, Layout } from "@ui-kitten/components";
 
-
 const FramePicker = (props) => {
   const [selectedFrame, setSelectedFrame] = useState(frameConsts[0]);
 
@@ -18,8 +17,21 @@ const FramePicker = (props) => {
           props.onSelectFrame(item);
         }}
       >
-        <View style={{ paddingRight: 5, paddingLeft: 5 }}>
-          <Image source={item.cropMask} style={{ transform:[{rotate: item.imgRotate}], width: 50, height: 50 }} />
+        <View
+          style={{
+            backgroundColor: "#212121",
+            paddingRight: 5,
+            paddingLeft: 5,
+          }}
+        >
+          <Image
+            source={item.cropMask}
+            style={{
+              transform: [{ rotate: item.imgRotate }],
+              width: 50,
+              height: 50,
+            }}
+          />
           <Text
             style={{
               fontSize: 12,

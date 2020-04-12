@@ -20,7 +20,6 @@ void main(){
 class GLCamera extends Component {
   constructor(props) {
     super(props);
-    
     this.camera = null;
   }
   async componentDidMount() {
@@ -30,7 +29,14 @@ class GLCamera extends Component {
     };
     this._raf = requestAnimationFrame(loop);
   }
-  
+  componentWillUnmount = () => {
+    console.log("GLCamera -> componentWillUnmount -> this._raf", this._raf)
+    if (!!this._raf) {
+      cancelAnimationFrame(this._raf)
+      this._raf == undefined;
+    }
+  }
+
   onCameraRef = camera => {
     this.camera = camera;
   };
@@ -57,6 +63,10 @@ class GLCamera extends Component {
   }
 
   render() {
+    if (this.props.imageSource) {
+      return { uri: imageSource }
+    }
+
     const { position } = this.props;
     
     const type = Camera.Constants.Type[position];

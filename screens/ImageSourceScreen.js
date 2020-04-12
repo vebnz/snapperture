@@ -3,7 +3,9 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
 import { Image, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import splash from "../assets/images/g14.png";
+import splashLight from "../assets/images/logolighttext.png";
+import splashDark from "../assets/images/logodarktext.png";
+import { useColorScheme } from "react-native-appearance";
 
 const ImageSourceScreen = ({ route, navigation }) => {
   const theme = useTheme();
@@ -11,6 +13,13 @@ const ImageSourceScreen = ({ route, navigation }) => {
   const [imageSource, setImageSource] = useState(false);
   const [croppedPicture, setCroppedPicture] = useState();
 
+  const colorScheme = useColorScheme();
+
+  const splash =
+    colorScheme === "light"
+      ? splashDark
+      : splashLight;
+      
   let openImagePickerAsync = async () => {
     setImageSource(false);
     try {

@@ -15,6 +15,7 @@ import {
   Layout,
 } from "@ui-kitten/components";
 import { useNavigation } from "@react-navigation/native";
+import { useColorScheme } from "react-native-appearance";
 
 export const FontList = [
   { fontFamily: "avantquelombre", name: "Avant" },
@@ -51,44 +52,6 @@ const CaptionView = (props) => {
     setRotate(rotateIncrement);
     props.onRotateCaptionSnapshot(rotateIncrement)
   }
-  
-  const renderItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          setCaptionFont(item.fontFamily);
-          // props.onSetCaptionOptions({
-          //   fontFamily: item.fontFamily,
-          // });
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: "#ffffff",
-            width: 120,
-            height: 80,
-            paddingRight: 5,
-            paddingLeft: 5,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 13,
-              fontFamily: item.fontFamily,
-              textAlign: "center",
-              alignSelf: "center",
-              color: "#000000",
-            }}
-          >
-            {item.name}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Button
@@ -96,7 +59,7 @@ const CaptionView = (props) => {
         onPress={() => {
           props.navigation.navigate("Caption");
         }}
-        accessoryRight={(props) => <Text>{"Edit caption"}</Text>}
+        accessoryRight={(props) => <Text status="control">{"Edit caption"}</Text>}
         accessoryLeft={(icoprops) => (
           <Icon {...icoprops} name="pencil" />
         )}

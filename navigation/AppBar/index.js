@@ -20,7 +20,7 @@ const TopAppBar = (props) => {
         accessoryLeft={(props) => (
           <Icon {...props} name="image-filter-black-white" />
         )}
-        status={props.activeAction === ACTION_FILTER?"primary":"control"}
+        status={props.activeAction === ACTION_FILTER?"primary":"basic"}
         
         onPress={() => {
           setCurrentAction("Filters");
@@ -30,7 +30,7 @@ const TopAppBar = (props) => {
       <Button
         appearance="ghost"
         accessoryLeft={(props) => <Icon {...props} name="format-textbox" />}
-        status={props.activeAction === ACTION_TEXT?"primary":"control"}
+        status={props.activeAction === ACTION_TEXT?"primary":"basic"}
         
         onPress={() => {
           setCurrentAction("Captions");
@@ -42,7 +42,7 @@ const TopAppBar = (props) => {
         accessoryLeft={(props) => (
           <Icon {...props} name="image-filter-frames" />
         )}
-        status={props.activeAction === ACTION_FRAME?"primary":"control"}
+        status={props.activeAction === ACTION_FRAME?"primary":"basic"}
         
         onPress={() => {
           setCurrentAction("Frames");

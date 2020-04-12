@@ -15,12 +15,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FontList } from "../components/CaptionView";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { captureRef } from "react-native-view-shot";
+import { useColorScheme } from "react-native-appearance";
 
 
 const BackIcon = (props) => <Icon {...props} name="arrow-left" />;
 
 export const CaptionScreen = (props) => {
-  console.log("CaptionScreen -> props", props);
   const [captionText, setCaptionText] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [fontSize, setFontSize] = useState(30);
@@ -28,6 +28,7 @@ export const CaptionScreen = (props) => {
 
   const textRenderTarget = useRef();
 
+  const colorScheme = useColorScheme();
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
@@ -37,7 +38,7 @@ export const CaptionScreen = (props) => {
       >
         <View
           style={{
-            backgroundColor: "#ffffff",
+            backgroundColor: colorScheme === "light" ? "#000000" : "#ffffff",
             width: 120,
             height: 80,
             paddingRight: 5,
@@ -52,7 +53,7 @@ export const CaptionScreen = (props) => {
               fontFamily: item.fontFamily,
               textAlign: "center",
               alignSelf: "center",
-              color: "#000000",
+              color: colorScheme === "light" ? "#ffffff" : "#000000",
             }}
           >
             {item.name}
@@ -62,12 +63,12 @@ export const CaptionScreen = (props) => {
     );
   };
 
-  const navigateBack = async () => {
-    await snapTarget();
-  };
 
   const BackAction = () => (
-    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
+    <TopNavigationAction icon={BackIcon} onPress={() => {
+      console.log("navigateBack -> props.navigation", props.navigation)
+      props.navigation.goBack();
+    }} />
   );
 
   const snapTarget = async () => {

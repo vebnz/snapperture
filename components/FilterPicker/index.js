@@ -54,8 +54,6 @@ const FilterPicker = props => {
         value={1}
         minimumValue={0}
         maximumValue={1.25}
-        minimumTrackTintColor="#ffffff"
-        maximumTrackTintColor="#ff0000"
         onValueChange={value => {
           props.onSetIntensity(value)
         }}
