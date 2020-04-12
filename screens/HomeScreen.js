@@ -16,7 +16,11 @@ import GLCamera from "../components/GLCamera";
 import PanView from "../components/PanView";
 import filterConsts from "../constants/Filters";
 import frameConsts from "../constants/Frames";
-import TopAppBar, { ACTION_FILTER, ACTION_FRAME, ACTION_TEXT } from "../navigation/AppBar";
+import TopAppBar, {
+  ACTION_FILTER,
+  ACTION_FRAME,
+  ACTION_TEXT,
+} from "../navigation/AppBar";
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -79,7 +83,6 @@ class HomeScreen extends Component {
   };
 
   onLayout = (evt) => {
-    
     const { width, height } = evt.nativeEvent.layout;
     this.setState({
       width,
@@ -92,7 +95,11 @@ class HomeScreen extends Component {
     this.setState({ filter, activeFilterContentTitle: filter.name });
   };
   onSelectFrame = (frame) => {
-    this.setState({ frame, frameOptions: frame, activeFrameContentTitle: frame.name });
+    this.setState({
+      frame,
+      frameOptions: frame,
+      activeFrameContentTitle: frame.name,
+    });
   };
 
   onFlipPress = () => {
@@ -105,22 +112,19 @@ class HomeScreen extends Component {
   onSurfaceCapture = async () => {
     try {
       if (this.surface) {
-        if (this.camera && this.camera.camera) {
-          // await this.camera.camera.takePictureAsync()
-          const {
-            height,
-            localUri,
-            uri,
-            width,
-          } = await this.surface.glView.capture();
+        const {
+          height,
+          localUri,
+          uri,
+          width,
+        } = await this.surface.glView.capture();
 
-          this.props.navigation.navigate("Share", {
-            height,
-            localUri,
-            uri,
-            width,
-          });
-        }
+        this.props.navigation.navigate("Share", {
+          height,
+          localUri,
+          uri,
+          width,
+        });
       }
     } catch (error) {
       console.log("HomeScreen -> onSurfaceCapture -> error", error);
