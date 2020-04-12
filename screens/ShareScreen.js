@@ -34,13 +34,13 @@ const ShareScreen = ({ route, navigation }) => {
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title="Share your creation" />
+      <TopNavigation alignment="center" title="Share your creation" />
       <Layout style={{ flex: 1 }}>
         <Image
           style={{ flex: 1, resizeMode: "contain" }}
           source={{ uri: localUri }}
         />
-        <ButtonGroup style={{justifyContent:'center'}}>
+        <ButtonGroup style={{ justifyContent: "center" }}>
           <Button
             accessoryLeft={(props) => <Icon {...props} name="share" />}
             accessoryRight={(props) => <Text>Share this...</Text>}

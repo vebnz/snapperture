@@ -1,38 +1,22 @@
 import { withNavigationFocus } from "@react-navigation/compat";
+import { Button, Icon, Layout, Text } from "@ui-kitten/components";
+import { Linking } from "expo";
 import { Camera } from "expo-camera";
+import Constants from "expo-constants";
+import * as IntentLauncherAndroid from "expo-intent-launcher";
 import { Surface as GLSurface } from "gl-react-expo";
 import React, { Component } from "react";
-import {
-  View,
-  Slider,
-  Image,
-  TouchableHighlightBase,
-  Platform,
-  AppState,
-} from "react-native";
-import FX from "../components/FX";
-import Constants from "expo-constants";
-import GLCamera from "../components/GLCamera";
-import FilterPicker from "../components/FilterPicker";
-import * as IntentLauncherAndroid from "expo-intent-launcher";
-import defaultMask from "../assets/masks/portrait.png";
-import test80 from "../assets/images/test80.jpg";
-import filterConsts from "../constants/Filters";
-import TopAppBar, {
-  ACTION_FILTER,
-  ACTION_FRAME,
-  ACTION_TEXT,
-} from "../navigation/AppBar";
-import TextFx from "../components/FX/TextFx";
-import { captureRef } from "react-native-view-shot";
-import { CaptionView } from "../components/CaptionView";
-import FramePicker from "../components/FramePicker";
-import frameConsts from "../constants/Frames";
-import { Linking, SplashScreen } from "expo";
-import { Layout, Text, Button, Icon } from "@ui-kitten/components";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { AppState, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { CaptionView } from "../components/CaptionView";
+import FilterPicker from "../components/FilterPicker";
+import FramePicker from "../components/FramePicker";
+import FX from "../components/FX";
+import GLCamera from "../components/GLCamera";
 import PanView from "../components/PanView";
+import filterConsts from "../constants/Filters";
+import frameConsts from "../constants/Frames";
+import TopAppBar, { ACTION_FILTER, ACTION_FRAME, ACTION_TEXT } from "../navigation/AppBar";
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -47,7 +31,7 @@ class HomeScreen extends Component {
       intensity: 1,
       filter: filterConsts[0],
       renderedNode: null,
-      action: ACTION_TEXT,
+      action: ACTION_FILTER,
       captionText: "",
       captionOptions: {},
       frameOptions: frameConsts[0],
@@ -71,7 +55,6 @@ class HomeScreen extends Component {
   };
 
   componentWillUnmount() {
-    console.log("HomeScreen -> componentWillUnmount -> componentWillUnmount")
     this.camera = null;
     cancelAnimationFrame(this._raf);
     AppState.removeEventListener("change", this._handleAppStateChange);
@@ -83,7 +66,6 @@ class HomeScreen extends Component {
       nextAppState === "active"
     ) {
       if (this.camera && this.camera.camera) {
-        console.log("GLCamera -> app foreground");
         this.setState({ camkey: Math.random() });
         // this.camera.camera.resumePreview();
       }
@@ -96,7 +78,7 @@ class HomeScreen extends Component {
   };
 
   onLayout = (evt) => {
-    console.log("HomeScreen -> onLayout");
+    
     const { width, height } = evt.nativeEvent.layout;
     this.setState({
       width,
@@ -106,10 +88,10 @@ class HomeScreen extends Component {
   };
 
   onSelectFilter = (filter) => {
-    this.setState({ filter });
+    this.setState({ filter, activeFilterContentTitle: filter.name });
   };
   onSelectFrame = (frame) => {
-    this.setState({ frameOptions: frame });
+    this.setState({ frameOptions: frame, activeFrameContentTitle: frame.name });
   };
 
   onFlipPress = () => {
@@ -168,7 +150,6 @@ class HomeScreen extends Component {
             route={this.props.route}
             navigation={this.props.navigation}
             setCaptionSnapshot={(uri) => {
-              console.log("HomeScreen -> renderActionPanel -> uri", uri);
               this.setState({
                 renderedNode: { uri: uri.uri },
               });
@@ -247,11 +228,6 @@ class HomeScreen extends Component {
     if (!this.props.navigation.isFocused()) {
       return <Text>Camera delayed rendering</Text>;
     }
-    console.log("HomeScreen -> render -> imageSource", imageSource);
-    console.log(
-      "HomeScreen -> componentDidMount -> this.props.route",
-      this.props.route
-    );
     const { params } = this.props.route;
     let imageSource = false;
     if (params && params.imageSource) {
@@ -261,7 +237,10 @@ class HomeScreen extends Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <TopAppBar
+          activeContentTitle={this.state.activeContentTitle}
           activeAction={this.state.action}
+          activeFilterContentTitle={this.state.activeFilterContentTitle}
+          activeFrameContentTitle={this.state.activeFrameContentTitle}
           onAppBarActionButtonPress={(action) => this.setState({ action })}
         />
         <Layout style={{ flex: 1 }} onLayout={this.onLayout}>
@@ -292,10 +271,9 @@ class HomeScreen extends Component {
                     width={width}
                     imageSource={imageSource}
                   />
-                ):(
-                  {uri: imageSource}
+                ) : (
+                  { uri: imageSource }
                 )}
-                
               </FX>
             </GLSurface>
 

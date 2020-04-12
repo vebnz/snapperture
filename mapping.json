@@ -1,5 +1,44 @@
 {
   "strict": {
     "text-font-family": "Quicksand"
+  },
+  "components": {
+    "TopNavigationAction": {
+      "meta": {},
+      "appearances": {
+        "default": {
+          "mapping": {
+            "iconTintColor": "color-primary-500",
+            "state": {
+              "hover": {
+                "iconTintColor": "color-primary-500"
+              },
+              "focused": {
+                "iconTintColor": "color-primary-500"
+              },
+              "active": {
+                "iconTintColor": "color-primary-500"
+              }
+            }
+          }
+        },
+        "control": {
+          "mapping": {
+            "iconTintColor": "text-basic-color",
+            "state": {
+              "hover": {
+                "iconTintColor": "text-basic-color"
+              },
+              "focused": {
+                "iconTintColor": "text-basic-color"
+              },
+              "active": {
+                "iconTintColor": "text-basic-color"
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

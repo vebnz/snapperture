@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import frameConsts from "../../constants/Frames";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
@@ -9,6 +9,11 @@ import { Text, Layout } from "@ui-kitten/components";
 const FramePicker = (props) => {
   const [selectedFrame, setSelectedFrame] = useState(frameConsts[0]);
 
+  useEffect(() => {
+    setSelectedFrame(frameConsts[0]);
+    props.onSelectFrame(frameConsts[0]);
+  }, []);
+  
   const renderItem = ({ item }) => {
     return (
       <TouchableOpacity
@@ -48,9 +53,6 @@ const FramePicker = (props) => {
   };
   return (
     <Layout style={{ flex: 1, justifyContent: "flex-end" }}>
-      <Text category="h3" style={{ flex: 1, textAlign: "center" }}>
-        {selectedFrame.name}
-      </Text>
       <FlatList
         horizontal
         data={frameConsts}
