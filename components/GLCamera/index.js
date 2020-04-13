@@ -78,8 +78,6 @@ class GLCamera extends Component {
           // style={{width: this.props.width, height: this.props.height}}
           ratio="1:1"
           type={type}
-          autoFocus={false}
-          whiteBalance={Camera.Constants.WhiteBalance.fluorescent}
           ref={this.onCameraRef}
           onCameraReady={this.onCameraReady}
         />
