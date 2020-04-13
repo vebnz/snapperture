@@ -74,6 +74,17 @@ const App = (props) => {
           Silent: require("./assets/fonts/Silent-Reaction.ttf"),
           Sunshine: require("./assets/fonts/Sunshine-in-my-Soul.ttf"),
           Sweetly: require("./assets/fonts/Sweetly-Broken.ttf"),
+          GochiHand: require("./assets/fonts/GochiHand-Regular.ttf"),
+          HomemadeApple: require("./assets/fonts/HomemadeApple-Regular.ttf"),
+          Lobster: require("./assets/fonts/Lobster-Regular.ttf"),
+          MrsSaintDelafield: require("./assets/fonts/MrsSaintDelafield-Regular.ttf"),
+          PermanentMarker: require("./assets/fonts/PermanentMarker.ttf"),
+          Playball: require("./assets/fonts/Playball-Regular.ttf"),
+          PressStart2P: require("./assets/fonts/PressStart2P-Regular.ttf"),
+          RipeApricots: require("./assets/fonts/RipeApricots.ttf"),
+          RockSalt: require("./assets/fonts/RockSalt-Regular.ttf"),
+          CodyStar: require("./assets/fonts/Codystar-Regular.ttf")
+
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service

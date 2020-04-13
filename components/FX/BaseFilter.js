@@ -18,11 +18,6 @@ const BaseFilter = (props) => {
   );
 
   useEffect(() => {
-    console.log("shader rebooted?")
-  })
-
-  useEffect(() => {
-    console.log("BaseFilter -> filter.shaderName", filter.shaderName)
     setShaders(
       Shaders.create({
         SHADER: {

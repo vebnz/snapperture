@@ -32,6 +32,16 @@ export const FontList = [
   { fontFamily: "Silent", name: "Silent Script" },
   { fontFamily: "Sunshine", name: "Sunshine" },
   { fontFamily: "Sweetly", name: "Sweetly" },
+
+  { fontFamily: "HomemadeApple", name: "Homemade Apple" },
+  { fontFamily: "Lobster", name: "Lobster" },
+  { fontFamily: "MrsSaintDelafield", name: "Saint Script" },
+  { fontFamily: "PermanentMarker", name: "Marker" },
+  { fontFamily: "Playball", name: "Playball" },
+  { fontFamily: "PressStart2P", name: "Arcade" },
+  { fontFamily: "RipeApricots", name: "Apricots" },
+  { fontFamily: "RockSalt", name: "Rock Salt" },
+  { fontFamily: "CodyStar", name: "LED Board" },
 ];
 const CaptionView = (props) => {
   const [captionText, setCaptionText] = useState(false);

@@ -122,12 +122,12 @@ export const CaptionScreen = (props) => {
               includeFontPadding: true,
               textAlignVertical: "center",
               padding: 10,
-              color: "#ffffff",
               textAlign: "center",
             }}
           >
             {captionText}
           </Text>
+        
           <Input
             autoFocus
             style={{ flex: 1 }}
@@ -170,7 +170,7 @@ export const CaptionScreen = (props) => {
             accessoryLeft={(props) => (
               <Icon {...props} name="keyboard-return" />
             )}
-            accessoryRight={(props) => <Text>Apply Caption</Text>}
+            accessoryRight={(props) => <Text status="control">Apply Caption</Text>}
             status="primary"
             onPress={() => {
               snapTarget();
