@@ -80,6 +80,7 @@ class GLCamera extends Component {
           type={type}
           ref={this.onCameraRef}
           onCameraReady={this.onCameraReady}
+          videoStabilizationMode={Camera.Constants.VideoStabilization.cinematic}
         />
       </Node>
     );
