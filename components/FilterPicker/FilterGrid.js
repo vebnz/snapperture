@@ -41,7 +41,6 @@ const FilterGrid = (props) => {
     );
   };
 
-  console.log("props.eva.style.mStyle", props.eva.style.mStyle);
   return (
     <Modal
       hardwareAccelerated

@@ -11,6 +11,23 @@ import BaseFilter from "./BaseFilter";
 const OverlayNode = (props) => {
   let { children: inputImageTexture, fxTextOffset, frameOptions } = props;
 
+  const [oShader, setShaders] = useState(
+    Shaders.create({
+      OVERLAY: {
+        frag: Overlay,
+      },
+    })
+  );
+
+  useEffect(() => {
+    setShaders(
+      Shaders.create({
+        OVERLAY: {
+          frag: Overlay,
+        },
+      })
+    );
+  }, []);
   const [textOverlay, setTextOverlay] = useState(
     Asset.fromModule(require("../../assets/masks/blank.png"))
   );
@@ -46,12 +63,6 @@ const OverlayNode = (props) => {
     loadOverlay();
   }, [props.overlay, frameOptions]);
 
-  const oShader = Shaders.create({
-    OVERLAY: {
-      frag: Overlay,
-    },
-  });
-
   const uniforms = {
     inputImageTexture,
     overlay: textOverlay,
@@ -63,15 +74,10 @@ const OverlayNode = (props) => {
     shaderTricks: Platform.OS === "ios",
     fxTextOffset,
     ...assetUniforms,
-  }
-  console.log("OverlayNode -> uniforms", uniforms)
+  };
   return (
-    <Node
-      shader={oShader.OVERLAY}
-      ignoreUnusedUniforms
-      uniforms={uniforms}
-    >
-      <BaseFilter {...props}/>
+    <Node shader={oShader.OVERLAY} ignoreUnusedUniforms uniforms={uniforms}>
+      <BaseFilter {...props} />
     </Node>
   );
 };

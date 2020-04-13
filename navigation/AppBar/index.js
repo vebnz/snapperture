@@ -22,7 +22,6 @@ const TopAppBar = (props) => {
 
   const splash = colorScheme === "light" ? splashDark : splashLight;
 
-  console.log("TopAppBar -> props", props);
   const [currentAction, setCurrentAction] = useState("Filters");
   const renderToolbar = () => (
     <React.Fragment>

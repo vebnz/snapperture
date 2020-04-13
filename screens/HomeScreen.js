@@ -42,7 +42,7 @@ class HomeScreen extends Component {
       frameOptions: frameConsts[0],
       fontSize: 20,
       appState: AppState.currentState,
-      opacity: 1.0
+      opacity: 1.0,
     };
     this.camera = null;
     this.unmountedCamera = true;
@@ -79,6 +79,12 @@ class HomeScreen extends Component {
     this.setState({ appState: nextAppState });
   };
 
+  forceRedraw = () => {
+    console.log("hs force redraw");
+    // this.setState({ camkey: Math.random() });
+    this.surface.rebootForDebug();
+  };
+
   onCameraError = (error) => {
     console.log("onCameraError -> error", error);
   };
@@ -93,7 +99,13 @@ class HomeScreen extends Component {
   };
 
   onSelectFilter = (filter) => {
-    this.setState({ filter, activeFilterContentTitle: filter.name });
+    if (filter.shaderName !== this.state.filter.shaderName) {
+      this.setState({ filter, activeFilterContentTitle: filter.name });
+      console.log('rebootshader here')
+      this.surface.rebootForDebug()
+    } else {
+      this.setState({ filter, activeFilterContentTitle: filter.name });
+    }
   };
   onSelectFrame = (frame) => {
     this.setState({
@@ -214,7 +226,7 @@ class HomeScreen extends Component {
       fontSize,
       rotateIncrement,
       fxTextOffset,
-      opacity
+      opacity,
     } = this.state;
 
     if (!width && !height) {
@@ -249,7 +261,7 @@ class HomeScreen extends Component {
     if (params && params.imageSource) {
       imageSource = params.imageSource;
     }
-
+    console.log("HomeScreen -> render -> this.state.camkey", this.state.camkey);
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <TopAppBar
@@ -279,6 +291,7 @@ class HomeScreen extends Component {
                 frameOptions={frameOptions}
                 fxTextOffset={fxTextOffset}
                 opacity={opacity}
+                forceRedraw={this.forceRedraw}
               >
                 {!imageSource ? (
                   <GLCamera
